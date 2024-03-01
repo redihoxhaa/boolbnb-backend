@@ -1,0 +1,70 @@
+@import "~bootstrap/scss/bootstrap";
+@import "_partials/reset.scss";
+@import "_partials/common.scss";
+@import "_partials/components.scss";
+@import "_partials/typography.scss";
+@import "_partials/utilities.scss";
+@import "_partials/variables.scss";
+@import "_partials/mixins.scss";
+
+.welcome {
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    p {
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    a {
+        display: block;
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    .highlight {
+        font-weight: bold;
+        color: #007bff;
+    }
+}
+
+.project-list,
+.project-show {
+    .pic-container {
+        width: 200px;
+        margin: 0 auto;
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.project-update,
+.project-create {
+    .input-group-text {
+        width: 10%;
+    }
+}
+
+#app .pic-container {
+    width: 200px;
+
+    img {
+        width: 100%;
+    }
+}
+
+.category {
+    border-radius: 0;
+}
