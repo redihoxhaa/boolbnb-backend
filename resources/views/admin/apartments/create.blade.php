@@ -37,7 +37,12 @@
         <input type="text" id="longitude" name="longitude">
     
         <label for="images">Images:</label>
+        
+    <div id="image-container">
         <input type="file" id="images" name="images[]" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
+    </div>
+    <button type="button" id="add-image">Add Image</button>
+
 
     
         <label for="services">Services:</label><br>
@@ -99,6 +104,19 @@
                 suggestionsMenu.classList.add('d-none');
             }
         });
+
+        
+
+    document.getElementById('add-image').addEventListener('click', function() {
+        var imageContainer = document.getElementById('image-container');
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.name = 'images[]';
+        input.accept = 'image/jpeg,image/png,image/jpg,image/gif,image/webp';
+        input.multiple = true;
+        imageContainer.appendChild(input);
+    });
+
     </script>
 
 
