@@ -44,7 +44,7 @@ class ApartmentSeeder extends Seeder
             $apartment->address = $apartmentData['address'];
             $apartment->latitude = $apartmentData['latitude'];
             $apartment->longitude = $apartmentData['longitude'];
-            $apartment->image = implode(',', $apartmentData['image']);
+            $apartment->images = implode(',', $apartmentData['image']);
             $apartment->save();
             $apartment->slug = Str::slug($apartmentData['title']) . '-' . $apartment->id;
             $apartment->save();

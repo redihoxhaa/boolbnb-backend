@@ -7,6 +7,9 @@ use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ApartmentController extends Controller
 {
@@ -15,7 +18,8 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        //
+        $apartments = Apartment::all();
+        return view('admin.apartments.list', compact('apartments'));
     }
 
     /**
@@ -33,7 +37,37 @@ class ApartmentController extends Controller
      */
     public function store(StoreApartmentRequest $request)
     {
-        //
+        $data = $request->validated();
+        $apartment = new Apartment();
+        $user = Auth::user();
+
+        $apartment->user_id = $user->id;
+        $apartment->title = $data['title'];
+        $apartment->description = $data['description'];
+        $apartment->rooms = $data['rooms'];
+        $apartment->beds = $data['beds'];
+        $apartment->bathrooms = $data['bathrooms'];
+        $apartment->square_meters = $data['square_meters'];
+        $apartment->address = $data['address'];
+        $apartment->latitude = $data['latitude'];
+        $apartment->longitude = $data['longitude'];
+        if (isset($data['images'])) {
+            $imagesPaths = [];
+            foreach ($data['images'] as $image) {
+                $imagesPaths[] = Storage::put('uploads', $image);
+            }
+            $apartment->images = implode(',', $imagesPaths);
+        }
+        // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
+        $apartment->save();
+        $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
+        $apartment->save();
+        if (isset($data['services'])) {
+            $apartment->services()->sync($data['services']);
+        } else {
+            $apartment->services()->sync([]);
+        }
+        return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully listed.');
     }
 
     /**
@@ -41,7 +75,7 @@ class ApartmentController extends Controller
      */
     public function show(Apartment $apartment)
     {
-        //
+        return view('admin.apartments.show', compact('apartment'));
     }
 
     /**
@@ -49,7 +83,10 @@ class ApartmentController extends Controller
      */
     public function edit(Apartment $apartment)
     {
-        //
+
+        $services = Service::all();
+
+        return view('admin.apartments.edit', compact('services', 'apartment'));
     }
 
     /**
@@ -57,7 +94,35 @@ class ApartmentController extends Controller
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
-        //
+
+        $data = $request->validated();
+
+        $apartment->title = $data['title'];
+        $apartment->description = $data['description'];
+        $apartment->rooms = $data['rooms'];
+        $apartment->beds = $data['beds'];
+        $apartment->bathrooms = $data['bathrooms'];
+        $apartment->square_meters = $data['square_meters'];
+        $apartment->address = $data['address'];
+        $apartment->latitude = $data['latitude'];
+        $apartment->longitude = $data['longitude'];
+        if (isset($data['images'])) {
+            $imagesPaths = [];
+            foreach ($data['images'] as $image) {
+                $imagesPaths[] = Storage::put('uploads', $image);
+            }
+            $apartment->images = implode(',', $imagesPaths);
+        }
+        // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
+
+        $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
+        $apartment->save();
+        if (isset($data['services'])) {
+            $apartment->services()->sync($data['services']);
+        } else {
+            $apartment->services()->sync([]);
+        }
+        return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully updated');
     }
 
     /**
@@ -65,6 +130,14 @@ class ApartmentController extends Controller
      */
     public function destroy(Apartment $apartment)
     {
-        //
+        $apartment->services()->sync([]);
+        // Elimina le immagini associate all'appartamento
+        $imagesPaths = explode(',', $apartment->images);
+        foreach ($imagesPaths as $imagePath) {
+            Storage::delete($imagePath);
+        }
+        $apartment->delete();
+
+        return redirect()->route('admin.apartments.index')->with('message', $apartment->title . '" was successfully deleted.');
     }
 }
