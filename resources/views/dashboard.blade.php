@@ -8,7 +8,7 @@
                     Welcome to my portfolio, {{ Auth::user()->name }}!
                 </h1>
 
-
+                <a href="{{ route('admin.apartments.create') }}">Aggiungi appartamento</a>
 
             </div>
         </div>

@@ -6,6 +6,7 @@ use App\Models\Apartment;
 use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Service;
 
 class ApartmentController extends Controller
 {
@@ -22,7 +23,9 @@ class ApartmentController extends Controller
      */
     public function create()
     {
-        //
+        $services = Service::all();
+
+        return view('admin.apartments.create', compact('services'));
     }
 
     /**

@@ -7,64 +7,30 @@
 @import "_partials/variables.scss";
 @import "_partials/mixins.scss";
 
-.welcome {
-    h1 {
-        color: #333;
-        text-align: center;
-    }
-
-    p {
-        margin-bottom: 20px;
-    }
-
-    ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    li {
-        margin-bottom: 10px;
-    }
-
-    a {
-        display: block;
-        width: fit-content;
-        margin: 0 auto;
-    }
-
-    .highlight {
-        font-weight: bold;
-        color: #007bff;
-    }
+body {
+    color: white;
 }
 
-.project-list,
-.project-show {
-    .pic-container {
-        width: 200px;
-        margin: 0 auto;
-
-        img {
-            width: 100%;
-        }
-    }
+h1 {
+    color: #333;
+    text-align: center;
 }
 
-.project-update,
-.project-create {
-    .input-group-text {
-        width: 10%;
-    }
+p {
+    margin-bottom: 20px;
 }
 
-#app .pic-container {
-    width: 200px;
-
-    img {
-        width: 100%;
-    }
+ul {
+    list-style: none;
+    padding: 0;
 }
 
-.category {
-    border-radius: 0;
+li {
+    margin-bottom: 10px;
+}
+
+a {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
 }

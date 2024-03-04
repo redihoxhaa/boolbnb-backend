@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('apartments', ApartmentController::class)->parameters(['apartments' => 'apartment:slug']);
 });
 
 
