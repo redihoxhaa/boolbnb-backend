@@ -22,7 +22,10 @@ class StoreMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'apartment_id' => 'required|integer|exists:apartments,id',
+            'sender_name' => 'required|string',
+            'sender_email' => 'required|email',
+            'message_text' => 'required|string',
         ];
     }
 }

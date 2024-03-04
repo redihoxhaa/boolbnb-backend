@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Visit;
-use App\Http\Requests\StoreVisitRequest;
-use App\Http\Requests\UpdateVisitRequest;
+use App\Models\Service;
+use App\Http\Requests\StoreServiceRequest;
+use App\Http\Requests\UpdateServiceRequest;
+use App\Http\Controllers\Controller;
 
-class VisitController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class VisitController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreVisitRequest $request)
+    public function store(StoreServiceRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class VisitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Visit $visit)
+    public function show(Service $service)
     {
         //
     }
@@ -43,7 +44,7 @@ class VisitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Visit $visit)
+    public function edit(Service $service)
     {
         //
     }
@@ -51,7 +52,7 @@ class VisitController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateVisitRequest $request, Visit $visit)
+    public function update(UpdateServiceRequest $request, Service $service)
     {
         //
     }
@@ -59,7 +60,7 @@ class VisitController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Visit $visit)
+    public function destroy(Service $service)
     {
         //
     }

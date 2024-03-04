@@ -34,6 +34,7 @@ class UpdateApartmentRequest extends FormRequest
             'longitude' => 'required|numeric',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'services' => 'required|exists:services,id',
+            'is_visibile' => 'required|boolean'
         ];
     }
 }

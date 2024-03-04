@@ -9,25 +9,25 @@
 
     <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-    
+
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required maxlength="255">
-    
+
         <label for="description">Description:</label>
         <textarea id="description" name="description" required></textarea>
-    
+
         <label for="rooms">Rooms:</label>
         <input type="number" id="rooms" name="rooms" required min="1">
-    
+
         <label for="beds">Beds:</label>
         <input type="number" id="beds" name="beds" required min="1">
-    
+
         <label for="bathrooms">Bathrooms:</label>
         <input type="number" id="bathrooms" name="bathrooms" required min="1">
-    
+
         <label for="square_meters">Square Meters:</label>
         <input type="number" id="square_meters" name="square_meters" required min="1">
-    
+
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" autocomplete="off" placeholder="Type your address...">
         <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
@@ -35,25 +35,41 @@
         </div>
         <input type="text" id="latitude" name="latitude">
         <input type="text" id="longitude" name="longitude">
-    
+
         <label for="images">Images:</label>
-        
-    <div id="image-container">
-        <input type="file" id="images" name="images[]" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
-    </div>
-    <button type="button" id="add-image">Add Image</button>
+
+        <!-- Area per caricare le immagini -->
+        <div id="image-container">
+            <input type="file" id="images" name="images[]"
+                accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
+        </div>
+
+        <button type="button" id="add-image">Add Image</button>
 
 
-    
+
         <label for="services">Services:</label><br>
-    @foreach($services as $service)
-        <input type="checkbox" id="service{{ $service->id }}" name="services[]" value="{{ $service->id }}">
-        <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
-    @endforeach
+        @foreach ($services as $service)
+            <input type="checkbox" id="service{{ $service->id }}" name="services[]" value="{{ $service->id }}">
+            <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
+        @endforeach
 
-    <button type="submit">Submit</button>
+        <div>
+            <label>
+                <input type="radio" name="is_visible" value="0">
+                Private
+            </label>
+        </div>
+        <div>
+            <label>
+                <input type="radio" name="is_visible" value="1">
+                Public
+            </label>
+        </div>
+
+        <button type="submit">Submit</button>
     </form>
-    
+
 
     <!-- Script per la ricerca dell'indirizzo -->
     <script>
@@ -99,24 +115,44 @@
         }
 
 
-        document.addEventListener('click', event => {
-            if (!suggestionsMenu.contains(event.target) && event.target !== search) {
-                suggestionsMenu.classList.add('d-none');
-            }
+        // Aggiungi un'event listener per il click sul pulsante per aggiungere immagini
+        document.getElementById('add-image').addEventListener('click', function() {
+            const imageContainer = document.getElementById('image-container');
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.name = 'images[]';
+            input.accept = 'image/jpeg,image/png,image/jpg,image/gif,image/webp';
+            input.multiple = true;
+            input.addEventListener('change', handleFileSelect);
+            imageContainer.appendChild(input);
         });
 
-        
+        // Funzione per gestire il cambiamento del file di input e visualizzare le anteprime delle immagini
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const imageContainer = document.getElementById('image-preview-container');
+            imageContainer.innerHTML = ''; // Rimuovi anteprime precedenti
 
-    document.getElementById('add-image').addEventListener('click', function() {
-        var imageContainer = document.getElementById('image-container');
-        var input = document.createElement('input');
-        input.type = 'file';
-        input.name = 'images[]';
-        input.accept = 'image/jpeg,image/png,image/jpg,image/gif,image/webp';
-        input.multiple = true;
-        imageContainer.appendChild(input);
-    });
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (!file.type.startsWith('image/')) {
+                    continue;
+                }
 
+                const reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        const img = document.createElement('img');
+                        img.className = 'image-preview';
+                        img.src = e.target.result;
+                        img.title = theFile.name;
+                        imageContainer.appendChild(img);
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
 
 

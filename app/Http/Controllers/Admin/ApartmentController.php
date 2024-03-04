@@ -59,6 +59,7 @@ class ApartmentController extends Controller
             $apartment->images = implode(',', $imagesPaths);
         }
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
+        $apartment->is_visible = $data['is_visible'];
         $apartment->save();
         $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
         $apartment->save();
@@ -116,6 +117,7 @@ class ApartmentController extends Controller
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
 
         $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
+        $apartment->is_visible = $data['is_visible'];
         $apartment->save();
         if (isset($data['services'])) {
             $apartment->services()->sync($data['services']);
