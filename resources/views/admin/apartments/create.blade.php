@@ -10,50 +10,58 @@
     <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
+        <!-- Campo per il titolo dell'appartamento -->
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required maxlength="255">
 
+        <!-- Campo per la descrizione dell'appartamento -->
         <label for="description">Description:</label>
         <textarea id="description" name="description" required></textarea>
 
+        <!-- Campo per il numero di stanze dell'appartamento -->
         <label for="rooms">Rooms:</label>
         <input type="number" id="rooms" name="rooms" required min="1">
 
+        <!-- Campo per il numero di letti dell'appartamento -->
         <label for="beds">Beds:</label>
         <input type="number" id="beds" name="beds" required min="1">
 
+        <!-- Campo per il numero di bagni dell'appartamento -->
         <label for="bathrooms">Bathrooms:</label>
         <input type="number" id="bathrooms" name="bathrooms" required min="1">
 
+        <!-- Campo per i metri quadrati dell'appartamento -->
         <label for="square_meters">Square Meters:</label>
         <input type="number" id="square_meters" name="square_meters" required min="1">
 
+        <!-- Campo per l'indirizzo dell'appartamento -->
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" autocomplete="off" placeholder="Type your address...">
         <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
             <ul class="suggestions-list"></ul>
         </div>
-        <input type="text" id="latitude" name="latitude">
-        <input type="text" id="longitude" name="longitude">
+        <!-- Campi nascosti per latitudine e longitudine -->
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
 
+        <!-- Campo per caricare le immagini dell'appartamento -->
         <label for="images">Images:</label>
-
-        <!-- Area per caricare le immagini -->
         <div id="image-container">
             <input type="file" id="images" name="images[]"
                 accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
         </div>
 
+        <!-- Bottone per aggiungere ulteriori immagini -->
         <button type="button" id="add-image">Add Image</button>
 
-
-
+        <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
         <label for="services">Services:</label><br>
         @foreach ($services as $service)
             <input type="checkbox" id="service{{ $service->id }}" name="services[]" value="{{ $service->id }}">
             <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
         @endforeach
 
+        <!-- Campo per specificare la visibilità dell'appartamento -->
         <div>
             <label>
                 <input type="radio" name="is_visible" value="0">
@@ -62,13 +70,15 @@
         </div>
         <div>
             <label>
-                <input type="radio" name="is_visible" value="1">
+                <input type="radio" name="is_visible" value="1" checked>
                 Public
             </label>
         </div>
 
+        <!-- Bottone per inviare il form -->
         <button type="submit">Submit</button>
     </form>
+
 
 
     <!-- Script per la ricerca dell'indirizzo -->
