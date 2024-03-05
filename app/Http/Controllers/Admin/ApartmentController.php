@@ -10,6 +10,7 @@ use App\Models\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class ApartmentController extends Controller
 {
@@ -38,9 +39,31 @@ class ApartmentController extends Controller
     public function store(StoreApartmentRequest $request)
     {
         $data = $request->validated();
+
+        $address = $data['address'];
+
+        // Effettua una chiamata all'API di geocodifica per ottenere la latitudine e la longitudine
+        $response = Http::withoutVerifying()->get('https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json', [
+            'key' => env('TOMTOM_API_KEY'),
+        ]);
+
+
+        if ($response->successful()) {
+            $addressQuery = $response->json();
+            if (isset($addressQuery['results']) && !empty($addressQuery['results'])) {
+                $latitude = $addressQuery['results'][0]['position']['lat'];
+                $longitude = $addressQuery['results'][0]['position']['lon'];
+            } else {
+                // Nessun risultato trovato per l'indirizzo fornito
+                return redirect()->back()->withInput()->withErrors(['address' => 'Indirizzo non valido']);
+            }
+        } else {
+            // La chiamata all'API non è riuscita
+            return redirect()->back()->withInput()->withErrors(['address' => 'Errore durante la geocodifica']);
+        }
+
         $apartment = new Apartment();
         $user = Auth::user();
-
         $apartment->user_id = $user->id;
         $apartment->title = $data['title'];
         $apartment->description = $data['description'];
@@ -48,9 +71,9 @@ class ApartmentController extends Controller
         $apartment->beds = $data['beds'];
         $apartment->bathrooms = $data['bathrooms'];
         $apartment->square_meters = $data['square_meters'];
-        $apartment->address = $data['address'];
-        $apartment->latitude = $data['latitude'];
-        $apartment->longitude = $data['longitude'];
+        $apartment->address = $address;
+        $apartment->latitude = $latitude;
+        $apartment->longitude = $longitude;
         if (isset($data['images'])) {
             $imagesPaths = [];
             foreach ($data['images'] as $image) {
@@ -108,15 +131,37 @@ class ApartmentController extends Controller
     {
         $data = $request->validated();
 
+        $address = $data['address'];
+
+        // Effettua una chiamata all'API di geocodifica per ottenere la latitudine e la longitudine
+        $response = Http::withoutVerifying()->get('https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json', [
+            'key' => env('TOMTOM_API_KEY'),
+        ]);
+
+
+        if ($response->successful()) {
+            $addressQuery = $response->json();
+            if (isset($addressQuery['results']) && !empty($addressQuery['results'])) {
+                $latitude = $addressQuery['results'][0]['position']['lat'];
+                $longitude = $addressQuery['results'][0]['position']['lon'];
+            } else {
+                // Nessun risultato trovato per l'indirizzo fornito
+                return redirect()->back()->withInput()->withErrors(['address' => 'Indirizzo non valido']);
+            }
+        } else {
+            // La chiamata all'API non è riuscita
+            return redirect()->back()->withInput()->withErrors(['address' => 'Errore durante la geocodifica']);
+        }
+
         $apartment->title = $data['title'];
         $apartment->description = $data['description'];
         $apartment->rooms = $data['rooms'];
         $apartment->beds = $data['beds'];
         $apartment->bathrooms = $data['bathrooms'];
         $apartment->square_meters = $data['square_meters'];
-        $apartment->address = $data['address'];
-        $apartment->latitude = $data['latitude'];
-        $apartment->longitude = $data['longitude'];
+        $apartment->address = $address;
+        $apartment->latitude = $latitude;
+        $apartment->longitude = $longitude;
         if (isset($data['images'])) {
             $imagesPaths = [];
             foreach ($data['images'] as $image) {

@@ -30,8 +30,8 @@ class StoreApartmentRequest extends FormRequest
             'bathrooms' => 'required|integer|min:1|max:255',
             'square_meters' => 'required|integer|min:1|max:50000',
             'address' => 'required|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            // 'latitude' => 'required|numeric',
+            // 'longitude' => 'required|numeric',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'services' => 'required|exists:services,id',
             'is_visible' => 'required|boolean'

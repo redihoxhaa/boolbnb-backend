@@ -1,97 +1,124 @@
-@extends('layouts.admin') <!-- Estende il layout dell'area amministrativa -->
+@extends('layouts.admin')
 
-@section('title', 'Create New Apartment') <!-- Imposta il titolo della pagina -->
+@section('title', 'Create New Apartment')
 
-@section('content') <!-- Inizio della sezione del contenuto -->
+@section('content')
 
-    <div class="container"> <!-- Container principale -->
+    <div class="container">
 
-        <h1 class="mb-5">Create New Apartment</h1> <!-- Titolo principale -->
+        <h1 class="mb-5">Create New Apartment</h1>
 
         <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
             <!-- Form per creare un nuovo appartamento -->
             @csrf <!-- Token CSRF -->
 
-            <!-- Prima riga di input -->
+
             <div class="row mb-3">
+
+                <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-6">
                     <label for="title" class="form-label">Title *</label>
                     <input type="text" class="form-control" id="title" name="title" required maxlength="255"
                         value="{{ old('title') }}">
-                    <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
+                <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-6">
                     <label for="description" class="form-label">Description *</label>
                     <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
-                    <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('description')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
             </div>
 
-            <!-- Seconda riga di input -->
+
             <div class="row mb-3">
+
+                <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-4">
                     <label for="rooms" class="form-label">Rooms *</label>
                     <input type="number" class="form-control" id="rooms" name="rooms" required min="1"
                         value="{{ old('rooms') }}">
-                    <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('rooms')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
+                <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-4">
                     <label for="beds" class="form-label">Beds *</label>
                     <input type="number" class="form-control" id="beds" name="beds" required min="1"
                         value="{{ old('beds') }}">
-                    <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('beds')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
+                <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-4">
                     <label for="bathrooms" class="form-label">Bathrooms *</label>
                     <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1"
                         value="{{ old('bathrooms') }}">
-                    <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('bathrooms')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
             </div>
 
-            <!-- Terza riga di input -->
+
             <div class="row mb-3">
+
+                <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-4">
                     <label for="square_meters" class="form-label">Square Meters *</label>
                     <input type="number" class="form-control" id="square_meters" name="square_meters" required
                         min="1" value="{{ old('square_meters') }}">
-                    <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('square_meters')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
+                <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
                 <div class="col-md-8">
                     <label for="address" class="form-label">Address *</label>
                     <input type="text" class="form-control" id="address" name="address" autocomplete="off"
                         placeholder="Type your address..." value="{{ old('address') }}">
-                    <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
+
+                    @error('address')
+                        <div class="alert alert-danger mt-2">{{ $message }}</div>
+                    @enderror
+
                     <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
                         <ul class="suggestions-list"></ul>
                     </div>
-                    <input type="hidden" id="latitude" name="latitude" value="{{ old('latitude') }}">
-                    <input type="hidden" id="longitude" name="longitude" value="{{ old('longitude') }}">
                 </div>
+
             </div>
 
-            <!-- Quarta riga di input -->
+
             <div class="row mb-3">
+
+                <!-- Campo per caricare le immagini dell'appartamento, con possibilità di aggiungere più immagini -->
                 <div class="col-md-6">
-                    <!-- Campo per caricare le immagini dell'appartamento, con possibilità di aggiungere più immagini -->
+
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="images" class="form-label">Images</label>
@@ -100,32 +127,38 @@
                                     accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
                             </div>
                             <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
-                            <!-- Campo per il caricamento delle immagini dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                             @error('images')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                             @enderror
+
                         </div>
                     </div>
                 </div>
+
+                <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
                 <div class="col-md-6">
-                    <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
+
                     <label for="services" class="form-label">Services *</label><br>
                     @foreach ($services as $service)
                         <input type="checkbox" id="service{{ $service->id }}" name="services[]"
                             value="{{ $service->id }}" @if (is_array(old('services')) && in_array($service->id, old('services'))) checked @endif>
                         <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
                     @endforeach
-                    <!-- Campo per la selezione dei servizi, con validazione e ripristino dei dati precedenti in caso di errore -->
+
                     @error('services')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
+
                 </div>
+
             </div>
 
-            <!-- Quinta riga di input -->
+
             <div class="row mb-3">
+
+                <!-- Campo per la visibilità dell'appartamento -->
                 <div class="col-md-6">
-                    <!-- Campo per la visibilità dell'appartamento -->
                     <label class="form-label">Visibility *</label><br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="is_visible" id="visibility_private"
@@ -138,6 +171,7 @@
                         <label class="form-check-label" for="visibility_public">Public</label>
                     </div>
                 </div>
+
             </div>
 
             <!-- Bottone di submit -->
@@ -152,8 +186,6 @@
         const search = document.getElementById('address');
         const suggestionsMenu = document.getElementById('suggestionsMenu');
         const suggestionsList = suggestionsMenu.querySelector('.suggestions-list');
-        const latitude = document.getElementById('latitude');
-        const longitude = document.getElementById('longitude');
 
         search.addEventListener('input', function() {
             if (search.value.trim() !== '') {
@@ -179,8 +211,6 @@
                             li.addEventListener('click', () => {
                                 search.value = result.address.freeformAddress;
                                 suggestionsMenu.classList.add('d-none');
-                                latitude.value = result.position.lat;
-                                longitude.value = result.position.lon;
                             });
                             suggestionsList.appendChild(li);
                         });

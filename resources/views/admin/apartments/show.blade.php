@@ -65,6 +65,7 @@
                                 <div class="col-md-3">
                                     <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
                                         class="img-fluid mb-2">
+
                                 </div>
                             @endforeach
                         </div>
