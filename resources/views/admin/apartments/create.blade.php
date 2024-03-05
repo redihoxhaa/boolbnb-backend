@@ -8,14 +8,16 @@
 
         <h1 class="mb-5">Create New Apartment</h1> <!-- Titolo principale -->
 
-        <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data"> <!-- Form per creare un nuovo appartamento -->
+        <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
+            <!-- Form per creare un nuovo appartamento -->
             @csrf <!-- Token CSRF -->
 
             <!-- Prima riga di input -->
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="title" class="form-label">Title:</label>
-                    <input type="text" class="form-control" id="title" name="title" required maxlength="255" value="{{ old('title') }}">
+                    <input type="text" class="form-control" id="title" name="title" required maxlength="255"
+                        value="{{ old('title') }}">
                     <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
@@ -35,7 +37,8 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="rooms" class="form-label">Rooms:</label>
-                    <input type="number" class="form-control" id="rooms" name="rooms" required min="1" value="{{ old('rooms') }}">
+                    <input type="number" class="form-control" id="rooms" name="rooms" required min="1"
+                        value="{{ old('rooms') }}">
                     <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('rooms')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
@@ -43,7 +46,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="beds" class="form-label">Beds:</label>
-                    <input type="number" class="form-control" id="beds" name="beds" required min="1" value="{{ old('beds') }}">
+                    <input type="number" class="form-control" id="beds" name="beds" required min="1"
+                        value="{{ old('beds') }}">
                     <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('beds')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
@@ -51,7 +55,8 @@
                 </div>
                 <div class="col-md-4">
                     <label for="bathrooms" class="form-label">Bathrooms:</label>
-                    <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1" value="{{ old('bathrooms') }}">
+                    <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1"
+                        value="{{ old('bathrooms') }}">
                     <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('bathrooms')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
@@ -63,7 +68,8 @@
             <div class="row mb-3">
                 <div class="col-md-4">
                     <label for="square_meters" class="form-label">Square Meters:</label>
-                    <input type="number" class="form-control" id="square_meters" name="square_meters" required min="1" value="{{ old('square_meters') }}">
+                    <input type="number" class="form-control" id="square_meters" name="square_meters" required
+                        min="1" value="{{ old('square_meters') }}">
                     <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('square_meters')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
@@ -71,7 +77,8 @@
                 </div>
                 <div class="col-md-8">
                     <label for="address" class="form-label">Address:</label>
-                    <input type="text" class="form-control" id="address" name="address" autocomplete="off" placeholder="Type your address..." value="{{ old('address') }}">
+                    <input type="text" class="form-control" id="address" name="address" autocomplete="off"
+                        placeholder="Type your address..." value="{{ old('address') }}">
                     <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
                     <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
                         <ul class="suggestions-list"></ul>
@@ -104,8 +111,8 @@
                     <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
                     <label for="services" class="form-label">Services:</label><br>
                     @foreach ($services as $service)
-                        <input type="checkbox" id="service{{ $service->id }}" name="services[]" value="{{ $service->id }}"
-                            @if(is_array(old('services')) && in_array($service->id, old('services'))) checked @endif>
+                        <input type="checkbox" id="service{{ $service->id }}" name="services[]"
+                            value="{{ $service->id }}" @if (is_array(old('services')) && in_array($service->id, old('services'))) checked @endif>
                         <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
                     @endforeach
                     <!-- Campo per la selezione dei servizi, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -121,11 +128,13 @@
                     <!-- Campo per la visibilità dell'appartamento -->
                     <label class="form-label">Visibility:</label><br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_private" value="0" @if(old('is_visible') == 0) checked @endif>
+                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_private"
+                            value="0" @if (old('is_visible') == 0) checked @endif>
                         <label class="form-check-label" for="visibility_private">Private</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_public" value="1" @if(old('is_visible') == 1) checked @endif>
+                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_public"
+                            value="1" @if (old('is_visible') == 1) checked @endif>
                         <label class="form-check-label" for="visibility_public">Public</label>
                     </div>
                 </div>
