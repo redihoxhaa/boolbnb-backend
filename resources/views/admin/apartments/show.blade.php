@@ -24,7 +24,7 @@
             <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                 <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="toast-header bg-success text-white">
-                        <strong class="me-auto"><i class="fa-solid fa-trash-can me-1"></i>Edited!</strong>
+                        <strong class="me-auto"><i class="fa-solid fa-check me-2"></i>Success!</strong>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
                             aria-label="Close"></button>
                     </div>
