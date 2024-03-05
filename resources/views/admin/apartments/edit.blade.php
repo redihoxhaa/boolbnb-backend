@@ -6,7 +6,7 @@
 
     <div class="container"> <!-- Container principale -->
 
-        <h1 class="mb-5">Edit Apartment</h1> <!-- Titolo principale -->
+        <h1 class="my-5 text-white">Edit Apartment</h1> <!-- Titolo principale -->
 
 
 
@@ -18,7 +18,7 @@
             <!-- Prima riga di input -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="title" class="form-label">Title:</label>
+                    <label for="title" class="form-label">Title *</label>
                     <input type="text" class="form-control" id="title" name="title" required maxlength="255"
                         value="{{ old('title', $apartment->title) }}">
                     <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -27,7 +27,7 @@
                     @enderror
                 </div>
                 <div class="col-md-6">
-                    <label for="description" class="form-label">Description:</label>
+                    <label for="description" class="form-label">Description *</label>
                     <textarea class="form-control" id="description" name="description" required>{{ old('description', $apartment->description) }}</textarea>
                     <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
                     @error('description')
@@ -39,7 +39,7 @@
             <!-- Seconda riga di input -->
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="rooms" class="form-label">Rooms:</label>
+                    <label for="rooms" class="form-label">Rooms *</label>
                     <input type="number" class="form-control" id="rooms" name="rooms" required min="1"
                         value="{{ old('rooms', $apartment->rooms) }}">
                     <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -48,7 +48,7 @@
                     @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="beds" class="form-label">Beds:</label>
+                    <label for="beds" class="form-label">Beds *</label>
                     <input type="number" class="form-control" id="beds" name="beds" required min="1"
                         value="{{ old('beds', $apartment->beds) }}">
                     <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -57,7 +57,7 @@
                     @enderror
                 </div>
                 <div class="col-md-4">
-                    <label for="bathrooms" class="form-label">Bathrooms:</label>
+                    <label for="bathrooms" class="form-label">Bathrooms *</label>
                     <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1"
                         value="{{ old('bathrooms', $apartment->bathrooms) }}">
                     <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -70,7 +70,7 @@
             <!-- Terza riga di input -->
             <div class="row mb-3">
                 <div class="col-md-4">
-                    <label for="square_meters" class="form-label">Square Meters:</label>
+                    <label for="square_meters" class="form-label">Square Meters *</label>
                     <input type="number" class="form-control" id="square_meters" name="square_meters" required
                         min="1" value="{{ old('square_meters', $apartment->square_meters) }}">
                     <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
@@ -79,7 +79,7 @@
                     @enderror
                 </div>
                 <div class="col-md-8">
-                    <label for="address" class="form-label">Address:</label>
+                    <label for="address" class="form-label">Address *</label>
                     <input type="text" class="form-control" id="address" name="address" autocomplete="off"
                         placeholder="Type your address..." value="{{ old('address', $apartment->address) }}">
                     <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
@@ -99,7 +99,7 @@
                     <!-- Campo per caricare le immagini dell'appartamento, con possibilità di aggiungere più immagini -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="images" class="form-label">Images:</label>
+                            <label for="images" class="form-label">Images</label>
                             <div id="image-container">
                                 <input type="file" id="images" name="images[]"
                                     accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
@@ -114,7 +114,7 @@
                 </div>
                 <div class="col-md-6">
                     <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
-                    <label for="services" class="form-label">Services:</label><br>
+                    <label for="services" class="form-label">Services *</label><br>
                     @foreach ($services as $service)
                         <input type="checkbox" id="service{{ $service->id }}" name="services[]"
                             value="{{ $service->id }}"
@@ -132,7 +132,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <!-- Campo per la visibilità dell'appartamento -->
-                    <label class="form-label">Visibility:</label><br>
+                    <label class="form-label">Visibility *</label><br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="is_visible" id="visibility_private"
                             value="0" @if (old('is_visible', $apartment->is_visible) == 0) checked @endif>

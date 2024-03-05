@@ -18,7 +18,7 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        $apartments = Apartment::all();
+        $apartments = Apartment::orderBy('created_at', 'desc')->get();
         return view('admin.apartments.list', compact('apartments'));
     }
 

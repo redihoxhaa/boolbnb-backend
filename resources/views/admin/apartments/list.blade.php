@@ -4,6 +4,7 @@
 
 @section('content')
     <div class="container mt-4">
+        <h1 class="text-white">Apartments List</h1>
         <div class="row mb-3">
             <div class="col">
                 <a class="btn btn-primary btn-sm" href="{{ route('admin.apartments.create') }}">
@@ -71,18 +72,56 @@
                                                 href="{{ route('admin.apartments.show', $apartment) }}">
                                                 <i class="fas fa-info-circle me-2"></i>Info
                                             </a>
+
                                             <a class="btn btn-secondary"
                                                 href="{{ route('admin.apartments.edit', $apartment) }}">
                                                 <i class="fas fa-edit me-2"></i>Edit
                                             </a>
-                                            <form action="{{ route('admin.apartments.destroy', $apartment) }}"
-                                                method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger mc-delete">
-                                                    <i class="fas fa-trash-alt me-2"></i>Delete
-                                                </button>
-                                            </form>
+
+                                            <button class="btn btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#my-dialog-{{ $apartment->id }}">
+                                                <i class="fas fa-trash-alt me-2"></i>
+                                                Delete
+                                            </button>
+
+
+                                            {{-- Modale --}}
+                                            <div class="modal" id="my-dialog-{{ $apartment->id }}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content card-custom">
+
+                                                        {{-- Messaggio di alert --}}
+                                                        <div class="modal-header text-center">
+                                                            <h3>Are you sure?</h3>
+                                                        </div>
+
+                                                        {{-- Informazione operazione --}}
+                                                        <div class="modal-body text-center">
+                                                            You are about to delete <br> {{ $apartment->title }}</span>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+
+                                                            {{-- Pulsante annulla --}}
+                                                            <button
+                                                                class="btn custom-btn white text-uppercase mb-4 mt-5 fw-bold"
+                                                                data-bs-dismiss="modal">Dismiss
+                                                            </button>
+
+                                                            {{-- Pulsante elimina --}}
+                                                            <form
+                                                                action="{{ route('admin.apartments.destroy', $apartment) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <input
+                                                                    class="btn custom-btn white text-uppercase mb-4 mt-5 fw-bold"
+                                                                    type="submit" value="DELETE">
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
