@@ -60,16 +60,27 @@ class ApartmentController extends Controller
         }
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
         $apartment->is_visible = $data['is_visible'];
+
+        // Generazione dello slug unico
+        $slug = Str::slug($data['title']);
+        $counter = 0;
+        while (Apartment::where('slug', $slug)->exists()) {
+            $counter++;
+            $slug = Str::slug($data['title'] . '-' . $counter);
+        }
+        $apartment->slug = $slug;
+
         $apartment->save();
-        $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
-        $apartment->save();
+
         if (isset($data['services'])) {
             $apartment->services()->sync($data['services']);
         } else {
             $apartment->services()->sync([]);
         }
+
         return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully listed.');
     }
+
 
     /**
      * Display the specified resource.
@@ -95,7 +106,6 @@ class ApartmentController extends Controller
      */
     public function update(UpdateApartmentRequest $request, Apartment $apartment)
     {
-
         $data = $request->validated();
 
         $apartment->title = $data['title'];
@@ -116,7 +126,15 @@ class ApartmentController extends Controller
         }
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
 
-        $apartment->slug = Str::slug($data['title']) . '-' . $apartment->id;
+        // Generazione dello slug unico
+        $slug = Str::slug($data['title']);
+        $counter = 0;
+        while (Apartment::where('slug', $slug)->where('id', '!=', $apartment->id)->exists()) {
+            $counter++;
+            $slug = Str::slug($data['title'] . '-' . $counter);
+        }
+        $apartment->slug = $slug;
+
         $apartment->is_visible = $data['is_visible'];
         $apartment->save();
         if (isset($data['services'])) {
@@ -126,6 +144,7 @@ class ApartmentController extends Controller
         }
         return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully updated');
     }
+
 
     /**
      * Remove the specified resource from storage.
