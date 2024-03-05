@@ -32,7 +32,7 @@ class StoreApartmentRequest extends FormRequest
             'address' => 'required|string|max:255',
             // 'latitude' => 'required|numeric',
             // 'longitude' => 'required|numeric',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:1024',
             'services' => 'required|exists:services,id',
             'is_visible' => 'required|boolean'
         ];

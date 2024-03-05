@@ -117,14 +117,28 @@
                         <div class="col-md-6">
                             <label for="images" class="form-label">Images</label>
                             <div id="image-container">
-                                <input type="file" id="images" name="images[]"
-                                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
+                                <input type="file" name="images[]"
+                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp"
+                                    onchange="checkFileSize(this)" multiple>
+                                <div id="file-size-error" class="text-danger"></div>
                             </div>
                             <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
+
+                            <p class="card-text"><strong>Images:</strong></p>
+                            <div class="row">
+                                @foreach (explode(',', $apartment->images) as $image)
+                                    <div class="col-md-3">
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
+                                            class="img-fluid mb-2">
+
+                                    </div>
+                                @endforeach
+                            </div>
 
                             @error('images')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                             @enderror
+
                         </div>
                     </div>
                 </div>
@@ -246,6 +260,24 @@
                 })(file);
 
                 reader.readAsDataURL(file);
+            }
+        }
+
+        // Funzione per fare il check sulla dimensione dell'immagine
+        function checkFileSize(input) {
+            const files = input.files;
+            const maxSize = 1024 * 1024; // 1024 KB in bytes
+            const errorDiv = document.getElementById('file-size-error');
+
+            // Resetta il contenuto del div
+            errorDiv.textContent = '';
+
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > maxSize) {
+                    errorDiv.textContent = 'The image has to weight 1MB max.' + files[i].name;
+                    input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                    return;
+                }
             }
         }
     </script>

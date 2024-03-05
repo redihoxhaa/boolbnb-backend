@@ -163,12 +163,13 @@ class ApartmentController extends Controller
         $apartment->latitude = $latitude;
         $apartment->longitude = $longitude;
         if (isset($data['images'])) {
-            $imagesPaths = [];
+            $existingImages = explode(',', $apartment->images); // Converti la stringa di immagini esistenti in un array
             foreach ($data['images'] as $image) {
-                $imagesPaths[] = Storage::put('uploads', $image);
+                $existingImages[] = Storage::put('uploads', $image); // Aggiungi le nuove immagini all'array delle immagini esistenti
             }
-            $apartment->images = implode(',', $imagesPaths);
+            $apartment->images = implode(',', $existingImages); // Converti l'array di immagini in una stringa separata da virgole
         }
+
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo
 
         // Generazione dello slug unico

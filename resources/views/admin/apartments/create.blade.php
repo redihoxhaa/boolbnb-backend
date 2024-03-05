@@ -123,8 +123,10 @@
                         <div class="col-md-6">
                             <label for="images" class="form-label">Images</label>
                             <div id="image-container">
-                                <input type="file" id="images" name="images[]"
-                                    accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" multiple>
+                                <input type="file" name="images[]"
+                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp"
+                                    onchange="checkFileSize(this)" multiple>
+                                <div id="file-size-error" class="text-danger"></div>
                             </div>
                             <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
 
@@ -256,6 +258,24 @@
                 })(file);
 
                 reader.readAsDataURL(file);
+            }
+        }
+
+        // Funzione per fare il check sulla dimensione dell'immagine
+        function checkFileSize(input) {
+            const files = input.files;
+            const maxSize = 1024 * 1024; // 1024 KB in bytes
+            const errorDiv = document.getElementById('file-size-error');
+
+            // Resetta il contenuto del div
+            errorDiv.textContent = '';
+
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > maxSize) {
+                    errorDiv.textContent = 'The image has to weight 1MB max.' + files[i].name;
+                    input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                    return;
+                }
             }
         }
     </script>
