@@ -119,7 +119,7 @@
                             <div id="image-container">
                                 <input type="file" name="images[]"
                                     accept="image/jpeg, image/png, image/jpg, image/gif, image/webp"
-                                    onchange="checkFileSize(this)" multiple>
+                                    onchange="checkFileSize(this); previewImages(this)" multiple>
                                 <div id="file-size-error" class="text-danger"></div>
                             </div>
                             <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
@@ -130,9 +130,11 @@
                                     <div class="col-md-3">
                                         <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
                                             class="img-fluid mb-2">
-
                                     </div>
                                 @endforeach
+                                <div class="row" id="preview-images-container">
+                                    <!-- Qui verranno visualizzate le miniature delle immagini -->
+                                </div>
                             </div>
 
                             @error('images')
@@ -278,6 +280,31 @@
                     input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
                     return;
                 }
+            }
+        }
+
+        // Funzione per visualizzare immagini prima di caricarle
+
+        function previewImages(input) {
+            const previewContainer = document.getElementById('preview-images-container');
+            previewContainer.innerHTML = ''; // Pulisce il contenitore delle miniature
+
+            const files = input.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('img-fluid', 'mb-2');
+                    const col = document.createElement('div');
+                    col.classList.add('col-md-3');
+                    col.appendChild(img);
+                    previewContainer.appendChild(col);
+                }
+
+                reader.readAsDataURL(file);
             }
         }
     </script>
