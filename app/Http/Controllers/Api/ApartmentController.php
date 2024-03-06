@@ -89,4 +89,28 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
+    public function show(Request $request)
+    {
+        // Assicurati che l'ID sia presente nella richiesta
+        if ($request->has('id')) {
+            // Recupera l'ID dalla richiesta
+            $id = $request->input('id');
+
+            // Esegui la query utilizzando l'ID sulla tabella "apartments"
+            $apartment = Apartment::find($id);
+
+            // Verifica se l'appartamento è stato trovato
+            if ($apartment) {
+                // Ritorna l'appartamento (puoi fare altro con esso qui)
+                return response()->json($apartment);
+            } else {
+                // Nel caso in cui l'appartamento non sia stato trovato, restituisci un messaggio di errore
+                return response()->json(['error' => 'Appartamento non trovato'], 404);
+            }
+        } else {
+            // Se l'ID non è presente nella richiesta, restituisci un messaggio di errore
+            return response()->json(['error' => 'ID mancante nella richiesta'], 400);
+        }
+    }
 }
