@@ -72,8 +72,8 @@ class ApartmentController extends Controller
         $apartment->bathrooms = $data['bathrooms'];
         $apartment->square_meters = $data['square_meters'];
         $apartment->address = $address;
-        $apartment->latitude = $latitude;
-        $apartment->longitude = $longitude;
+        $apartment->lat = $latitude;
+        $apartment->lon = $longitude;
         if (isset($data['images'])) {
             $imagesPaths = [];
             foreach ($data['images'] as $image) {
@@ -160,8 +160,8 @@ class ApartmentController extends Controller
         $apartment->bathrooms = $data['bathrooms'];
         $apartment->square_meters = $data['square_meters'];
         $apartment->address = $address;
-        $apartment->latitude = $latitude;
-        $apartment->longitude = $longitude;
+        $apartment->lat = $latitude;
+        $apartment->lon = $longitude;
         if (isset($data['images'])) {
             $existingImages = explode(',', $apartment->images); // Converti la stringa di immagini esistenti in un array
             foreach ($data['images'] as $image) {
