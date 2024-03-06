@@ -13,11 +13,11 @@ class ApartmentController extends Controller
     {
         // Eager loading per caricare le relazioni sponsorizzate
         $apartments = Apartment::with('sponsorships')
+            ->where('is_visible', 1) // Considera solo gli appartamenti visibili
             ->orderByRaw('CASE 
-                WHEN id IN (SELECT apartment_id FROM apartment_sponsorship) THEN 0
-                WHEN is_visible = 1 THEN 1
-                ELSE 2
-            END')
+            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship) THEN 0
+            ELSE 1
+        END')
             ->orderByDesc('created_at')
             ->get();
 
