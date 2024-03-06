@@ -12,7 +12,7 @@ class ApartmentController extends Controller
     public function index(Request $request)
     {
         // Eager loading per caricare le relazioni sponsorizzate
-        $apartments = Apartment::with('sponsorships')
+        $apartments = Apartment::with('sponsorships', 'services')
             ->where('is_visible', 1) // Considera solo gli appartamenti visibili
             ->orderByRaw('CASE 
             WHEN id IN (SELECT apartment_id FROM apartment_sponsorship) THEN 0
