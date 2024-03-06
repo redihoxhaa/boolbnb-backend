@@ -27,7 +27,6 @@
     <script src="https://api.tomtom.com/maps-sdk-for-web/cdn/plugins/SearchBox/3.1.3-public-preview.0/SearchBox-web.js">
     </script>
 
-
     <!-- Usando Vite -->
     @vite(['resources/js/app.js'])
 </head>
@@ -35,15 +34,22 @@
 <body>
     <div id="app">
 
-        <header class="navbar navbar-dark sticky-top dark-header flex-md-nowrap p-2 shadow">
+        <header class="navbar sticky-top header flex-md-nowrap p-2 border-header">
             <div class="row justify-content-between">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/">My Portofolio</a>
+
+                {{-- Logo --}}
+                <a class="navbar-brand col-md-3 col-lg-2 me-0" href="/">BoolBnb</a>
+
+                {{-- Button Mobile --}}
                 <button class="navbar-toggler position-absolute d-md-none collapsed" type="button"
                     data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
             </div>
+
+            {{-- Navbar --}}
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap ms-2">
                     <a class="nav-link" href="{{ route('logout') }}"
@@ -67,11 +73,11 @@
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link text-white {{ Route::currentRouteName() == 'dashboard' ? 'bg-secondary' : '' }}"
+                                <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'bg-secondary' : '' }}"
                                     href="{{ route('admin.dashboard') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard
                                 </a>
-                                <a class="nav-link text-white {{ Route::currentRouteName() == 'dashboard' ? 'bg-secondary' : '' }}"
+                                <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'bg-secondary' : '' }}"
                                     href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Apartment
                                 </a>

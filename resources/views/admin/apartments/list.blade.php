@@ -1,18 +1,36 @@
+@php
+    use Carbon\Carbon;
+@endphp
+
 @extends('layouts.admin')
 
 @section('title', 'Manage Apartments')
 
 @section('content')
     <div class="container mt-4">
-        <h1 class="text-white">Apartments List</h1>
-        <div class="row mb-3">
-            <div class="col">
-                <a class="btn btn-primary btn-sm" href="{{ route('admin.apartments.create') }}">
-                    <i class="fa-solid fa-plus me-1"></i>New Apartment
-                </a>
-            </div>
 
+        {{-- Path Page --}}
+        <div>
+            <span>Admin</span>
+            <span>/</span>
+            <span>Apartments</span>
+        </div>
+
+        {{-- Title Page --}}
+        <h1 class="page-title">Listed Properties</h1>
+
+        {{-- Button --}}
+        <div class="my-4">
+            <a class="button-black" href="{{ route('admin.apartments.create') }}">
+                <i class="fa-solid fa-plus me-1"></i>New Apartment
+            </a>
+        </div>
+
+        {{-- Toast --}}
+        <div>
             <div class="col-auto">
+
+                {{-- Toast Success --}}
                 @if (session('success'))
                     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                         <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -28,6 +46,7 @@
                     </div>
                 @endif
 
+                {{-- Toast Error --}}
                 @if (session('message'))
                     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                         <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
@@ -42,30 +61,39 @@
                         </div>
                     </div>
                 @endif
+
             </div>
+
         </div>
+
+        {{-- Table Properites --}}
         <div class="row">
             <div class="col">
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">Title</th>
-                                <th scope="col">Beds</th>
-                                <th scope="col">Bathrooms</th>
-                                <th scope="col">Square Meters</th>
-                                <th scope="col">Address</th>
-                                <th scope="col" class="text-end">Actions</th>
+                                <th scope="col">TITLE</th>
+                                <th scope="col">ADDRESS</th>
+                                <th scope="col">STATUS</th>
+                                <th scope="col">VIEWS</th>
+                                <th scope="col">MESSAGES</th>
+                                <th scope="col">LISTED</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($apartments as $apartment)
                                 <tr>
-                                    <td>{{ $apartment->title }}</td>
-                                    <td>{{ $apartment->beds }}</td>
-                                    <td>{{ $apartment->bathrooms }}</td>
-                                    <td>{{ $apartment->square_meters }}</td>
+                                    <td>
+                                        <img src="{{ $apartment->images }}" alt="">
+                                        {{ $apartment->title }}
+                                    </td>
                                     <td>{{ $apartment->address }}</td>
+                                    <td>'status'</td>
+                                    <td>{{ $apartment->visits->count() }}</td>
+                                    <td>{{ $apartment->messages->count() }}</td>
+                                    <td>{{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
+
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
                                             <a class="btn btn-primary"
