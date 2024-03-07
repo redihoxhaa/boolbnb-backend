@@ -61,10 +61,43 @@ Listed Properties
 }
 
 .status-tag {
-    background-color: #CEF27F;
     font-size: 12px;
     padding: 10px 16px;
     border-radius: 4px;
+}
 
+.tag-sponsored {
+    background-color: #CEF27F;
+}
 
+.tag-hidden {
+    background-color: #DFDFDF;
+}
+
+td,
+th {
+    border: none;
+}
+
+.properties-table {
+
+    &:nth-child(odd) {
+
+        td {
+            box-shadow: none;
+            background-color: #f6f6f6;
+        }
+
+        td:first-child {
+            border-radius: 16px 0 0 16px;
+        }
+
+        td:last-child {
+            border-radius: 0 16px 16px 0;
+        }
+    }
+}
+
+.btn-group {
+    gap: 20px;
 }

@@ -8,7 +8,7 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="container mt-4">
+    <div class="mt-4 me-5 mb-5">
 
         {{-- Path Page --}}
         <div>
@@ -86,7 +86,8 @@
                             @foreach ($apartments as $apartment)
                                 <tr class="properties-table">
                                     <td>
-                                        <div class="d-flex align-items-center">
+                                        <a class="d-flex align-items-center"
+                                            href="{{ route('admin.apartments.show', $apartment) }}">
                                             <div>
                                                 @if ($apartment->images)
                                                     <img class="apartment-img"
@@ -94,7 +95,7 @@
                                                         alt="apartment-image">
                                                 @else
                                                     <img class="apartment-img"
-                                                        src="https://plus.unsplash.com/premium_photo-1674676471104-3c4017645e6f?q=80&w=1940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                        src="https://saterdesign.com/cdn/shop/products/property-placeholder_a9ec7710-1f1e-4654-9893-28c34e3b6399_600x.jpg?v=1500393334"
                                                         alt="apartment-image">
                                                 @endif
                                             </div>
@@ -102,39 +103,45 @@
                                                 <span class="apartment-title">{{ Str::limit($apartment->title, 18, '...') }}
                                                 </span>
                                             </div>
-                                        </div>
+                                        </a>
                                     </td>
                                     <td class="center">{{ Str::limit($apartment->address, 20, '...') }}</td>
                                     <td>
-                                        @if ($apartment->sponsorships->count() > 0 && $apartment->sponsorships->last()->end_date > Carbon::now())
-                                            <div>
-                                                <span class="status-tag">Sponsored</span>
+                                        @if (
+                                            $apartment->sponsorships->count() &&
+                                                $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
+                                            <div class="status-tag tag-sponsored d-inline">
+                                                <span>Sponsored</span>
+                                            </div>
+                                        @elseif (!$apartment->is_visible)
+                                            <div class="status-tag tag-hidden d-inline">
+                                                <img class="me-1" src="{{ asset('storage/' . 'hidden_icon.svg') }}"
+                                                    alt="">
+                                                <span>Hidden</span>
                                             </div>
                                         @endif
 
                                     </td>
-                                    <td>{{ $apartment->visits->count() }}</td>
-                                    <td>{{ $apartment->messages->count() }}</td>
+                                    <td>
+                                        <img class="me-2" src="{{ asset('storage/' . 'visit_icon.svg') }}"
+                                            alt="">{{ $apartment->visits->count() }}
+                                    </td>
+                                    <td><img class="me-2" src="{{ asset('storage/' . 'messages_icon.svg') }}"
+                                            alt="">{{ $apartment->messages->count() }}</td>
                                     <td>{{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
 
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
-                                            <a class="btn btn-primary"
-                                                href="{{ route('admin.apartments.show', $apartment) }}">
-                                                <i class="fas fa-info-circle me-2"></i>Info
+                                            <a href="{{ route('admin.apartments.edit', $apartment) }}">
+                                                <img class="icon" src="{{ asset('storage/' . 'edit_icon.svg') }}">
+                                            </a>
+                                            <a href="{{ route('admin.apartments.edit', $apartment) }}">
+                                                <img src="{{ asset('storage/' . 'sponsor_icon.svg') }}">
                                             </a>
 
-                                            <a class="btn btn-secondary"
-                                                href="{{ route('admin.apartments.edit', $apartment) }}">
-                                                <i class="fas fa-edit me-2"></i>Edit
+                                            <a data-bs-toggle="modal" data-bs-target="#my-dialog-{{ $apartment->id }}">
+                                                <img src="{{ asset('storage/' . 'delete_icon.svg') }}">
                                             </a>
-
-                                            <button class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#my-dialog-{{ $apartment->id }}">
-                                                <i class="fas fa-trash-alt me-2"></i>
-                                                Delete
-                                            </button>
-
 
                                             {{-- Modale --}}
                                             <div class="modal" id="my-dialog-{{ $apartment->id }}">
