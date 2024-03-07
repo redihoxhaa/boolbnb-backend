@@ -79,7 +79,7 @@
                                 </a>
                                 <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'bg-secondary' : '' }}"
                                     href="{{ route('admin.apartments.index') }}">
-                                    <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Apartment
+                                    <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
                                 </a>
 
                             </li>
