@@ -1,5 +1,6 @@
 @php
     use Carbon\Carbon;
+
 @endphp
 
 @extends('layouts.admin')
@@ -83,13 +84,27 @@
                         </thead>
                         <tbody>
                             @foreach ($apartments as $apartment)
-                                <tr>
+                                <tr class="properties-table">
                                     <td>
-                                        <img src="{{ $apartment->images }}" alt="">
-                                        {{ $apartment->title }}
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <img class="apartment-img" src="{{ $apartment->images }}" alt="">
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="apartment-title">{{ Str::limit($apartment->title, 18, '...') }}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td>{{ $apartment->address }}</td>
-                                    <td>'status'</td>
+                                    <td class="center">{{ Str::limit($apartment->address, 20, '...') }}</td>
+                                    <td>
+                                        @if (count($apartment->sponsorships))
+                                            <div>
+                                                <span class="status-tag">Sponsored</span>
+                                            </div>
+                                        @endif
+
+                                    </td>
                                     <td>{{ $apartment->visits->count() }}</td>
                                     <td>{{ $apartment->messages->count() }}</td>
                                     <td>{{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
