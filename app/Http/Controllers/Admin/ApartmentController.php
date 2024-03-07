@@ -19,8 +19,11 @@ class ApartmentController extends Controller
      */
     public function index()
     {
-        $userId = auth()->id(); // Ottieni l'id dell'utente autenticato
-        $apartments = Apartment::where('user_id', $userId)->orderBy('created_at', 'desc')->get();
+        $userId = auth()->id();
+        $apartments = Apartment::with('sponsorships', 'services')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.apartments.list', compact('apartments'));
     }
 
