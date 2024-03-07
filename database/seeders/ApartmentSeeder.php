@@ -42,9 +42,9 @@ class ApartmentSeeder extends Seeder
             $apartment->bathrooms = $apartmentData['bathrooms'];
             $apartment->square_meters = $apartmentData['square_meters'];
             $apartment->address = $apartmentData['address'];
-            $apartment->latitude = $apartmentData['latitude'];
-            $apartment->longitude = $apartmentData['longitude'];
-            $apartment->images = implode(',', $apartmentData['image']);
+            $apartment->lat = $apartmentData['lat'];
+            $apartment->lon = $apartmentData['lon'];
+            $apartment->images = implode(',', $apartmentData['images']);
             $apartment->save();
             $apartment->slug = Str::slug($apartmentData['title']) . '-' . $apartment->id;
             $apartment->save();
