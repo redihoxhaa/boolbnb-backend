@@ -12,7 +12,7 @@ return [
         'address' => 'Via della Lungara 14, Roma, Italy',
         'lat' => 41.8981,
         'lon' => 12.4705,
-        'images' => ['https://example.com/images1.jpg', 'https://example.com/images2.jpg', 'https://example.com/images3.jpg'],
+        'images' => [],
         'services' => [3, 5, 1],
     ],
     [
@@ -26,7 +26,7 @@ return [
         'address' => 'Via Capo d\'Africa 33, Roma, Italy',
         'lat' => 41.8902,
         'lon' => 12.4913,
-        'images' => ['https://example.com/images4.jpg', 'https://example.com/images5.jpg', 'https://example.com/images6.jpg'],
+        'images' => [],
         'services' => [2, 4, 5],
     ],
     [
@@ -40,7 +40,7 @@ return [
         'address' => 'Via Lungomare 5, Palermo, Italy',
         'lat' => 38.1321,
         'lon' => 13.3356,
-        'images' => ['https://example.com/images7.jpg', 'https://example.com/images8.jpg', 'https://example.com/images9.jpg'],
+        'images' => [],
         'services' => [1, 3, 4],
     ],
     [
@@ -54,7 +54,7 @@ return [
         'address' => 'Via dei Calzaiuoli 22, Firenze, Italy',
         'lat' => 43.7714,
         'lon' => 11.2549,
-        'images' => ['https://example.com/images10.jpg', 'https://example.com/images11.jpg', 'https://example.com/images12.jpg'],
+        'images' => [],
         'services' => [5, 2, 3],
     ],
     [
@@ -68,7 +68,7 @@ return [
         'address' => 'Via Monte Cristallo 10, Cortina d\'Ampezzo, Italy',
         'lat' => 46.5361,
         'lon' => 12.1353,
-        'images' => ['https://example.com/images13.jpg', 'https://example.com/images14.jpg', 'https://example.com/images15.jpg'],
+        'images' => [],
         'services' => [4, 1, 5],
     ],
     [
@@ -82,7 +82,7 @@ return [
         'address' => 'Viale Europa 80, Roma, Italy',
         'lat' => 41.8335,
         'lon' => 12.4667,
-        'images' => ['https://example.com/images16.jpg', 'https://example.com/images17.jpg', 'https://example.com/images18.jpg'],
+        'images' => [],
         'services' => [3, 5, 2],
     ],
     [
@@ -96,7 +96,7 @@ return [
         'address' => 'Via Chiantigiana 50, Siena, Italy',
         'lat' => 43.3190,
         'lon' => 11.3304,
-        'images' => ['https://example.com/images19.jpg', 'https://example.com/images20.jpg', 'https://example.com/images21.jpg'],
+        'images' => [],
         'services' => [1, 4, 5],
     ],
     [
@@ -110,7 +110,7 @@ return [
         'address' => 'Via Marina Grande 15, Positano, Italy',
         'lat' => 40.6298,
         'lon' => 14.4850,
-        'images' => ['https://example.com/images22.jpg', 'https://example.com/images23.jpg', 'https://example.com/images24.jpg'],
+        'images' => [],
         'services' => [2, 3, 4],
     ],
     [
@@ -124,7 +124,7 @@ return [
         'address' => 'Strada dei Vini 8, Perugia, Italy',
         'lat' => 43.1107,
         'lon' => 12.3898,
-        'images' => ['https://example.com/images25.jpg', 'https://example.com/images26.jpg', 'https://example.com/images27.jpg'],
+        'images' => [],
         'services' => [5, 1, 2],
     ],
     [
@@ -138,7 +138,7 @@ return [
         'address' => 'Via Urbana 50, Roma, Italy',
         'lat' => 41.8954,
         'lon' => 12.4919,
-        'images' => ['https://example.com/images28.jpg', 'https://example.com/images29.jpg', 'https://example.com/images30.jpg'],
+        'images' => [],
         'services' => [4, 3, 1],
     ],
     [
@@ -152,7 +152,7 @@ return [
         'address' => 'Via Pepe 10, Milano, Italy',
         'lat' => 45.4863,
         'lon' => 9.1865,
-        'images' => ['https://example.com/images31.jpg', 'https://example.com/images32.jpg', 'https://example.com/images33.jpg'],
+        'images' => [],
         'services' => [3, 5, 2],
     ],
     [
@@ -166,7 +166,7 @@ return [
         'address' => 'Via Marmorata 12, Roma, Italy',
         'lat' => 41.8774,
         'lon' => 12.4753,
-        'images' => ['https://example.com/images34.jpg', 'https://example.com/images35.jpg', 'https://example.com/images36.jpg'],
+        'images' => [],
         'services' => [2, 4, 1],
     ],
     [
@@ -180,7 +180,7 @@ return [
         'address' => 'Calle Larga Rosa 15, Venezia, Italy',
         'lat' => 45.4347,
         'lon' => 12.3382,
-        'images' => ['https://example.com/images37.jpg', 'https://example.com/images38.jpg', 'https://example.com/images39.jpg'],
+        'images' => [],
         'services' => [5, 1, 3],
     ],
     [
@@ -194,7 +194,7 @@ return [
         'address' => 'Via Archimede 50, Roma, Italy',
         'lat' => 41.9187,
         'lon' => 12.4868,
-        'images' => ['https://example.com/images40.jpg', 'https://example.com/images41.jpg', 'https://example.com/images42.jpg'],
+        'images' => [],
         'services' => [4, 2, 1],
     ],
     [
@@ -208,7 +208,7 @@ return [
         'address' => 'Piazza Navona 1, Roma, Italy',
         'lat' => 41.8992,
         'lon' => 12.4732,
-        'images' => ['https://example.com/images43.jpg', 'https://example.com/images44.jpg', 'https://example.com/images45.jpg'],
+        'images' => [],
         'services' => [3, 5, 4],
     ],
     [
@@ -222,7 +222,7 @@ return [
         'address' => 'Via Alpina 10, Courmayeur, Italy',
         'lat' => 45.7972,
         'lon' => 6.9742,
-        'images' => ['https://example.com/images46.jpg', 'https://example.com/images47.jpg', 'https://example.com/images48.jpg'],
+        'images' => [],
         'services' => [2, 4, 1],
     ],
     [
@@ -236,7 +236,7 @@ return [
         'address' => 'Viale della Liberazione 15, Milano, Italy',
         'lat' => 45.4837,
         'lon' => 9.1956,
-        'images' => ['https://example.com/images49.jpg', 'https://example.com/images50.jpg', 'https://example.com/images51.jpg'],
+        'images' => [],
         'services' => [5, 3, 2],
     ],
     [
@@ -250,7 +250,7 @@ return [
         'address' => 'Via Regina 100, Bellagio, Italy',
         'lat' => 45.9861,
         'lon' => 9.2564,
-        'images' => ['https://example.com/images52.jpg', 'https://example.com/images53.jpg', 'https://example.com/images54.jpg'],
+        'images' => [],
         'services' => [4, 1, 3],
     ],
     [
@@ -264,7 +264,7 @@ return [
         'address' => 'Via dei Volsci 20, Roma, Italy',
         'lat' => 41.9006,
         'lon' => 12.5206,
-        'images' => ['https://example.com/images55.jpg', 'https://example.com/images56.jpg', 'https://example.com/images57.jpg'],
+        'images' => [],
         'services' => [3, 2, 5],
     ],
     [
@@ -278,7 +278,7 @@ return [
         'address' => 'Via Crescenzio 2, Roma, Italy',
         'lat' => 41.9063,
         'lon' => 12.4624,
-        'images' => ['https://example.com/images58.jpg', 'https://example.com/images59.jpg', 'https://example.com/images60.jpg'],
+        'images' => [],
         'services' => [1, 4, 2],
     ],
 ];

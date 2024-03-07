@@ -88,7 +88,15 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div>
-                                                <img class="apartment-img" src="{{ $apartment->images }}" alt="">
+                                                @if ($apartment->images)
+                                                    <img class="apartment-img"
+                                                        src="{{ asset('storage/' . explode(',', $apartment->images)[0]) }}"
+                                                        alt="apartment-image">
+                                                @else
+                                                    <img class="apartment-img"
+                                                        src="https://plus.unsplash.com/premium_photo-1674676471104-3c4017645e6f?q=80&w=1940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                        alt="apartment-image">
+                                                @endif
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <span class="apartment-title">{{ Str::limit($apartment->title, 18, '...') }}
@@ -98,7 +106,7 @@
                                     </td>
                                     <td class="center">{{ Str::limit($apartment->address, 20, '...') }}</td>
                                     <td>
-                                        @if (count($apartment->sponsorships))
+                                        @if ($apartment->sponsorships->count() > 0 && $apartment->sponsorships->last()->end_date > Carbon::now())
                                             <div>
                                                 <span class="status-tag">Sponsored</span>
                                             </div>
