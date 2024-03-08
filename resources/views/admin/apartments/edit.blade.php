@@ -122,7 +122,7 @@
                                     onchange="checkFileSize(this); previewImages(this)" multiple>
                                 <div id="file-size-error" class="text-danger"></div>
                             </div>
-                            <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
+
 
                             @if ($apartment->images)
                                 <p class="card-text"><strong>Images:</strong></p>
@@ -227,18 +227,6 @@
                 .catch(error => console.error('Error:', error));
         }
 
-
-        // Aggiungi un'event listener per il click sul pulsante per aggiungere immagini
-        document.getElementById('add-image').addEventListener('click', function() {
-            const imageContainer = document.getElementById('image-container');
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.name = 'images[]';
-            input.accept = 'image/jpeg,image/png,image/jpg,image/gif,image/webp';
-            input.multiple = true;
-            input.addEventListener('change', handleFileSelect);
-            imageContainer.appendChild(input);
-        });
 
         // Funzione per gestire il cambiamento del file di input e visualizzare le anteprime delle immagini
         function handleFileSelect(event) {

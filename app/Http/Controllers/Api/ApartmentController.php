@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apartment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -46,11 +47,17 @@ class ApartmentController extends Controller
     {
         $data = $request->validate([
             'address' => 'required|string',
-            'radius' => 'required|numeric',
+            'rooms' => 'nullable|numeric',
+            'beds' => 'nullable|numeric',
+            'bathrooms' => 'nullable|numeric',
+            'radius' => 'nullable|numeric',
+            'services.*' => 'nullable|exists:services,id'
         ]);
 
         $address = $data['address'];
-        $radius = $data['radius'];
+
+        // Verifica se il parametro radius è stato fornito
+        $radius = $request->has('radius') ? $data['radius'] : 50;
 
         // Effettua una chiamata all'API di geocodifica per ottenere la latitudine e la longitudine
         $response = Http::withoutVerifying()->get('https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json', [
@@ -63,11 +70,33 @@ class ApartmentController extends Controller
                 $latitude = $addressQuery['results'][0]['position']['lat'];
                 $longitude = $addressQuery['results'][0]['position']['lon'];
 
-                // Esegue la query per trovare gli appartamenti entro il raggio specificato con eager loading di services e sponsorships
-                $apartments = Apartment::with('services', 'sponsorships')
+                // Costruzione della query base
+                $query = Apartment::with('services', 'sponsorships')
                     ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
-                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
-                    ->get();
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
+
+                // Aggiunta delle condizioni opzionali per i servizi
+                if ($request->has('services')) {
+                    $query->whereHas('services', function ($query) use ($data) {
+                        $query->whereIn('id', $data['services']);
+                    });
+                }
+
+                // Aggiunta delle condizioni opzionali
+                if ($request->has('rooms')) {
+                    $query->where('rooms', $data['rooms']);
+                }
+
+                if ($request->has('beds')) {
+                    $query->where('beds', $data['beds']);
+                }
+
+                if ($request->has('bathrooms')) {
+                    $query->where('bathrooms', $data['bathrooms']);
+                }
+
+                // Esecuzione della query
+                $apartments = $query->get();
 
                 // Calcola la distanza per ogni appartamento e aggiungi il campo distance
                 $apartments = $apartments->map(function ($apartment) use ($latitude, $longitude) {
@@ -112,5 +141,17 @@ class ApartmentController extends Controller
             // Se l'ID non è presente nella richiesta, restituisci un messaggio di errore
             return response()->json(['error' => 'ID mancante nella richiesta'], 400);
         }
+    }
+
+    public function sponsored()
+    {
+        $now = Carbon::now();
+
+        $sponsoredApartments = Apartment::whereHas('sponsorships', function ($query) use ($now) {
+            $query->orderBy('end_date', 'desc')
+                ->where('end_date', '>', $now);
+        })->take(6)->get();
+
+        return response()->json($sponsoredApartments);
     }
 }
