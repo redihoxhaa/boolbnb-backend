@@ -75,16 +75,18 @@
                         <thead>
                             <tr>
                                 <th scope="col">TITLE</th>
-                                <th scope="col">ADDRESS</th>
-                                <th scope="col">STATUS</th>
-                                <th scope="col">VIEWS</th>
-                                <th scope="col">MESSAGES</th>
-                                <th scope="col">LISTED</th>
+                                <th scope="col" class="d-none d-lg-table-cell">ADDRESS</th>
+                                <th scope="col" class="d-none d-sm-table-cell">STATUS</th>
+                                <th scope="col" class="d-none d-xl-table-cell">VIEWS</th>
+                                <th scope="col" class="d-none d-xl-table-cell">MESSAGES</th>
+                                <th scope="col" class="d-none d-xxl-table-cell">LISTED</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($apartments as $apartment)
                                 <tr class="properties-table">
+
+                                    {{-- Title --}}
                                     <td>
                                         <a class="d-flex align-items-center"
                                             href="{{ route('admin.apartments.show', $apartment) }}">
@@ -105,8 +107,13 @@
                                             </div>
                                         </a>
                                     </td>
-                                    <td class="center">{{ Str::limit($apartment->address, 20, '...') }}</td>
-                                    <td>
+
+                                    {{-- Address --}}
+                                    <td class="center d-none d-lg-table-cell">
+                                        {{ Str::limit($apartment->address, 20, '...') }}</td>
+
+                                    {{-- Status --}}
+                                    <td class="d-none d-sm-table-cell">
                                         @if (
                                             $apartment->sponsorships->count() &&
                                                 $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
@@ -122,14 +129,23 @@
                                         @endif
 
                                     </td>
-                                    <td>
+
+                                    {{-- Visits --}}
+                                    <td class="d-none d-xl-table-cell">
                                         <img class="me-2" src="{{ asset('assets/images/' . 'visit_icon.svg') }}"
                                             alt="">{{ $apartment->visits->count() }}
                                     </td>
-                                    <td><img class="me-2" src="{{ asset('assets/images/' . 'messages_icon.svg') }}"
-                                            alt="">{{ $apartment->messages->count() }}</td>
-                                    <td>{{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
 
+                                    {{-- Messages --}}
+                                    <td class="d-none d-xl-table-cell"><img class="me-2"
+                                            src="{{ asset('assets/images/' . 'messages_icon.svg') }}"
+                                            alt="">{{ $apartment->messages->count() }}</td>
+
+                                    {{-- Created at --}}
+                                    <td class="d-none d-xxl-table-cell">
+                                        {{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
+
+                                    {{-- Button --}}
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
