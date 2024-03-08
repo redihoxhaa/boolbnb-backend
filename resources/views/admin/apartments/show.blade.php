@@ -59,16 +59,18 @@
                                 {{ $service->name }},
                             @endforeach
                         </p>
-                        <p class="card-text"><strong>Images:</strong></p>
-                        <div class="row">
-                            @foreach (explode(',', $apartment->images) as $image)
-                                <div class="col-md-3">
-                                    <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
-                                        class="img-fluid mb-2">
+                        @if ($apartment->images)
+                            <p class="card-text"><strong>Images:</strong></p>
+                            <div class="row">
+                                @foreach (explode(',', $apartment->images) as $image)
+                                    <div class="col-md-3">
+                                        <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
+                                            class="img-fluid mb-2">
 
-                                </div>
-                            @endforeach
-                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
 
                     <div class="mt-3 text-center">

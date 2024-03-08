@@ -166,12 +166,18 @@ class ApartmentController extends Controller
         $apartment->address = $address;
         $apartment->lat = $latitude;
         $apartment->lon = $longitude;
-        if (isset($data['images'])) {
+        if (isset($data['images']) && strlen($apartment->images)) {
             $existingImages = explode(',', $apartment->images); // Converti la stringa di immagini esistenti in un array
             foreach ($data['images'] as $image) {
                 $existingImages[] = Storage::put('uploads', $image); // Aggiungi le nuove immagini all'array delle immagini esistenti
             }
             $apartment->images = implode(',', $existingImages); // Converti l'array di immagini in una stringa separata da virgole
+        } elseif (isset($data['images']) && !strlen($apartment->images)) {
+            $imagesPaths = [];
+            foreach ($data['images'] as $image) {
+                $imagesPaths[] = Storage::put('uploads', $image);
+            }
+            $apartment->images = implode(',', $imagesPaths);
         }
 
         // $imagesPaths = explode(',', $apartment->images); -Metodo per trasformare da stringa in array in modo da ciclarlo

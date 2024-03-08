@@ -5,7 +5,7 @@
 
     <div class="container">
 
-        <h1 class="my-5 text-white">Edit Apartment</h1> <!-- Titolo principale -->
+        <h1 class="my-5 text-black">Edit Apartment</h1> <!-- Titolo principale -->
 
 
 
@@ -124,18 +124,20 @@
                             </div>
                             <button type="button" id="add-image" class="btn btn-secondary mt-2">Add Image</button>
 
-                            <p class="card-text"><strong>Images:</strong></p>
-                            <div class="row">
-                                @foreach (explode(',', $apartment->images) as $image)
-                                    <div class="col-md-3">
-                                        <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
-                                            class="img-fluid mb-2">
+                            @if ($apartment->images)
+                                <p class="card-text"><strong>Images:</strong></p>
+                                <div class="row">
+                                    @foreach (explode(',', $apartment->images) as $image)
+                                        <div class="col-md-3">
+                                            <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
+                                                class="img-fluid mb-2">
+                                        </div>
+                                    @endforeach
+                                    <div class="row" id="preview-images-container">
+                                        <!-- Qui verranno visualizzate le miniature delle immagini -->
                                     </div>
-                                @endforeach
-                                <div class="row" id="preview-images-container">
-                                    <!-- Qui verranno visualizzate le miniature delle immagini -->
                                 </div>
-                            </div>
+                            @endif
 
                             @error('images')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->

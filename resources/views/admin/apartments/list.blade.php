@@ -76,10 +76,8 @@
                             <tr>
                                 <th scope="col">TITLE</th>
                                 <th scope="col" class="d-none d-lg-table-cell">ADDRESS</th>
-                                <th scope="col" class="d-none d-sm-table-cell">STATUS</th>
-                                <th scope="col" class="d-none d-xl-table-cell">VIEWS</th>
-                                <th scope="col" class="d-none d-xl-table-cell">MESSAGES</th>
-                                <th scope="col" class="d-none d-xxl-table-cell">LISTED</th>
+                                <th scope="col" class="d-none d-sm-table-cell text-center">STATUS</th>
+                                <th scope="col" class="d-none d-xxl-table-cell text-nowrap text-center">LISTED ON</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,7 +100,7 @@
                                                 @endif
                                             </div>
                                             <div class="d-flex align-items-center">
-                                                <span class="apartment-title">{{ Str::limit($apartment->title, 18, '...') }}
+                                                <span class="apartment-title">{{ $apartment->title }}
                                                 </span>
                                             </div>
                                         </a>
@@ -110,10 +108,10 @@
 
                                     {{-- Address --}}
                                     <td class="center d-none d-lg-table-cell">
-                                        {{ Str::limit($apartment->address, 20, '...') }}</td>
+                                        {{ $apartment->address }}</td>
 
                                     {{-- Status --}}
-                                    <td class="d-none d-sm-table-cell">
+                                    <td class="d-none d-sm-table-cell text-center">
                                         @if (
                                             $apartment->sponsorships->count() &&
                                                 $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
@@ -121,28 +119,22 @@
                                                 <span>Sponsored</span>
                                             </div>
                                         @elseif (!$apartment->is_visible)
-                                            <div class="status-tag tag-hidden d-inline">
+                                            <div class="status-tag tag-hidden d-inline text-nowrap">
                                                 <img class="me-1" src="{{ asset('assets/images/' . 'hidden_icon.svg') }}"
                                                     alt="">
                                                 <span>Hidden</span>
+                                            </div>
+                                        @else
+                                            <div class="status-tag tag-active d-inline">
+                                                <span>Active</span>
                                             </div>
                                         @endif
 
                                     </td>
 
-                                    {{-- Visits --}}
-                                    <td class="d-none d-xl-table-cell">
-                                        <img class="me-2" src="{{ asset('assets/images/' . 'visit_icon.svg') }}"
-                                            alt="">{{ $apartment->visits->count() }}
-                                    </td>
-
-                                    {{-- Messages --}}
-                                    <td class="d-none d-xl-table-cell"><img class="me-2"
-                                            src="{{ asset('assets/images/' . 'messages_icon.svg') }}"
-                                            alt="">{{ $apartment->messages->count() }}</td>
 
                                     {{-- Created at --}}
-                                    <td class="d-none d-xxl-table-cell">
+                                    <td class="d-none d-xxl-table-cell text-center text-nowrap">
                                         {{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
 
                                     {{-- Button --}}
@@ -162,12 +154,12 @@
 
                                             {{-- Modale --}}
                                             <div class="modal" id="my-dialog-{{ $apartment->id }}">
-                                                <div class="modal-dialog">
+                                                <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content card-custom">
 
                                                         {{-- Messaggio di alert --}}
-                                                        <div class="modal-header text-center">
-                                                            <h3>Are you sure?</h3>
+                                                        <div class="modal-header ">
+                                                            <h3 class="d-block w-100 text-center">Are you sure?</h3>
                                                         </div>
 
                                                         {{-- Informazione operazione --}}
@@ -175,10 +167,10 @@
                                                             You are about to delete <br> {{ $apartment->title }}</span>
                                                         </div>
 
-                                                        <div class="modal-footer">
+                                                        <div class="modal-footer d-flex justify-content-center">
 
                                                             {{-- Pulsante annulla --}}
-                                                            <button class="btn btn-success text-uppercase mb-4 mt-5 fw-bold"
+                                                            <button class="btn btn-light text-uppercase fw-bold mb-4 mt-3"
                                                                 data-bs-dismiss="modal">Dismiss
                                                             </button>
 
@@ -189,7 +181,7 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <input
-                                                                    class="btn btn-danger text-uppercase mb-4 mt-5 fw-bold"
+                                                                    class="btn btn-danger text-uppercase fw-bold mb-4 mt-3"
                                                                     type="submit" value="DELETE">
                                                             </form>
                                                         </div>

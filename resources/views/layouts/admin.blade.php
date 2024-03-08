@@ -72,14 +72,15 @@
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block border-sidebar sidebar collapse">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
-                            <li class="nav-item {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">
+                            <li
+                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
+                                <a class="nav-link px-3" href="{{ route('admin.dashboard') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard
                                 </a>
                             </li>
                             <li
-                                class="nav-item {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('admin.apartments.index') }}">
+                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
+                                <a class="nav-link px-3" href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
