@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="mt-3 text-center">
-                        <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm"><i
+                        <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4"><i
                                 class="fas fa-arrow-left"></i> Go Back</a>
                     </div>
                 </div>
