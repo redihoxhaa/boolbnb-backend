@@ -115,7 +115,7 @@
                                             </div>
                                         @elseif (!$apartment->is_visible)
                                             <div class="status-tag tag-hidden d-inline">
-                                                <img class="me-1" src="{{ asset('storage/' . 'hidden_icon.svg') }}"
+                                                <img class="me-1" src="{{ asset('assets/images/' . 'hidden_icon.svg') }}"
                                                     alt="">
                                                 <span>Hidden</span>
                                             </div>
@@ -123,24 +123,24 @@
 
                                     </td>
                                     <td>
-                                        <img class="me-2" src="{{ asset('storage/' . 'visit_icon.svg') }}"
+                                        <img class="me-2" src="{{ asset('assets/images/' . 'visit_icon.svg') }}"
                                             alt="">{{ $apartment->visits->count() }}
                                     </td>
-                                    <td><img class="me-2" src="{{ asset('storage/' . 'messages_icon.svg') }}"
+                                    <td><img class="me-2" src="{{ asset('assets/images/' . 'messages_icon.svg') }}"
                                             alt="">{{ $apartment->messages->count() }}</td>
                                     <td>{{ Carbon::parse($apartment->created_at)->toDateString() }}</td>
 
                                     <td class="text-center">
                                         <div class="btn-group" role="group">
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
-                                                <img class="icon" src="{{ asset('storage/' . 'edit_icon.svg') }}">
+                                                <img class="icon" src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
                                             </a>
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
-                                                <img src="{{ asset('storage/' . 'sponsor_icon.svg') }}">
+                                                <img src="{{ asset('assets/images/' . 'sponsor_icon.svg') }}">
                                             </a>
 
                                             <a data-bs-toggle="modal" data-bs-target="#my-dialog-{{ $apartment->id }}">
-                                                <img src="{{ asset('storage/' . 'delete_icon.svg') }}">
+                                                <img src="{{ asset('assets/images/' . 'delete_icon.svg') }}">
                                             </a>
 
                                             {{-- Modale --}}
