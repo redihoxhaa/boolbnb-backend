@@ -178,8 +178,7 @@
                                                         <div class="modal-footer">
 
                                                             {{-- Pulsante annulla --}}
-                                                            <button
-                                                                class="btn custom-btn white text-uppercase mb-4 mt-5 fw-bold"
+                                                            <button class="btn btn-success text-uppercase mb-4 mt-5 fw-bold"
                                                                 data-bs-dismiss="modal">Dismiss
                                                             </button>
 
@@ -190,7 +189,7 @@
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <input
-                                                                    class="btn custom-btn white text-uppercase mb-4 mt-5 fw-bold"
+                                                                    class="btn btn-danger text-uppercase mb-4 mt-5 fw-bold"
                                                                     type="submit" value="DELETE">
                                                             </form>
                                                         </div>
