@@ -21,14 +21,13 @@ Sidebar
 
 .nav-item {
 
-    a {
-        border-radius: 24px;
-        padding: 12px 24px;
-        margin: 6px 0;
 
-        &:hover {
-            background-color: #F4F4F4;
-        }
+    border-radius: 14px;
+    padding: 8px 24px;
+    margin: 6px 0;
+
+    &:hover {
+        background-color: #F4F4F4;
     }
 
     i,

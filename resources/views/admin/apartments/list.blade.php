@@ -155,7 +155,8 @@
                                                 <img src="{{ asset('assets/images/' . 'sponsor_icon.svg') }}">
                                             </a>
 
-                                            <a data-bs-toggle="modal" data-bs-target="#my-dialog-{{ $apartment->id }}">
+                                            <a role='button' data-bs-toggle="modal"
+                                                data-bs-target="#my-dialog-{{ $apartment->id }}">
                                                 <img src="{{ asset('assets/images/' . 'delete_icon.svg') }}">
                                             </a>
 
