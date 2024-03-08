@@ -26,7 +26,7 @@
                 <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
                     <div class="pic-container">
                         <img src="https://lwfiles.mycourse.app/6368e5089f20781a7e4f1805-public/2c162927114072f9ebbf04043a593fb9.png"
-                            alt="Boolean logo">
+                            alt="Boolean logo" class="w-25">
                         {{-- config('app.name', 'Laravel') --}}
                     </div>
 
@@ -40,7 +40,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">{{ __('Home') }}</a>
                         </li>
