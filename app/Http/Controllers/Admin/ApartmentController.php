@@ -8,10 +8,14 @@ use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\Sponsorship;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class ApartmentController extends Controller
 {
@@ -227,7 +231,61 @@ class ApartmentController extends Controller
         return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment'));
     }
 
-    public function buySponsorship(Apartment $apartment)
+    public function buySponsorship(Request $request, $apartmentID)
     {
+
+        // Validazione dei dati inviati dal form
+        $validator = Validator::make($request->all(), [
+            'sponsorship_choice' => 'required|exists:sponsorships,id',
+        ]);
+
+        // Se la validazione fallisce, gestire gli errori di validazione
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Ottenere l'appartamento dal suo ID
+        $apartment = Apartment::findOrFail($apartmentID);
+
+        // Ottenere l'ID del tipo di sponsorizzazione scelta dal form
+        $sponsorshipID = $request->input('sponsorship_choice');
+
+        // Ottenere la sponsorizzazione dal suo ID
+        $sponsorship = Sponsorship::findOrFail($sponsorshipID);
+
+        // Ottenere la durata della sponsorizzazione in ore
+        $durationHours = $sponsorship->package_duration;
+
+        // Ottenere l'ultimo end_date di sponsorizzazione dell'appartamento
+        $lastEndDate = DB::table('apartment_sponsorship')
+            ->where('apartment_id', $apartmentID)
+            ->orderBy('end_date', 'desc')
+            ->value('end_date');
+
+        // Calcolare la data di inizio della sponsorizzazione
+        $startDate = Carbon::now();
+
+        // Se c'è un record di sponsorizzazione precedente, impostare la data di inizio sulla base dell'end_date di questo record
+        if ($lastEndDate) {
+            $startDate = Carbon::parse($lastEndDate)->max(Carbon::now());
+        }
+
+        // Calcolare la data di fine della sponsorizzazione
+        $endDate = $startDate->copy()->addHours($durationHours);
+
+        // Se l'appartamento non è visibile, impostalo a visibile
+        if (!$apartment->is_visible) {
+            $apartment->update(['is_visible' => 1]);
+        }
+
+        // Inserire il nuovo record nella tabella pivot apartment_sponsorship
+        DB::table('apartment_sponsorship')->insert([
+            'apartment_id' => $apartmentID,
+            'sponsorship_id' => $sponsorshipID,
+            'created_at' => Carbon::now(),
+            'end_date' => $endDate,
+        ]);
+
+        // Redirect o restituisci una risposta a seconda delle tue esigenze
     }
 }
