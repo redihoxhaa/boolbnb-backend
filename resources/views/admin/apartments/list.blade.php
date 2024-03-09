@@ -114,6 +114,7 @@
                                     <td class="d-none d-sm-table-cell text-center">
                                         @if (
                                             $apartment->sponsorships->count() &&
+                                                $apartment->is_visible == 1 &&
                                                 $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
                                             <div class="status-tag tag-sponsored d-inline">
                                                 <span>Sponsored</span>

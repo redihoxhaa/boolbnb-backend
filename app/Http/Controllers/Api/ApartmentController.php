@@ -152,7 +152,10 @@ class ApartmentController extends Controller
         $sponsoredApartments = Apartment::whereHas('sponsorships', function ($query) use ($now) {
             $query->orderBy('end_date', 'desc')
                 ->where('end_date', '>', $now);
-        })->take(6)->get();
+        })
+            ->where('is_visible', 1) // Aggiungo la condizione per is_visible
+            ->take(6)
+            ->get();
 
         return response()->json($sponsoredApartments);
     }
