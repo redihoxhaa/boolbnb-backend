@@ -7,6 +7,7 @@ use App\Http\Requests\StoreApartmentRequest;
 use App\Http\Requests\UpdateApartmentRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
+use App\Models\Sponsorship;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -216,5 +217,17 @@ class ApartmentController extends Controller
         $apartment->delete();
 
         return redirect()->route('admin.apartments.index')->with('message', $apartment->title . '" was successfully deleted.');
+    }
+
+    public function sponsorship($apartment)
+    {
+        $apartment = Apartment::findOrFail($apartment);
+        $sponsorships = Sponsorship::all();
+
+        return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment'));
+    }
+
+    public function buySponsorship(Apartment $apartment)
+    {
     }
 }

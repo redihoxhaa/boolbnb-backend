@@ -30,6 +30,7 @@ Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('apartments', ApartmentController::class)->parameters(['apartments' => 'apartment:slug']);
     Route::resource('messages', MessageController::class)->parameters(['messages' => 'message:id']);
+    Route::get('apartments/{apartment}/sponsor-apartment', [ApartmentController::class, 'sponsorship'])->name('apartments.sponsorship');
 });
 Route::post('/guest/messages', [MessageController::class, 'storeMessageFromGuest'])->name('messages.storeMessageFromGuest');
 Route::post('/guest/visits', [VisitController::class, 'storeVisitFromGuest'])->name('visits.storeVisitFromGuest');

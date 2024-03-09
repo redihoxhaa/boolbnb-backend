@@ -143,7 +143,7 @@
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
                                                 <img class="icon" src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
                                             </a>
-                                            <a href="{{ route('admin.apartments.edit', $apartment) }}">
+                                            <a href="{{ route('admin.apartments.sponsorship', $apartment) }}">
                                                 <img src="{{ asset('assets/images/' . 'sponsor_icon.svg') }}">
                                             </a>
 
