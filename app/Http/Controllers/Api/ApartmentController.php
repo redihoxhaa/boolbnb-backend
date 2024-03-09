@@ -77,10 +77,12 @@ class ApartmentController extends Controller
 
                 // Aggiunta delle condizioni opzionali per i servizi
                 if ($request->has('services')) {
-                    $query->whereHas('services', function ($query) use ($data) {
-                        $query->whereIn('id', $data['services']);
+                    $serviceIds = explode(',', $request->input('services'));
+                    $query->whereHas('services', function ($query) use ($serviceIds) {
+                        $query->whereIn('id', $serviceIds);
                     });
                 }
+
 
                 // Aggiunta delle condizioni opzionali
                 if ($request->has('rooms')) {
@@ -127,7 +129,7 @@ class ApartmentController extends Controller
             $id = $request->input('id');
 
             // Esegui la query utilizzando l'ID sulla tabella "apartments"
-            $apartment = Apartment::find($id);
+            $apartment = Apartment::with('sponsorships', 'services')->find($id);
 
             // Verifica se l'appartamento è stato trovato
             if ($apartment) {
