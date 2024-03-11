@@ -16,7 +16,7 @@ class ApartmentController extends Controller
         $apartments = Apartment::with('sponsorships', 'services')
             ->where('is_visible', 1) // Considera solo gli appartamenti visibili
             ->orderByRaw('CASE 
-            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship) THEN 0
+            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship WHERE end_date > NOW()) THEN 0
             ELSE 1
         END')
             ->orderByDesc('created_at')
