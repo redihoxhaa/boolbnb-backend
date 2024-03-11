@@ -73,20 +73,23 @@
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li
-                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
-                                <a class="nav-link px-3" href="{{ route('admin.dashboard') }}">
+                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                    href="{{ route('admin.dashboard') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
-                                <a class="nav-link px-3" href="{{ route('admin.apartments.index') }}">
+                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                    href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
-                                <a class="nav-link px-3" href="{{ route('admin.messages.index') }}">
+                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                    href="{{ route('admin.messages.index') }}">
                                     <i class="fa-solid fa-envelope fa-lg fa-fw"></i></i> Messages
                                 </a>
                             </li>
