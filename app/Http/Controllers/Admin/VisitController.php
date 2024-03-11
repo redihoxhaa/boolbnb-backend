@@ -7,6 +7,8 @@ use App\Http\Requests\StoreVisitRequest;
 use App\Http\Requests\UpdateVisitRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+
 
 class VisitController extends Controller
 {
@@ -72,10 +74,22 @@ class VisitController extends Controller
             'apartment_id' => 'required|integer|exists:apartments,id',
         ]);
 
-        $message = new Visit();
-        $message->apartment_id = $validatedData['apartment_id'];
-        $message->visitor_ip = $request->ip();
-        $message->save();
+        // Verifica se è stata fatta una visita per l'appartamento specificato dall'IP negli ultimi 10 minuti
+        $lastVisit = Visit::where('apartment_id', $validatedData['apartment_id'])
+            ->where('visitor_ip', $request->ip())
+            ->where('created_at', '>=', Carbon::now()->subMinutes(10))
+            ->first();
+
+        if ($lastVisit) {
+            // Se è stata trovata una visita, restituisci un messaggio di errore
+            return response()->json(['error' => 'Too many visits for this apartment in last 10 minutes'], 403);
+        }
+
+        // Se non è stata trovata una visita per l'appartamento specificato dall'IP, salva la nuova visita
+        $visit = new Visit();
+        $visit->apartment_id = $validatedData['apartment_id'];
+        $visit->visitor_ip = $request->ip();
+        $visit->save();
 
         return response()->json(['message' => 'Registered visit'], 201);
     }
