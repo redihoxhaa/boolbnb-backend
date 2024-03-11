@@ -84,6 +84,12 @@
                                     <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
+                            <li
+                                class="nav-item d-flex justify-content-center px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
+                                <a class="nav-link px-3" href="{{ route('admin.messages.index') }}">
+                                    <i class="fa-solid fa-envelope fa-lg fa-fw"></i></i> Messages
+                                </a>
+                            </li>
                         </ul>
 
 

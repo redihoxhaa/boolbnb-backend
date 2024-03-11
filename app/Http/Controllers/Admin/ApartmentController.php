@@ -286,6 +286,6 @@ class ApartmentController extends Controller
             'end_date' => $endDate,
         ]);
 
-        // Redirect o restituisci una risposta a seconda delle tue esigenze
+        return view('admin.apartments.sponsor_result', compact('apartment', 'sponsorship', 'endDate'));
     }
 }

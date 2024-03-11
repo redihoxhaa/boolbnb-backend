@@ -2,7 +2,7 @@
 
 return [
     [
-        'apartment_id' => 1,
+        'apartment_id' => 6,
         'sender_name' => 'John Smith',
         'sender_email' => 'john.smith@example.com',
         'message_text' => 'Hello, I am interested in renting your apartment. Could you please provide more details about the amenities and the rental terms? Thank you!',
@@ -12,18 +12,6 @@ return [
         'sender_name' => 'Emily Johnson',
         'sender_email' => 'emily.johnson@example.com',
         'message_text' => 'Hi there, I came across your apartment listing and I am impressed! Can you tell me if it\'s pet-friendly? Looking forward to hearing from you!',
-    ],
-    [
-        'apartment_id' => 1,
-        'sender_name' => 'Michael Williams',
-        'sender_email' => 'michael.williams@example.com',
-        'message_text' => 'Good day! Your apartment seems perfect for my upcoming trip. Is there a gym available in the building? Please let me know. Thank you!',
-    ],
-    [
-        'apartment_id' => 1,
-        'sender_name' => 'Jessica Brown',
-        'sender_email' => 'jessica.brown@example.com',
-        'message_text' => 'Hello, I am very interested in your apartment. Can you confirm if there\'s a swimming pool? Looking forward to your response!',
     ],
     [
         'apartment_id' => 2,
@@ -60,5 +48,11 @@ return [
         'sender_name' => 'Sophia Thomas',
         'sender_email' => 'sophia.thomas@example.com',
         'message_text' => 'Hello, I am interested in your apartment. Does it have a private bathroom? Looking forward to your response!',
-    ]
+    ],
+    [
+        'apartment_id' => 11,
+        'sender_name' => 'Sophio Thomaso',
+        'sender_email' => 'sophia.thomas@example.com',
+        'message_text' => 'Hello, I am interested in your apartment. Does it have a private bathroom? Looking forward to your response!',
+    ],
 ];
