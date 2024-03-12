@@ -86,8 +86,33 @@ class ApartmentController extends Controller
                         $query->where('end_date', '>', now());
                     })
                     ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
-                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
-                    ->get();
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
+
+                // Aggiunta delle condizioni opzionali per i servizi ai sponsorizzati
+                if ($request->has('services')) {
+                    $serviceIds = explode(',', $request->input('services'));
+                    foreach ($serviceIds as $serviceId) {
+                        $sponsoredApartments->whereHas('services', function ($query) use ($serviceId) {
+                            $query->where('id', $serviceId);
+                        });
+                    }
+                }
+
+                // Aggiunta delle condizioni opzionali ai sponsorizzati
+                if ($request->has('rooms')) {
+                    $sponsoredApartments->where('rooms', '>=', $data['rooms']);
+                }
+
+                if ($request->has('beds')) {
+                    $sponsoredApartments->where('beds', '>=', $data['beds']);
+                }
+
+                if ($request->has('bathrooms')) {
+                    $sponsoredApartments->where('bathrooms', '>=', $data['bathrooms']);
+                }
+
+                // Esegui la query per gli appartamenti sponsorizzati
+                $sponsoredApartments = $sponsoredApartments->get();
 
                 // Calcola e aggiunge la distanza per ogni appartamento sponsorizzato
                 $sponsoredApartments->each(function ($apartment) use ($latitude, $longitude) {
@@ -108,9 +133,11 @@ class ApartmentController extends Controller
                 // Aggiunta delle condizioni opzionali per i servizi ai non sponsorizzati
                 if ($request->has('services')) {
                     $serviceIds = explode(',', $request->input('services'));
-                    $nonSponsoredQuery->whereHas('services', function ($query) use ($serviceIds) {
-                        $query->whereIn('id', $serviceIds);
-                    });
+                    foreach ($serviceIds as $serviceId) {
+                        $nonSponsoredQuery->whereHas('services', function ($query) use ($serviceId) {
+                            $query->where('id', $serviceId);
+                        });
+                    }
                 }
 
                 // Aggiunta delle condizioni opzionali ai non sponsorizzati
@@ -150,6 +177,7 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
 
 
     // Funzione per il calcolo della distanza tramite la formula di Haversine
