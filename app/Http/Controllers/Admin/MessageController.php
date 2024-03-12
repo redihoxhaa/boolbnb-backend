@@ -41,22 +41,26 @@ class MessageController extends Controller
      */
     public function store(StoreMessageRequest $request)
     {
-        // $data = $request->validated();
-        // $message = new Message();
-
-        // $message->apartment_id = $data['apartment_id'];
-        // $message->sender_name = $data['sender_name'];
-        // $message->sender_email = $data['sender_email'];
-        // $message->message_text = $data['message_text'];
-        // $message->save();
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Message $message)
+    public function show($apartmentId)
     {
-        //
+        // Ottieni l'ID dell'utente autenticato
+        $userId = Auth::id();
+
+        // Controlla se l'appartamento specificato appartiene all'utente autenticato
+        $apartment = Apartment::where('id', $apartmentId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+
+        // Ottieni solo i messaggi relativi all'appartamento specificato
+        $messages = $apartment->messages;
+
+        // Ritorna la vista mostrando solo i messaggi dell'appartamento
+        return response()->json($messages);
     }
 
     /**

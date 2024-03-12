@@ -10,7 +10,7 @@
                 <h2 class="text-center mb-4">Apartments</h2>
                 <div class="list-group">
                     @foreach ($apartments as $apartment)
-                        <a href="#" class=" p-4 card mb-3 apartment-title" data-id="{{ $apartment->id }}">
+                        <a href="#" class="p-4 card mb-3 apartment-title" data-id="{{ $apartment->id }}">
                             <h5 class="mb-1">{{ $apartment->title }}</h5>
                             <span class="mb-1 fw-normal">{{ $apartment->address }}</span>
                         </a>
@@ -19,19 +19,9 @@
             </div>
             <div class="col-md-4">
                 <h2 class="text-center mb-4">Messages List</h2>
-                @foreach ($apartments as $apartment)
-                    <div class="apartment-{{ $apartment->id }} d-none apartment-messages">
-                        @foreach ($apartment->messages as $message)
-                            <div class="message card mb-3" data-message-id="{{ $message->id }}"
-                                data-message-text="{{ $message->message_text }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $message->sender_name }}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">{{ $message->sender_email }}</h6>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
+                <div id="messages-list">
+                    <!-- Messages will be loaded here -->
+                </div>
             </div>
             <div class="col-md-4">
                 <h2 class="text-center mb-4">Message Details</h2>
@@ -47,55 +37,72 @@
         </div>
     </div>
 
-@endsection
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const apartmentTitles = document.querySelectorAll(".apartment-title");
+            const messagesList = document.getElementById("messages-list");
+            const messageBody = document.querySelector(".message-body");
 
+            apartmentTitles.forEach(function(apartmentTitle) {
+                apartmentTitle.addEventListener("click", function() {
+                    const apartmentId = this.dataset.id;
+                    axios.get(`http://127.0.0.1:8000/admin/messages/${apartmentId}`)
+                        .then(response => {
+                            messagesList.innerHTML = '';
+                            response.data.forEach((message, index) => {
+                                const messageDiv = document.createElement('div');
+                                messageDiv.innerHTML = `
+                            <div class="message card mb-3" data-message-id="${message.id}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${message.sender_name}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${message.sender_email}</h6>
+                                    <input type="hidden" class="message-text" value="${message.message_text}">
+                                </div>
+                            </div>
+                        `;
+                                messagesList.appendChild(messageDiv);
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const apartmentTitles = document.querySelectorAll(".apartment-title");
-        const messageBody = document.querySelector(".message-body");
+                                // Se c'è solo un messaggio e siamo nell'ultimo ciclo, mostra il corpo del messaggio
+                                if (response.data.length === 1 && index === response
+                                    .data.length - 1) {
+                                    const messageText = messageDiv.querySelector(
+                                        '.message-text').value;
+                                    const messageTextElement = document.querySelector(
+                                        "#message-text");
+                                    messageTextElement.textContent = messageText;
+                                    messageBody.classList.remove("d-none");
+                                }
+                            });
 
-        apartmentTitles.forEach(function(apartmentTitle) {
-            apartmentTitle.addEventListener("click", function() {
-                const apartmentId = this.dataset.id;
-                const apartmentMessages = document.querySelectorAll(".apartment-messages");
-                const currentApartmentMessages = document.querySelector(
-                    `.apartment-${apartmentId}`
-                );
-
-                // Hide currently displayed message body
-                messageBody.classList.add("d-none");
-
-                apartmentTitles.forEach(function(title) {
-                    title.classList.remove("active");
+                            // Nascondi il corpo del messaggio se ci sono più messaggi
+                            if (response.data.length > 1) {
+                                messageBody.classList.add("d-none");
+                            }
+                        })
+                        .catch(error => console.error('Error fetching messages:', error));
                 });
+            });
 
-                apartmentMessages.forEach(function(message) {
-                    message.classList.add("d-none");
-                });
+            messagesList.addEventListener("click", function(event) {
+                const messageElement = event.target.closest(".message");
+                if (messageElement) {
+                    const messageText = messageElement.querySelector('.message-text').value;
+                    const messageTextElement = document.querySelector("#message-text");
 
-                if (currentApartmentMessages) {
-                    currentApartmentMessages.classList.remove("d-none");
-                    this.classList.add("active");
+                    messageTextElement.textContent = messageText;
+                    messageBody.classList.remove("d-none");
+
+                    // Rimuovi la classe "active" da tutti i messaggi
+                    document.querySelectorAll(".message").forEach(function(msg) {
+                        msg.classList.remove("active");
+                    });
+
+                    // Aggiungi la classe "active" solo al messaggio selezionato
+                    messageElement.classList.add("active");
                 }
             });
         });
+    </script>
 
-        const messages = document.querySelectorAll(".message");
-        messages.forEach(function(message) {
-            message.addEventListener("click", function() {
-                const messageText = this.dataset.messageText;
-                const messageTextElement = document.querySelector("#message-text");
-
-                messageTextElement.textContent = messageText;
-                messageBody.classList.remove("d-none");
-
-                messages.forEach(function(msg) {
-                    msg.classList.remove("active");
-                });
-
-                this.classList.add("active");
-            });
-        });
-    });
-</script>
+@endsection

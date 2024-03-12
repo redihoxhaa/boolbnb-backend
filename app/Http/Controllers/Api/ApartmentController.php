@@ -57,7 +57,7 @@ class ApartmentController extends Controller
         $address = $data['address'];
 
         // Verifica se il parametro radius è stato fornito
-        $radius = $request->has('radius') ? $data['radius'] : 50;
+        $radius = $request->has('radius') ? $data['radius'] : 5;
 
         // Effettua una chiamata all'API di geocodifica per ottenere la latitudine e la longitudine
         $response = Http::withoutVerifying()->get('https://api.tomtom.com/search/2/geocode/' . urlencode($address) . '.json', [
@@ -70,47 +70,71 @@ class ApartmentController extends Controller
                 $latitude = $addressQuery['results'][0]['position']['lat'];
                 $longitude = $addressQuery['results'][0]['position']['lon'];
 
-                // Costruzione della query base
-                $query = Apartment::with('services', 'sponsorships')
+                // Esecuzione della query per gli appartamenti sponsorizzati
+                $sponsoredApartments = Apartment::with('services', 'sponsorships')
+                    ->whereHas('sponsorships', function ($query) {
+                        $query->where('end_date', '>', now());
+                    })
                     ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
-                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
+                    ->get();
 
-                // Aggiunta delle condizioni opzionali per i servizi
-                if ($request->has('services')) {
-                    $serviceIds = explode(',', $request->input('services'));
-                    $query->whereHas('services', function ($query) use ($serviceIds) {
-                        $query->whereIn('id', $serviceIds);
-                    });
-                }
-
-
-                // Aggiunta delle condizioni opzionali
-                if ($request->has('rooms')) {
-                    $query->where('rooms', $data['rooms']);
-                }
-
-                if ($request->has('beds')) {
-                    $query->where('beds', $data['beds']);
-                }
-
-                if ($request->has('bathrooms')) {
-                    $query->where('bathrooms', $data['bathrooms']);
-                }
-
-                // Esecuzione della query
-                $apartments = $query->get();
-
-                // Calcola la distanza per ogni appartamento e aggiungi il campo distance
-                $apartments = $apartments->map(function ($apartment) use ($latitude, $longitude) {
+                // Calcola la distanza per ogni appartamento sponsorizzato e aggiungi il campo distance
+                $sponsoredApartments = $sponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
                     $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
                     $apartment->distance = $distance;
                     return $apartment;
                 });
 
-                // Ordina gli appartamenti per distanza
-                $apartments = $apartments->sortBy('distance');
+                // Ordina gli appartamenti sponsorizzati per distanza
+                $sponsoredApartments = $sponsoredApartments->sortBy('distance');
 
-                return response()->json($apartments);
+                // Esecuzione della query per gli appartamenti non sponsorizzati
+                $nonSponsoredQuery = Apartment::with('services', 'sponsorships')
+                    ->whereDoesntHave('sponsorships', function ($query) {
+                        $query->where('end_date', '>', now());
+                    })
+                    ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
+
+                // Aggiunta delle condizioni opzionali per i servizi ai non sponsorizzati
+                if ($request->has('services')) {
+                    $serviceIds = explode(',', $request->input('services'));
+                    $nonSponsoredQuery->whereHas('services', function ($query) use ($serviceIds) {
+                        $query->whereIn('id', $serviceIds);
+                    });
+                }
+
+                // Aggiunta delle condizioni opzionali ai non sponsorizzati
+                if ($request->has('rooms')) {
+                    $nonSponsoredQuery->where('rooms', '>=', $data['rooms']);
+                }
+
+                if ($request->has('beds')) {
+                    $nonSponsoredQuery->where('beds', '>=', $data['beds']);
+                }
+
+                if ($request->has('bathrooms')) {
+                    $nonSponsoredQuery->where('bathrooms', '>=', $data['bathrooms']);
+                }
+
+                // Esecuzione della query per gli appartamenti non sponsorizzati
+                $nonSponsoredApartments = $nonSponsoredQuery->get();
+
+                // Calcola la distanza per ogni appartamento non sponsorizzato e aggiungi il campo distance
+                $nonSponsoredApartments = $nonSponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
+                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
+                    $apartment->distance = $distance;
+                    return $apartment;
+                });
+
+                // Ordina gli appartamenti non sponsorizzati per distanza
+                $nonSponsoredApartments = $nonSponsoredApartments->sortBy('distance');
+
+                // Unisci gli appartamenti sponsorizzati e non sponsorizzati
+                $mergedApartments = $sponsoredApartments->merge($nonSponsoredApartments);
+
+                return response()->json($mergedApartments);
             } else {
                 // Nessun risultato trovato per l'indirizzo fornito
                 return response()->json(['error' => 'Indirizzo non valido'], 400);
@@ -120,6 +144,8 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
+
 
     public function show(Request $request)
     {

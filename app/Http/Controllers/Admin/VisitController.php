@@ -80,18 +80,21 @@ class VisitController extends Controller
             'apartment_id' => 'required|integer|exists:apartments,id',
         ]);
 
-        // Verifica se è stata fatta una visita per l'appartamento specificato dall'IP negli ultimi 10 minuti
+        // Ottieni la data di inizio della giornata corrente
+        $startOfDay = Carbon::now()->startOfDay();
+
+        // Verifica se è stata fatta una visita per l'appartamento specificato dall'IP nella giornata corrente
         $lastVisit = Visit::where('apartment_id', $validatedData['apartment_id'])
             ->where('visitor_ip', $request->ip())
-            ->where('created_at', '>=', Carbon::now()->subMinutes(10))
+            ->where('created_at', '>=', $startOfDay)
             ->first();
 
         if ($lastVisit) {
-            // Se è stata trovata una visita, restituisci un messaggio di errore
-            return response()->json(['error' => 'Too many visits for this apartment in last 10 minutes'], 403);
+            // Se è stata trovata una visita nella giornata corrente, restituisci un messaggio di errore
+            return response()->json(['error' => 'Too many visits for this apartment today'], 403);
         }
 
-        // Se non è stata trovata una visita per l'appartamento specificato dall'IP, salva la nuova visita
+        // Se non è stata trovata una visita per l'appartamento specificato dall'IP nella giornata corrente, salva la nuova visita
         $visit = new Visit();
         $visit->apartment_id = $validatedData['apartment_id'];
         $visit->visitor_ip = $request->ip();
