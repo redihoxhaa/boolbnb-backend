@@ -46,6 +46,14 @@
 
             apartmentTitles.forEach(function(apartmentTitle) {
                 apartmentTitle.addEventListener("click", function() {
+                    // Rimuovi la classe "active" da tutti gli appartamenti
+                    apartmentTitles.forEach(function(apartment) {
+                        apartment.classList.remove("active");
+                    });
+
+                    // Aggiungi la classe "active" all'appartamento cliccato
+                    this.classList.add("active");
+
                     const apartmentId = this.dataset.id;
                     axios.get(`http://127.0.0.1:8000/admin/messages/${apartmentId}`)
                         .then(response => {
@@ -53,7 +61,7 @@
                             response.data.forEach((message, index) => {
                                 const messageDiv = document.createElement('div');
                                 messageDiv.innerHTML = `
-                            <div class="message card mb-3" data-message-id="${message.id}">
+                            <div class="message card mb-3 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
                                 <div class="card-body">
                                     <h5 class="card-title">${message.sender_name}</h5>
                                     <h6 class="card-subtitle mb-2 text-muted">${message.sender_email}</h6>
