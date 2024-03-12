@@ -89,11 +89,9 @@ class ApartmentController extends Controller
                     ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
                     ->get();
 
-                // Calcola la distanza per ogni appartamento sponsorizzato e aggiungi il campo distance
-                $sponsoredApartments = $sponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
-                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                    $apartment->distance = $distance;
-                    return $apartment;
+                // Calcola e aggiunge la distanza per ogni appartamento sponsorizzato
+                $sponsoredApartments->each(function ($apartment) use ($latitude, $longitude) {
+                    $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->lat, $apartment->lon);
                 });
 
                 // Ordina gli appartamenti sponsorizzati per distanza
@@ -131,11 +129,9 @@ class ApartmentController extends Controller
                 // Esecuzione della query per gli appartamenti non sponsorizzati
                 $nonSponsoredApartments = $nonSponsoredQuery->get();
 
-                // Calcola la distanza per ogni appartamento non sponsorizzato e aggiungi il campo distance
-                $nonSponsoredApartments = $nonSponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
-                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                    $apartment->distance = $distance;
-                    return $apartment;
+                // Calcola e aggiunge la distanza per ogni appartamento non sponsorizzato
+                $nonSponsoredApartments->each(function ($apartment) use ($latitude, $longitude) {
+                    $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->lat, $apartment->lon);
                 });
 
                 // Ordina gli appartamenti non sponsorizzati per distanza
@@ -154,6 +150,7 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
 
     // Funzione per il calcolo della distanza tramite la formula di Haversine
     private function haversineDistance($lat1, $lon1, $lat2, $lon2)
