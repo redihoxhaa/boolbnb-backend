@@ -131,7 +131,7 @@ class ApartmentController extends Controller
                 // Ordina gli appartamenti non sponsorizzati per distanza
                 $nonSponsoredApartments = $nonSponsoredApartments->sortBy('distance');
 
-                // Unisci gli appartamenti sponsorizzati e non sponsorizzati
+                // Unisci gli appartamenti sponsorizzati e non sponsorizzati, ordinati prima per sponsorizzazione e poi per distanza
                 $mergedApartments = $sponsoredApartments->merge($nonSponsoredApartments);
 
                 return response()->json($mergedApartments);
@@ -144,6 +144,7 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
 
 
 
@@ -170,17 +171,30 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'ID mancante nella richiesta'], 400);
         }
     }
-
     public function sponsored()
     {
+        // Ottieni la data e l'ora attuali
         $now = Carbon::now();
 
+        // Ottieni gli appartamenti sponsorizzati
         $sponsoredApartments = Apartment::whereHas('sponsorships', function ($query) use ($now) {
-            $query->orderBy('end_date', 'desc')
-                ->where('end_date', '>', $now);
+            // Filtra le sponsorizzazioni attive
+            $query->where('end_date', '>', $now);
         })
-            ->where('is_visible', 1) // Aggiungo la condizione per is_visible
-            ->take(6)
+            ->where('is_visible', 1) // Aggiungi la condizione per is_visible
+            ->with(['sponsorships' => function ($query) {
+                // Ordina le sponsorizzazioni per data di creazione decrescente
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->orderBy(function ($query) {
+                // Ordina gli appartamenti in base alla data di creazione della sponsorizzazione più recente
+                $query->select('created_at')
+                    ->from('apartment_sponsorship')
+                    ->whereColumn('apartment_id', 'apartments.id')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(1);
+            }, 'desc')
+            ->take(6) // Prendi solo i primi 6 appartamenti sponsorizzati
             ->get();
 
         return response()->json($sponsoredApartments);
