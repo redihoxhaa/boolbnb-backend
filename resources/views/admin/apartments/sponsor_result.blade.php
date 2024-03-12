@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Sponsor Apartment')
+@section('title', 'Congratulations!')
 
 @section('content')
 

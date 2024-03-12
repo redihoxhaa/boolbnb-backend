@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 
+@section('title', 'BoolBnB - Dashboard')
+
 @section('content')
     <div class="welcome container">
         <div class="row justify-content-center">

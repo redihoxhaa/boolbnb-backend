@@ -1,6 +1,8 @@
 @extends('layouts.admin')
 
-@section('title', 'Apartment Details')
+@section('title')
+    Apartment Details - {{ $apartment->title }}
+@endsection
 
 @section('content')
 
