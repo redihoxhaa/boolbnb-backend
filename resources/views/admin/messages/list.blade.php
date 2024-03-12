@@ -19,12 +19,14 @@
             </div>
             <div class="col-md-4">
                 <h2 class="text-center mb-4">Messages List</h2>
+                <div class="apartment-guide text-center">Select an apartment</div>
                 <div id="messages-list">
                     <!-- Messages will be loaded here -->
                 </div>
             </div>
             <div class="col-md-4">
                 <h2 class="text-center mb-4">Message Details</h2>
+                <div class="message-guide text-center d-none">Select a message</div>
                 <div class="card message-body d-none">
                     <div class="card-header bg-primary text-white">
                         <h5 class="card-title">Message Body</h5>
@@ -43,6 +45,8 @@
             const apartmentTitles = document.querySelectorAll(".apartment-title");
             const messagesList = document.getElementById("messages-list");
             const messageBody = document.querySelector(".message-body");
+            const apartmentGuide = document.querySelector(".apartment-guide");
+            const messageGuide = document.querySelector(".message-guide");
 
             apartmentTitles.forEach(function(apartmentTitle) {
                 apartmentTitle.addEventListener("click", function() {
@@ -61,14 +65,14 @@
                             response.data.forEach((message, index) => {
                                 const messageDiv = document.createElement('div');
                                 messageDiv.innerHTML = `
-                            <div class="message card mb-3 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${message.sender_name}</h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">${message.sender_email}</h6>
-                                    <input type="hidden" class="message-text" value="${message.message_text}">
-                                </div>
-                            </div>
-                        `;
+                <div class="message card mb-3 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
+                    <div class="card-body">
+                        <h5 class="card-title">${message.sender_name}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">${message.sender_email}</h6>
+                        <input type="hidden" class="message-text" value="${message.message_text}">
+                    </div>
+                </div>
+            `;
                                 messagesList.appendChild(messageDiv);
 
                                 // Se c'è solo un messaggio e siamo nell'ultimo ciclo, mostra il corpo del messaggio
@@ -87,9 +91,24 @@
                             if (response.data.length > 1) {
                                 messageBody.classList.add("d-none");
                             }
+
+                            // Mostra il div dei messaggi e nascondi il div degli appartamenti
+                            messageGuide.classList.remove("d-none");
+                            apartmentGuide.classList.add("d-none");
+
+                            // Nascondi la scritta "Select a message" se ci sono messaggi
+                            if (response.data.length > 0) {
+                                messageGuide.classList.add("d-none");
+                            }
                         })
                         .catch(error => console.error('Error fetching messages:', error));
                 });
+
+                // Verifica se c'è solo un appartamento nei risultati
+                if (apartmentTitles.length === 1) {
+                    // Simula un click sull'unico appartamento
+                    apartmentTitle.click();
+                }
             });
 
             messagesList.addEventListener("click", function(event) {
@@ -108,6 +127,9 @@
 
                     // Aggiungi la classe "active" solo al messaggio selezionato
                     messageElement.classList.add("active");
+
+                    // Nascondi la scritta "Select a message" quando viene selezionato un messaggio
+                    messageGuide.classList.add("d-none");
                 }
             });
         });
