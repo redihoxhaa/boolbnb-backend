@@ -10,21 +10,45 @@ use Illuminate\Support\Facades\Http;
 
 class ApartmentController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         // Ottieni la data e l'ora attuali
         $now = Carbon::now();
 
-        // Eager loading per caricare le relazioni sponsorizzate
-        $apartments = Apartment::with('sponsorships', 'services')
-            ->where('is_visible', 1) // Considera solo gli appartamenti visibili
-            ->orderByRaw('CASE 
-            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship WHERE end_date > ?) THEN 0
-            ELSE 1
-        END, created_at DESC', [$now])
+        // Ottieni gli appartamenti sponsorizzati
+        $sponsoredApartments = Apartment::whereHas('sponsorships', function ($query) use ($now) {
+            // Filtra le sponsorizzazioni attive
+            $query->where('end_date', '>', $now);
+        })
+            ->where('is_visible', 1) // Aggiungi la condizione per is_visible
+            ->with(['sponsorships' => function ($query) {
+                // Ordina le sponsorizzazioni per data di creazione decrescente
+                $query->orderBy('created_at', 'desc');
+            }])
+            ->orderBy(function ($query) {
+                // Ordina gli appartamenti in base alla data di creazione della sponsorizzazione più recente
+                $query->select('created_at')
+                    ->from('apartment_sponsorship')
+                    ->whereColumn('apartment_id', 'apartments.id')
+                    ->orderBy('created_at', 'desc')
+                    ->limit(1);
+            }, 'desc')
+            ->take(6) // Prendi solo i primi 6 appartamenti sponsorizzati
             ->get();
 
-        return response()->json($apartments);
+        // Ottieni gli appartamenti non sponsorizzati
+        $nonSponsoredApartments = Apartment::whereDoesntHave('sponsorships', function ($query) use ($now) {
+            // Filtra le sponsorizzazioni scadute
+            $query->where('end_date', '<', $now);
+        })
+            ->where('is_visible', 1) // Aggiungi la condizione per is_visible
+            ->orderBy('created_at', 'desc') // Ordina gli appartamenti non sponsorizzati per data di creazione
+            ->get();
+
+        // Combina gli appartamenti sponsorizzati e non sponsorizzati
+        $allApartments = $sponsoredApartments->merge($nonSponsoredApartments);
+
+        return response()->json($allApartments);
     }
 
 
@@ -37,7 +61,7 @@ class ApartmentController extends Controller
             'beds' => 'nullable|numeric',
             'bathrooms' => 'nullable|numeric',
             'radius' => 'nullable|numeric',
-            'services.*' => 'nullable|exists:services,id',
+            'services.*' => 'nullable|exists:services,id'
         ]);
 
         $address = $data['address'];
@@ -56,31 +80,69 @@ class ApartmentController extends Controller
                 $latitude = $addressQuery['results'][0]['position']['lat'];
                 $longitude = $addressQuery['results'][0]['position']['lon'];
 
-                // Calcolo della distanza per appartamenti sponsorizzati e non sponsorizzati
+                // Esecuzione della query per gli appartamenti sponsorizzati
                 $sponsoredApartments = Apartment::with('services', 'sponsorships')
                     ->whereHas('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
-                    ->get()
-                    ->map(function ($apartment) use ($latitude, $longitude) {
-                        $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                        return $apartment;
-                    })
-                    ->sortBy('distance');
+                    ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
+                    ->get();
 
-                $nonSponsoredApartments = Apartment::with('services', 'sponsorships')
+                // Calcola la distanza per ogni appartamento sponsorizzato e aggiungi il campo distance
+                $sponsoredApartments = $sponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
+                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
+                    $apartment->distance = $distance;
+                    return $apartment;
+                });
+
+                // Ordina gli appartamenti sponsorizzati per distanza
+                $sponsoredApartments = $sponsoredApartments->sortBy('distance');
+
+                // Esecuzione della query per gli appartamenti non sponsorizzati
+                $nonSponsoredQuery = Apartment::with('services', 'sponsorships')
                     ->whereDoesntHave('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
-                    ->get()
-                    ->map(function ($apartment) use ($latitude, $longitude) {
-                        $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                        return $apartment;
-                    })
-                    ->sortBy('distance');
+                    ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
+                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
 
-                // Unione ordinata degli appartamenti
-                $mergedApartments = $sponsoredApartments->concat($nonSponsoredApartments);
+                // Aggiunta delle condizioni opzionali per i servizi ai non sponsorizzati
+                if ($request->has('services')) {
+                    $serviceIds = explode(',', $request->input('services'));
+                    $nonSponsoredQuery->whereHas('services', function ($query) use ($serviceIds) {
+                        $query->whereIn('id', $serviceIds);
+                    });
+                }
+
+                // Aggiunta delle condizioni opzionali ai non sponsorizzati
+                if ($request->has('rooms')) {
+                    $nonSponsoredQuery->where('rooms', '>=', $data['rooms']);
+                }
+
+                if ($request->has('beds')) {
+                    $nonSponsoredQuery->where('beds', '>=', $data['beds']);
+                }
+
+                if ($request->has('bathrooms')) {
+                    $nonSponsoredQuery->where('bathrooms', '>=', $data['bathrooms']);
+                }
+
+                // Esecuzione della query per gli appartamenti non sponsorizzati
+                $nonSponsoredApartments = $nonSponsoredQuery->get();
+
+                // Calcola la distanza per ogni appartamento non sponsorizzato e aggiungi il campo distance
+                $nonSponsoredApartments = $nonSponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
+                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
+                    $apartment->distance = $distance;
+                    return $apartment;
+                });
+
+                // Ordina gli appartamenti non sponsorizzati per distanza
+                $nonSponsoredApartments = $nonSponsoredApartments->sortBy('distance');
+
+                // Unisci gli appartamenti sponsorizzati e non sponsorizzati
+                $mergedApartments = $sponsoredApartments->merge($nonSponsoredApartments);
 
                 return response()->json($mergedApartments);
             } else {
