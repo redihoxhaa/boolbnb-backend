@@ -12,36 +12,22 @@ class ApartmentController extends Controller
 {
     public function index(Request $request)
     {
+        // Ottieni la data e l'ora attuali
+        $now = Carbon::now();
+
         // Eager loading per caricare le relazioni sponsorizzate
         $apartments = Apartment::with('sponsorships', 'services')
             ->where('is_visible', 1) // Considera solo gli appartamenti visibili
             ->orderByRaw('CASE 
-            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship WHERE end_date > NOW()) THEN 0
+            WHEN id IN (SELECT apartment_id FROM apartment_sponsorship WHERE end_date > ?) THEN 0
             ELSE 1
-        END')
-            ->orderByDesc('created_at')
+        END, created_at DESC', [$now])
             ->get();
 
         return response()->json($apartments);
     }
 
 
-    private function haversineDistance($lat1, $lon1, $lat2, $lon2)
-    {
-        $earthRadius = 6371; // in kilometers
-
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLon = deg2rad($lon2 - $lon1);
-
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-            sin($dLon / 2) * sin($dLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        $distance = $earthRadius * $c;
-
-        return $distance;
-    }
 
     public function search(Request $request)
     {
@@ -51,7 +37,7 @@ class ApartmentController extends Controller
             'beds' => 'nullable|numeric',
             'bathrooms' => 'nullable|numeric',
             'radius' => 'nullable|numeric',
-            'services.*' => 'nullable|exists:services,id'
+            'services.*' => 'nullable|exists:services,id',
         ]);
 
         $address = $data['address'];
@@ -70,69 +56,31 @@ class ApartmentController extends Controller
                 $latitude = $addressQuery['results'][0]['position']['lat'];
                 $longitude = $addressQuery['results'][0]['position']['lon'];
 
-                // Esecuzione della query per gli appartamenti sponsorizzati
+                // Calcolo della distanza per appartamenti sponsorizzati e non sponsorizzati
                 $sponsoredApartments = Apartment::with('services', 'sponsorships')
                     ->whereHas('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
-                    ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
-                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))])
-                    ->get();
+                    ->get()
+                    ->map(function ($apartment) use ($latitude, $longitude) {
+                        $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
+                        return $apartment;
+                    })
+                    ->sortBy('distance');
 
-                // Calcola la distanza per ogni appartamento sponsorizzato e aggiungi il campo distance
-                $sponsoredApartments = $sponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
-                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                    $apartment->distance = $distance;
-                    return $apartment;
-                });
-
-                // Ordina gli appartamenti sponsorizzati per distanza
-                $sponsoredApartments = $sponsoredApartments->sortBy('distance');
-
-                // Esecuzione della query per gli appartamenti non sponsorizzati
-                $nonSponsoredQuery = Apartment::with('services', 'sponsorships')
+                $nonSponsoredApartments = Apartment::with('services', 'sponsorships')
                     ->whereDoesntHave('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
-                    ->whereBetween('lat', [$latitude - ($radius / 111.045), $latitude + ($radius / 111.045)])
-                    ->whereBetween('lon', [$longitude - ($radius / (111.045 * cos(deg2rad($latitude)))), $longitude + ($radius / (111.045 * cos(deg2rad($latitude))))]);
+                    ->get()
+                    ->map(function ($apartment) use ($latitude, $longitude) {
+                        $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
+                        return $apartment;
+                    })
+                    ->sortBy('distance');
 
-                // Aggiunta delle condizioni opzionali per i servizi ai non sponsorizzati
-                if ($request->has('services')) {
-                    $serviceIds = explode(',', $request->input('services'));
-                    $nonSponsoredQuery->whereHas('services', function ($query) use ($serviceIds) {
-                        $query->whereIn('id', $serviceIds);
-                    });
-                }
-
-                // Aggiunta delle condizioni opzionali ai non sponsorizzati
-                if ($request->has('rooms')) {
-                    $nonSponsoredQuery->where('rooms', '>=', $data['rooms']);
-                }
-
-                if ($request->has('beds')) {
-                    $nonSponsoredQuery->where('beds', '>=', $data['beds']);
-                }
-
-                if ($request->has('bathrooms')) {
-                    $nonSponsoredQuery->where('bathrooms', '>=', $data['bathrooms']);
-                }
-
-                // Esecuzione della query per gli appartamenti non sponsorizzati
-                $nonSponsoredApartments = $nonSponsoredQuery->get();
-
-                // Calcola la distanza per ogni appartamento non sponsorizzato e aggiungi il campo distance
-                $nonSponsoredApartments = $nonSponsoredApartments->map(function ($apartment) use ($latitude, $longitude) {
-                    $distance = $this->haversineDistance($latitude, $longitude, $apartment->latitude, $apartment->longitude);
-                    $apartment->distance = $distance;
-                    return $apartment;
-                });
-
-                // Ordina gli appartamenti non sponsorizzati per distanza
-                $nonSponsoredApartments = $nonSponsoredApartments->sortBy('distance');
-
-                // Unisci gli appartamenti sponsorizzati e non sponsorizzati, ordinati prima per sponsorizzazione e poi per distanza
-                $mergedApartments = $sponsoredApartments->merge($nonSponsoredApartments);
+                // Unione ordinata degli appartamenti
+                $mergedApartments = $sponsoredApartments->concat($nonSponsoredApartments);
 
                 return response()->json($mergedApartments);
             } else {
@@ -144,6 +92,23 @@ class ApartmentController extends Controller
             return response()->json(['error' => 'Errore durante la geocodifica'], 500);
         }
     }
+
+    // Funzione per il calcolo della distanza tramite la formula di Haversine
+    private function haversineDistance($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371; // in kilometers
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $earthRadius * $c;
+
+        return $distance;
+    }
+
+
 
 
 
