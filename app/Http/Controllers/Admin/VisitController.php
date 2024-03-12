@@ -6,6 +6,7 @@ use App\Models\Visit;
 use App\Http\Requests\StoreVisitRequest;
 use App\Http\Requests\UpdateVisitRequest;
 use App\Http\Controllers\Controller;
+use App\Models\Apartment;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -17,7 +18,12 @@ class VisitController extends Controller
      */
     public function index()
     {
-        //
+        $userId = auth()->id();
+        $apartments = Apartment::with('sponsorships', 'services')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('admin.analytics.index', compact('apartments'));
     }
 
     /**

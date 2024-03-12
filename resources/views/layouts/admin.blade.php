@@ -93,6 +93,13 @@
                                     <i class="fa-solid fa-envelope fa-lg fa-fw"></i></i> Messages
                                 </a>
                             </li>
+                            <li
+                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.analytics.index' ? 'active' : '' }}">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                    href="{{ route('admin.analytics.index') }}">
+                                    <i class="fa-solid fa-chart-simple fa-lg fa-fw"></i></i></i> Analytics
+                                </a>
+                            </li>
                         </ul>
 
 
