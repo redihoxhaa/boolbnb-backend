@@ -16,7 +16,7 @@ class ApartmentController extends Controller
         $now = Carbon::now();
 
         // Ottieni gli appartamenti sponsorizzati
-        $sponsoredApartments = Apartment::whereHas('sponsorships', function ($query) use ($now) {
+        $sponsoredApartments = Apartment::with('sponsorships')->whereHas('sponsorships', function ($query) use ($now) {
             // Filtra le sponsorizzazioni attive
             $query->where('end_date', '>', $now);
         })
@@ -32,9 +32,7 @@ class ApartmentController extends Controller
                     ->whereColumn('apartment_id', 'apartments.id')
                     ->orderBy('created_at', 'desc')
                     ->limit(1);
-            }, 'desc')
-            ->take(6) // Prendi solo i primi 6 appartamenti sponsorizzati
-            ->get();
+            }, 'desc')->get();
 
         // Ottieni gli appartamenti non sponsorizzati
         $nonSponsoredApartments = Apartment::whereDoesntHave('sponsorships', function ($query) use ($now) {
@@ -48,7 +46,10 @@ class ApartmentController extends Controller
         // Combina gli appartamenti sponsorizzati e non sponsorizzati
         $allApartments = $sponsoredApartments->merge($nonSponsoredApartments);
 
-        return response()->json($allApartments);
+        return response()->json([
+            'sponsored_apartments' => $sponsoredApartments,
+            'non_sponsored_apartments' => $nonSponsoredApartments
+        ]);
     }
 
 
