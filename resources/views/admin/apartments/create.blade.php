@@ -124,8 +124,8 @@
                             <label for="images" class="form-label">Images</label>
                             <div id="image-container">
                                 <input type="file" name="images[]"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp"
-                                    onchange="checkFileSize(this)" multiple>
+                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                    onchange="checkFileSizeAndNumber(this)" multiple>
                                 <div id="file-size-error" class="text-danger"></div>
                             </div>
 
@@ -250,17 +250,26 @@
         }
 
         // Funzione per fare il check sulla dimensione dell'immagine
-        function checkFileSize(input) {
+        function checkFileSizeAndNumber(input) {
             const files = input.files;
             const maxSize = 1024 * 1024; // 1024 KB in bytes
+            const maxFiles = 8;
             const errorDiv = document.getElementById('file-size-error');
 
             // Resetta il contenuto del div
             errorDiv.textContent = '';
 
+            // Controlla il numero di file selezionati
+            if (files.length > maxFiles) {
+                errorDiv.textContent = `You can select up to ${maxFiles} images.`;
+                input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                return;
+            }
+
+            // Controlla la dimensione dei file
             for (let i = 0; i < files.length; i++) {
                 if (files[i].size > maxSize) {
-                    errorDiv.textContent = 'The image has to weight 1MB max.' + files[i].name;
+                    errorDiv.textContent = `The image ${files[i].name} has to weight 1MB max.`;
                     input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
                     return;
                 }

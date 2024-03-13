@@ -118,8 +118,8 @@
                             <label for="images" class="form-label">Images</label>
                             <div id="image-container">
                                 <input type="file" name="images[]"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp"
-                                    onchange="checkFileSize(this); previewImages(this)" multiple>
+                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                    onchange="checkFileSizeAndNumber(this); previewImages(this)" multiple>
                                 <div id="file-size-error" class="text-danger"></div>
                             </div>
 
@@ -275,26 +275,29 @@
 
         // Funzione per visualizzare immagini prima di caricarle
 
-        function previewImages(input) {
-            const previewContainer = document.getElementById('preview-images-container');
-            previewContainer.innerHTML = ''; // Pulisce il contenitore delle miniature
-
+        function checkFileSizeAndNumber(input) {
             const files = input.files;
+            const maxSize = 1024 * 1024; // 1024 KB in bytes
+            const maxFiles = 8;
+            const errorDiv = document.getElementById('file-size-error');
+
+            // Resetta il contenuto del div
+            errorDiv.textContent = '';
+
+            // Controlla il numero di file selezionati
+            if (files.length > maxFiles) {
+                errorDiv.textContent = `You can select up to ${maxFiles} images.`;
+                input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                return;
+            }
+
+            // Controlla la dimensione dei file
             for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.classList.add('img-fluid', 'mb-2');
-                    const col = document.createElement('div');
-                    col.classList.add('col-md-3');
-                    col.appendChild(img);
-                    previewContainer.appendChild(col);
+                if (files[i].size > maxSize) {
+                    errorDiv.textContent = `The image ${files[i].name} has to weight 1MB max.`;
+                    input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                    return;
                 }
-
-                reader.readAsDataURL(file);
             }
         }
     </script>
