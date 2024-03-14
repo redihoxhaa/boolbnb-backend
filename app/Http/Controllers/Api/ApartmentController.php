@@ -35,11 +35,7 @@ class ApartmentController extends Controller
             }, 'desc')->get();
 
         // Ottieni gli appartamenti non sponsorizzati
-        $nonSponsoredApartments = Apartment::whereDoesntHave('sponsorships', function ($query) use ($now) {
-            // Filtra le sponsorizzazioni scadute
-            $query->where('end_date', '<', $now);
-        })
-            ->where('is_visible', 1) // Aggiungi la condizione per is_visible
+        $nonSponsoredApartments = Apartment::where('is_visible', 1) // Aggiungi la condizione per is_visible
             ->orderBy('created_at', 'desc') // Ordina gli appartamenti non sponsorizzati per data di creazione
             ->get();
 
