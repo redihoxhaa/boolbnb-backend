@@ -43,6 +43,9 @@ class ApartmentController extends Controller
             ->orderBy('created_at', 'desc') // Ordina gli appartamenti non sponsorizzati per data di creazione
             ->get();
 
+        // Rimuovi gli appartamenti sponsorizzati dalla lista degli appartamenti non sponsorizzati
+        $nonSponsoredApartments = $nonSponsoredApartments->diff($sponsoredApartments);
+
         // Combina gli appartamenti sponsorizzati e non sponsorizzati
         $allApartments = $sponsoredApartments->merge($nonSponsoredApartments);
 
@@ -168,7 +171,17 @@ class ApartmentController extends Controller
                 // Unisci gli appartamenti sponsorizzati e non sponsorizzati
                 $mergedApartments = $sponsoredApartments->merge($nonSponsoredApartments);
 
-                return response()->json($mergedApartments);
+                $center = [
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'radius' => (int)$radius,
+
+                ];
+
+                return response()->json([
+                    'apartments' => $mergedApartments,
+                    'center' => $center,
+                ]);
             } else {
                 // Nessun risultato trovato per l'indirizzo fornito
                 return response()->json(['error' => 'Indirizzo non valido'], 400);
