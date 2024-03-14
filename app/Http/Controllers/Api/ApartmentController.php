@@ -256,7 +256,7 @@ class ApartmentController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->limit(1);
             }, 'desc')
-            ->take(6) // Prendi solo i primi 6 appartamenti sponsorizzati
+            ->take(8) // Prendi solo i primi 6 appartamenti sponsorizzati
             ->get();
 
         return response()->json($sponsoredApartments);
