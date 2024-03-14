@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Register') }}</div>
 
                     <div class="card-body">
-                        <form id="registerForm" method="POST" action="{{ route('register') }}">
+                        <form id="registerForm" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                             @csrf
 
                             <div class="mt-2 mb-4 row text-center">
@@ -82,7 +82,15 @@
                                 </div>
 
                             </div>
-
+                            <div class="mb-4 row">
+                                <label for="image"
+                                    class="col-md-4 col-form-label text-md-right">{{ __('Profile pic:') }} </label>
+                                <div class="col-md-6">
+                                    <input type="file" name="image"
+                                        accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                        onchange="checkFileSizeAndNumber(this)">
+                                </div>
+                            </div>
                             <div class="mb-4 row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -107,6 +115,32 @@
                 passwordError.classList.remove('d-none');
             } else {
                 passwordError.classList.add('d-none');
+            }
+        }
+
+        function checkFileSizeAndNumber(input) {
+            const files = input.files;
+            const maxSize = 1024 * 1024; // 1024 KB in bytes
+            const maxFiles = 1;
+            const errorDiv = document.getElementById('file-size-error');
+
+            // Resetta il contenuto del div
+            errorDiv.textContent = '';
+
+            // Controlla il numero di file selezionati
+            if (files.length > maxFiles) {
+                errorDiv.textContent = `You can select up to ${maxFiles} image.`;
+                input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                return;
+            }
+
+            // Controlla la dimensione dei file
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > maxSize) {
+                    errorDiv.textContent = `The image ${files[i].name} has to weight 1MB max.`;
+                    input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
+                    return;
+                }
             }
         }
     </script>

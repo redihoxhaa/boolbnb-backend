@@ -4,7 +4,7 @@ use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\VisitController;
 use App\Http\Controllers\Api\ApartmentController;
 use App\Http\Controllers\Api\ServiceController;
-
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +28,11 @@ Route::get('/apartments/search', [ApartmentController::class, 'search']);
 Route::get('/apartments/show', [ApartmentController::class, 'show']);
 Route::get('/apartments/sponsored', [ApartmentController::class, 'sponsored']);
 Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/userinfo', [UserController::class, 'index']);
 Route::post('/guest/messages', [MessageController::class, 'storeMessageFromGuest']);
 Route::post('/guest/visits', [VisitController::class, 'storeVisitFromGuest']);
+Route::get('/userinfo', [UserController::class, 'index']);
+
+// Route::middleware('web')->group(function () {
+
+// });
