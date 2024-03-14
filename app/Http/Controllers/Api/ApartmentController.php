@@ -55,6 +55,8 @@ class ApartmentController extends Controller
 
     public function search(Request $request)
     {
+
+
         $data = $request->validate([
             'address' => 'required|string',
             'rooms' => 'nullable|numeric',
@@ -81,7 +83,7 @@ class ApartmentController extends Controller
                 $longitude = $addressQuery['results'][0]['position']['lon'];
 
                 // Esecuzione della query per gli appartamenti sponsorizzati
-                $sponsoredApartments = Apartment::with('services', 'sponsorships')
+                $sponsoredApartments = Apartment::where('is_visible', 1)->with('services', 'sponsorships')
                     ->whereHas('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
@@ -123,7 +125,7 @@ class ApartmentController extends Controller
                 $sponsoredApartments = $sponsoredApartments->sortBy('distance');
 
                 // Esecuzione della query per gli appartamenti non sponsorizzati
-                $nonSponsoredQuery = Apartment::with('services', 'sponsorships')
+                $nonSponsoredQuery = Apartment::where('is_visible', 1)->with('services', 'sponsorships')
                     ->whereDoesntHave('sponsorships', function ($query) {
                         $query->where('end_date', '>', now());
                     })
