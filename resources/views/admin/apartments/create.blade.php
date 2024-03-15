@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-6">
+                        <div class="col-6 position-relative">
                             <h5 class="fw-bold">Location</h5>
                             <div class="input-container">
                                 <input type="text" class="form-control" id="address" name="address" autocomplete="off"
