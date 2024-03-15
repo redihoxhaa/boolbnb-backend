@@ -6,6 +6,7 @@
 @import "_partials/utilities.scss";
 @import "_partials/variables.scss";
 @import "_partials/mixins.scss";
+@import "_partials/create-style.scss";
 
 body {
     font-family: "Montserrat";
@@ -108,4 +109,10 @@ th {
 
 .active {
     background-color: #F4F4F4;
+}
+
+.card-icon {
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+    border-radius: 16px;
 }
