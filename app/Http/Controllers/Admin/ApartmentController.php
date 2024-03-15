@@ -282,7 +282,8 @@ class ApartmentController extends Controller
         DB::table('apartment_sponsorship')->insert([
             'apartment_id' => $apartmentID,
             'sponsorship_id' => $sponsorshipID,
-            'created_at' => Carbon::now(),
+            'created_at' => $startDate,
+            'updated_at' => Carbon::now(),
             'end_date' => $endDate,
         ]);
 
