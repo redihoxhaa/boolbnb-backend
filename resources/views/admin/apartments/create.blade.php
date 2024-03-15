@@ -180,53 +180,77 @@
                     <div>
                         <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship</h5>
                         <div class="row">
-                            <div class="p-2 col-3">
-                                <div class=" text-center card-icon">
-                                    <div>(i) Rooms</div>
-                                    <div class="room-counter mt-3">
-                                        <div class="room-control">
-                                            -
-                                        </div>
-                                        <div class="room-number">2</div>
-                                        <div class="room-control">
-                                            +
+                            <div class="p-2 col-4">
+                                <div class="d-flex flex-column">
+                                    <div class="card-sponsor">
+                                        <div class="mb-1">(i)</div>
+                                        <div class="fw-bold">Gold<br>Plan</div>
+                                        <span class="span-sponsor">1 days</span>
+                                        <div class=" price">
+                                            <div class="fw-bold">2.99 €</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="p-2 col-3">
-                                <div class=" text-center card-icon">
-                                    <div>(i) Rooms</div>
-                                    <div class="room-counter mt-3">
-                                        <div class="room-control">
-                                            -
-                                        </div>
-                                        <div class="room-number">2</div>
-                                        <div class="room-control">
-                                            +
+                            <div class="p-2 col-4">
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="card-sponsor">
+                                        <div class="mb-1">(i)</div>
+                                        <div class="fw-bold">Diamond<br>Plan</div>
+                                        <span class="span-sponsor">3 days</span>
+                                        <div class=" price">
+                                            <div class="fw-bold">5.99 €</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="p-2 col-3">
-                                <div class=" text-center card-icon">
-                                    <div>(i) Rooms</div>
-                                    <div class="room-counter mt-3">
-                                        <div class="room-control">
-                                            -
-                                        </div>
-                                        <div class="room-number">2</div>
-                                        <div class="room-control">
-                                            +
+                            <div class="p-2 col-4">
+                                <div class="d-flex flex-column gap-2">
+
+                                    <div class="card-sponsor active-sponsor">
+                                        <div class="mb-1">(i)</div>
+                                        <div class="fw-bold">Emerald<br>Plan</div>
+                                        <span class="span-sponsor">6 days</span>
+                                        <div class=" price">
+                                            <div class="save text-uppercase">save 10%</div>
+                                            <div class="fw-bold">9.99 €</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="p-2">
+                                <div class="no-sponsor d-flex">
+                                    <div class="d-flex gap-2">
+                                        <div><input type="radio" name="boost" id="boost-no">
+                                            <label for="boost-no"></label>
+                                        </div>
+                                        <div>
+                                            <p class="m-0 fw-bold">I don’t want to boost my listing</p>
+                                            <span class="span-no-boost">(Boosting your listing will increase your
+                                                visibility!)</span>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="span-payment">You will be directed to the payment page</div>
                     </div>
-
+                    <div>
+                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Available</h6>
+                        <label class="switch mt-2">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <span class="span-payment">It will not appear in the search engine</span>
                 </div>
+            </div>
+            <div class="text-end mt-5 me-5">
+                <button type="submit" class="btn btn-create">Save partment</button>
             </div>
             {{-- <div class="row mb-3">
 
