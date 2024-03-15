@@ -11,7 +11,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #E8EAEC;
+        background: #e8eaec;
         width: 28px;
         height: 28px;
         border-radius: 50%;
@@ -42,12 +42,12 @@
     .service-list {
         font-size: 14px;
         padding: 4px 15px 4px 4px;
-        border: 1px solid #E8EAEC;
+        border: 1px solid #e8eaec;
         border-radius: 25px;
     }
 
-
     /* Stili per i cerchi vuoti */
+
     .checkmark {
         position: relative;
         display: inline-block;
@@ -55,12 +55,12 @@
         height: 35px;
         border: 1px solid #ccc;
         border-radius: 50%;
-
     }
 
     /* Stili per i cerchi selezionati */
-    .service-label input[type="checkbox"]:checked+.checkmark::after {
-        content: '';
+
+    .service-label input[type="checkbox"]:checked + .checkmark::after {
+        content: "";
         position: absolute;
         top: 50%;
         left: 50%;
@@ -73,6 +73,7 @@
     }
 
     /* Stili per il testo */
+
     .service-label span {
         vertical-align: middle;
     }
@@ -92,7 +93,7 @@
         align-items: center;
         justify-content: center;
         border: 1px dashed #cacaca;
-        background-color: #F5F5F3;
+        background-color: #f5f5f3;
         padding: 1.5rem;
         border-radius: 10px;
         box-shadow: 0px 48px 35px -48px rgba(0, 0, 0, 0.1);
@@ -126,7 +127,7 @@
 
     .add-photo {
         font-size: 38px;
-        background-color: #F5F5F3;
+        background-color: #f5f5f3;
         width: 135px;
         height: 100px;
         text-align: center;
@@ -138,7 +139,7 @@
 
     .add-text {
         width: 100%;
-        background-color: #F5F5F3;
+        background-color: #f5f5f3;
         height: 100px;
         margin-top: 15px;
         font-size: 14px;
@@ -159,27 +160,23 @@
 
     .card-icon {
         padding: 10px;
-        border: 1px solid #D9D9D9;
+        border: 1px solid #d9d9d9;
         border-radius: 16px;
     }
 
     .card-sponsor {
         padding: 10px;
-        border: 1px solid #D9D9D9;
+        border: 1px solid #d9d9d9;
         border-radius: 16px;
         position: relative;
 
         .span-sponsor {
             font-size: 12px;
         }
-
-
-
-
     }
 
     .active-sponsor {
-        background-color: #CEF27F;
+        background-color: #cef27f;
     }
 
     .price {
@@ -190,7 +187,7 @@
     .save {
         position: absolute;
         font-size: 9px;
-        background-color: #C4E77A;
+        background-color: #c4e77a;
         padding: 2px;
         right: 0;
         bottom: 25px;
@@ -198,15 +195,13 @@
 
     .no-sponsor {
         width: 100%;
-        border: 1px solid #D9D9D9;
+        border: 1px solid #d9d9d9;
         border-radius: 16px;
         padding: 20px 30px;
 
         .span-no-boost {
             font-size: 10px;
         }
-
-
     }
 
     .span-payment {
@@ -231,9 +226,9 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #3C3C3C;
-        -webkit-transition: .4s;
-        transition: .4s;
+        background-color: #3c3c3c;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
         border-radius: 34px;
     }
 
@@ -245,28 +240,29 @@
         left: 4px;
         bottom: 4px;
         background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
         border-radius: 50%;
     }
 
-    input:checked+.slider {
-        background-color: #CEF27F;
+    input:checked + .slider {
+        background-color: #cef27f;
     }
 
-    input:focus+.slider {
-        box-shadow: 0 0 1px #2196F3;
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196f3;
     }
 
-    input:checked+.slider:before {
+    input:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(246px);
     }
 
     /*------ ADDED CSS ---------*/
+
     .slider:after {
-        content: 'Hidden';
+        content: "Hidden";
         color: white;
         display: block;
         position: absolute;
@@ -277,15 +273,15 @@
         font-family: Verdana, sans-serif;
     }
 
-    input:checked+.slider:after {
-        content: 'Visible';
-        color: #3C3C3C;
+    input:checked + .slider:after {
+        content: "Visible";
+        color: #3c3c3c;
     }
 
     /*--------- END --------*/
 
     .btn-create {
-        background-color: #CEF27F;
+        background-color: #cef27f;
         border-radius: 26px;
         padding: 12px 22px;
     }
