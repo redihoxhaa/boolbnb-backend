@@ -33,7 +33,8 @@
                     <div class="row mt-3">
                         <div class="p-2 col-3">
                             <div class=" text-center card-icon">
-                                <div>(i) Rooms</div>
+                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
+                                    Rooms</div>
                                 <div class="room-counter mt-3">
                                     <div class="room-control">
                                         -
@@ -48,7 +49,8 @@
 
                         <div class="p-2 col-3">
                             <div class=" text-center card-icon">
-                                <div>(i) Rooms</div>
+                                <div><img class="me-2" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
+                                </div>
                                 <div class="room-counter mt-3">
                                     <div class="room-control">
                                         -
@@ -62,7 +64,8 @@
                         </div>
                         <div class="p-2 col-3">
                             <div class=" text-center card-icon">
-                                <div>(i) Rooms</div>
+                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
+                                    Bathrooms</div>
                                 <div class="room-counter mt-3">
                                     <div class="room-control">
                                         -
@@ -76,12 +79,14 @@
                         </div>
                         <div class="p-2 col-3">
                             <div class=" text-center card-icon">
-                                <div>(i) Rooms</div>
+                                <div><img class="pb-1  me-2" src="{{ asset('assets/images/area.svg') }}" alt="Area">
+                                    Area
+                                </div>
                                 <div class="room-counter mt-3">
                                     <div class="room-control">
                                         -
                                     </div>
-                                    <div class="room-number">2</div>
+                                    <div class="room-number">2 <span class="sqm">sqm</span></div>
                                     <div class="room-control">
                                         +
                                     </div>
@@ -98,7 +103,7 @@
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="mt-3">
-                                <img class="w-100" src="{{ asset('assets/images/Group256.png') }}"" alt="img">
+                                <img class="w-100" src="{{ asset('assets/images/Group256.png') }}" alt="img">
                             </div>
 
                             @error('address')
@@ -135,7 +140,8 @@
                                     </li>
                                 </ul>
                                 @error('services')
-                                    <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
+                                    <div class="alert alert-danger mt-2">{{ $message }}</div>
+                                    <!-- Messaggio di errore -->
                                 @enderror
                             </div>
 
@@ -167,9 +173,10 @@
                         <div class="d-flex gap-2">
                             <div class="add-photo">+</div>
                             <div class="add-text">
-                                <span class="suggestion">(i) suggestion</span>
-                                <div class="d-flex align-items-center gap-3">
-                                    <i>(i)</i>
+                                <span class="suggestion"><img src="{{ asset('assets/images/brightness_alert.svg') }}"
+                                        alt="Bathrooms"> suggestion</span>
+                                <div class="d-flex align-items-center gap-3 me-1">
+                                    <img src="{{ asset('assets/images/bolt.svg') }}" alt="bolt">
                                     <p class="p-more-photo m-0">Add more photos, you'll assist the customer in making a
                                         better-informed decision.</p>
                                 </div>
@@ -183,7 +190,8 @@
                             <div class="p-2 col-4">
                                 <div class="d-flex flex-column">
                                     <div class="card-sponsor">
-                                        <div class="mb-1">(i)</div>
+                                        <div class="mb-1"><img src="{{ asset('assets/images/gold.svg') }}"
+                                                alt="Bathrooms"></div>
                                         <div class="fw-bold">Gold<br>Plan</div>
                                         <span class="span-sponsor">1 days</span>
                                         <div class=" price">
@@ -196,7 +204,8 @@
                             <div class="p-2 col-4">
                                 <div class="d-flex flex-column gap-2">
                                     <div class="card-sponsor">
-                                        <div class="mb-1">(i)</div>
+                                        <div class="mb-1"><img src="{{ asset('assets/images/diamond 1.svg') }}"
+                                                alt="diamond"></div>
                                         <div class="fw-bold">Diamond<br>Plan</div>
                                         <span class="span-sponsor">3 days</span>
                                         <div class=" price">
@@ -209,7 +218,8 @@
                                 <div class="d-flex flex-column gap-2">
 
                                     <div class="card-sponsor active-sponsor">
-                                        <div class="mb-1">(i)</div>
+                                        <div class="mb-1"><img src="{{ asset('assets/images/emerald.svg') }}"
+                                                alt="emerald"></div>
                                         <div class="fw-bold">Emerald<br>Plan</div>
                                         <span class="span-sponsor">6 days</span>
                                         <div class=" price">
@@ -250,7 +260,7 @@
                 </div>
             </div>
             <div class="text-end mt-5 me-5">
-                <button type="submit" class="btn btn-create">Save partment</button>
+                <button type="submit" class="btn btn-create">Save apartment</button>
             </div>
             {{-- <div class="row mb-3">
 

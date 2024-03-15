@@ -144,7 +144,7 @@
         font-size: 14px;
         display: flex;
         align-items: center;
-        padding: 40px;
+        padding: 38px;
         gap: 10px;
         border-radius: 10px;
         position: relative;
@@ -288,5 +288,10 @@
         background-color: #CEF27F;
         border-radius: 26px;
         padding: 12px 22px;
+    }
+
+    .sqm {
+        font-size: 14px;
+        font-weight: 400;
     }
 }
