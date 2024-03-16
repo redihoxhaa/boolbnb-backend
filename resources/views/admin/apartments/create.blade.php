@@ -523,6 +523,8 @@
                                             }).setLngLat([longitude, latitude]);
 
                                             marker.addTo(map);
+                                            simulateResize(window.innerWidth, window.innerHeight);
+
 
                                             // Centro la mappa sul nuovo marker
                                         } else {
@@ -564,6 +566,25 @@
                 this.style.display = 'none';
             });
         });
+
+        function simulateResize(width, height) {
+            // Imposta la larghezza e l'altezza dello schermo
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: width
+            });
+
+            Object.defineProperty(window, 'innerHeight', {
+                writable: true,
+                configurable: true,
+                value: height
+            });
+
+            // Crea e scatena l'evento resize
+            var event = new Event('resize');
+            window.dispatchEvent(event);
+        }
 
 
 
