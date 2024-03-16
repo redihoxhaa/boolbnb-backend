@@ -29,7 +29,18 @@
                         type="radio" class="sponsorship-radio" required>
                     <label for="sponsorship{{ $sponsorship->id }}" class="row ">
                         <div class="col-3">
-                            <span>icona</span>
+                            <div>
+                                @if ($sponsorship->package_name==='Gold')
+                                    <img src="{{ asset('assets/images/gold.svg') }}"
+                                    alt="Bathrooms">
+                                @elseif ($sponsorship->package_name==='Diamond')
+                                    <img src="{{ asset('assets/images/diamond 1.svg') }}"
+                                    alt="diamond">
+                                @else
+                                    <img src="{{ asset('assets/images/emerald.svg') }}"
+                                    alt="emerald">
+                                @endif
+                            </div>
                         </div>
                         <div class="col-9 d-flex flex-column">
                             <span>{{ $sponsorship->package_name }}</span>
