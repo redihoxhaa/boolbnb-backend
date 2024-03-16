@@ -17,13 +17,13 @@
                 <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
 
-                    <input placeholder="Title..." type="text" class="form-control" id="title" name="title" required
+                    <input placeholder="* Title..." type="text" class="form-control" id="title" name="title" required
                         maxlength="255" value="{{ old('title') }}">
 
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
-                    <textarea class="form-control mt-3" placeholder="Describe your apartament...." id="description" name="description"
+                    <textarea class="form-control mt-3" placeholder="* Describe your apartament...." id="description" name="description"
                         required>{{ old('description') }}</textarea>
 
                     @error('description')
@@ -41,7 +41,7 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" class="custom-input" name="rooms">
+                                    <input type="number" value="1" class="custom-input" name="rooms">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -58,7 +58,7 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" class="custom-input" name="beds">
+                                    <input type="number" value="1" class="custom-input" name="beds">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -76,7 +76,7 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" class="custom-input" name="bathrooms">
+                                    <input type="number" value="1" class="custom-input" name="bathrooms">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -94,7 +94,7 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" class="custom-input" name="square_meters">
+                                    <input type="number" value="1" class="custom-input" name="square_meters">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -104,15 +104,13 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-6 position-relative">
-                            <h5 class="fw-bold">Location</h5>
+                            <h5 class="fw-bold">Location *</h5>
                             <div class="input-container">
                                 <input type="text" class="form-control" id="address" name="address" autocomplete="off"
                                     placeholder="Select address..." value="{{ old('address') }}">
                                 <i class="fas fa-search"></i>
                             </div>
-                            <div class="mt-3">
-                                <img class="w-100" src="{{ asset('assets/images/Group256.png') }}" alt="img">
-                            </div>
+                            <div id="map" style="width: 100%; height: 570px;" class='map'></div>
 
                             @error('address')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
@@ -124,12 +122,12 @@
                         </div>
                         <div class="col-6">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="fw-bold">Service</h5>
+                                <h5 class="fw-bold">Services *</h5>
                                 <span>18 services selected </span>
                             </div>
                             <div class="input-container">
-                                <input type="text" class="form-control" id="service" name="service" autocomplete="off"
-                                    placeholder="Search for service..." value="{{ old('service') }}">
+                                <input type="text" class="form-control" id="service" name="service"
+                                    autocomplete="off" placeholder="Search for service..." value="{{ old('service') }}">
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="mt-3">
@@ -140,8 +138,11 @@
                                                 for="service{{ $service->id }}">
                                                 <input type="checkbox" id="service{{ $service->id }}" name="services[]"
                                                     value="{{ $service->id }}" style="display: none;">
-                                                <span class="checkmark"></span>
-                                                <span>{{ $service->name }}</span>
+                                                <span class="checkmark">
+                                                    <img src="{{ asset('assets/images/white-check.svg') }}"
+                                                        alt="">
+                                                </span>
+                                                <span class="ps-1">{{ $service->name }}</span>
                                             </label>
                                         @endforeach
                                         <div class="show-more mt-3 ms-2 text-decoration-underline">Show More</div>
@@ -160,7 +161,7 @@
 
                 <div class="col-lg-5">
                     <div>
-                        <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
+                        <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
                         <label class="custum-file-upload" for="file">
                             <div class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
@@ -193,7 +194,7 @@
                     </div>
 
                     <div>
-                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship</h5>
+                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship *</h5>
                         <div class="row">
                             <div class="p-2 col-4">
                                 <div class="d-flex flex-column">
@@ -255,10 +256,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="span-payment">You will be directed to the payment page</div>
+                        <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
                     <div>
-                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Available</h6>
+                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Availabilty *</h6>
                         <label class="switch mt-2">
                             <input type="checkbox">
                             <span class="slider"></span>
@@ -455,6 +456,21 @@
             }
         });
 
+        // Inizializza la mappa al caricamento della pagina
+        const initialLatitude = 0; // Modifica con la latitudine iniziale desiderata
+        const initialLongitude = 0; // Modifica con la longitudine iniziale desiderata
+        const initialCenter = [12.49130000, 41.89020000];
+        const map = tt.map({
+            key: "CGrCXRtpRKgwQl1fo2NZ0mOC3k7CHzUX",
+            container: "map",
+            center: initialCenter,
+            zoom: 13
+        });
+        map.addControl(new tt.FullscreenControl());
+        map.addControl(new tt.NavigationControl());
+
+        let marker = null;
+
         function getAddresses(address) {
             fetch(`https://api.tomtom.com/search/2/search/${encodeURIComponent(address)}.json?key=${keyApi}`)
                 .then(response => {
@@ -469,6 +485,56 @@
                             li.textContent = result.address.freeformAddress;
                             li.addEventListener('click', () => {
                                 search.value = result.address.freeformAddress;
+
+                                // Chiamata all'API di geocodifica per ottenere latitudine e longitudine
+                                fetch(
+                                        `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(result.address.freeformAddress)}.json?key=${keyApi}`
+                                    )
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Geocoding failed');
+                                        return response.json();
+                                    })
+                                    .then(geoData => {
+                                        if (geoData.results && geoData.results.length > 0) {
+                                            let latitude = geoData.results[0].position.lat;
+                                            let longitude = geoData.results[0].position.lon;
+
+                                            console.log(latitude, longitude);
+
+                                            map.setCenter([longitude, latitude]);
+
+                                            // Rimuovi il marker esistente se presente
+                                            if (marker) {
+                                                marker.remove();
+                                            }
+
+
+                                            // Aggiungi il marker alla mappa
+                                            const markerElement = document.createElement('img');
+                                            markerElement.src = 'https://svgshare.com/i/14RK.svg';
+                                            markerElement.style.width = '52px';
+                                            markerElement.style.height = '52px';
+
+                                            console.log(markerElement);
+
+                                            marker = new tt.Marker({
+                                                element: markerElement,
+                                                anchor: 'bottom'
+                                            }).setLngLat([longitude, latitude]);
+                                            console.log(marker);
+                                            marker.addTo(map);
+
+                                            // Centro la mappa sul nuovo marker
+                                        } else {
+                                            console.error('No geocoding results found');
+                                        }
+
+
+
+
+                                    })
+                                    .catch(error => console.error('Error during geocoding:', error));
+
                                 suggestionsMenu.classList.add('d-none');
                             });
                             suggestionsList.appendChild(li);
@@ -477,6 +543,9 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+
+        // Funzione per gestire i servizi
         document.addEventListener('DOMContentLoaded', function() {
             const showMoreBtn = document.querySelector('.show-more');
             const extraServices = document.querySelectorAll('.service-list.extra');
@@ -552,34 +621,75 @@
             }
         }
 
-        // Funzione per gestire il click su "+" o "-"
+        // Aggiungi un listener per l'evento 'change' su tutti i campi di input
+        document.querySelectorAll('.custom-input').forEach(function(inputField) {
+            inputField.addEventListener('change', function(event) {
+                let currentValue = parseInt(event.target.value);
+                if (isNaN(currentValue) || currentValue < 1) {
+                    event.target.value = 1; // Imposta il valore a 1 se è negativo o non valido
+                }
+            });
+        });
+
+        // Aggiorna la funzione updateCounter per utilizzare il valore corrente dal campo di input
         function updateCounter(operation, fieldName) {
-            var inputField = document.querySelector('input[name="' + fieldName + '"]');
+            let inputField = document.querySelector('input[name="' + fieldName + '"]');
             if (inputField) {
-                var currentValue = parseInt(inputField.value);
-                if (!isNaN(currentValue)) { // Verifica se il valore è un numero valido
-                    if (operation === 'plus') {
-                        inputField.value = currentValue + 1;
-                    } else if (operation === 'minus' && currentValue > 0) {
-                        inputField.value = currentValue - 1;
-                    }
-                } else {
-                    // Nel caso in cui il valore non sia un numero valido, impostiamo il valore del campo a 0
-                    inputField.value = 0;
+                let currentValue = parseInt(inputField.value);
+                if (isNaN(currentValue) || currentValue < 1) {
+                    currentValue = 1; // Imposta il valore predefinito a 1 se è negativo o non valido
+                }
+                if (operation === 'plus') {
+                    inputField.value = currentValue + 1;
+                } else if (operation === 'minus') {
+                    inputField.value = Math.max(currentValue - 1, 1);
                 }
             }
         }
 
-        // Aggiungi un listener per il click su "+" o "-"
-        document.addEventListener('click', function(event) {
-            // Verifica se l'elemento cliccato è un controllo di incremento o decremento
+        // Rimuovi l'event listener dal vecchio script di aggiornamento
+        document.removeEventListener('click', function(event) {
             if (event.target.classList.contains('counter-control-plus')) {
-                // Esegue la funzione di aggiornamento con operazione di incremento
                 updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
             } else if (event.target.classList.contains('counter-control-minus')) {
-                // Esegue la funzione di aggiornamento con operazione di decremento
                 updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
             }
+        });
+
+        // Aggiungi l'event listener agli elementi di controllo (+/-)
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('counter-control-plus')) {
+                updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            } else if (event.target.classList.contains('counter-control-minus')) {
+                updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            let searchInput = document.getElementById('service');
+            let serviceLabels = document.querySelectorAll('.service-label');
+
+            searchInput.addEventListener('input', function() {
+                let searchText = searchInput.value.trim().toLowerCase();
+
+                serviceLabels.forEach(function(label) {
+                    let labelName = label.textContent.trim().toLowerCase();
+                    let checkbox = label.querySelector('input[type="checkbox"]');
+
+                    if (labelName.includes(searchText)) {
+                        label.style.display = 'inline-block';
+                        checkbox.style.display = 'none';
+                    } else {
+                        label.style.display = 'none';
+                        checkbox.style.display = 'none';
+                    }
+
+                    // Show selected checkboxes if they match the search text
+                    if (checkbox.checked && !labelName.includes(searchText)) {
+                        label.style.display = 'inline-block';
+                    }
+                });
+            });
         });
     </script>
 @endsection
