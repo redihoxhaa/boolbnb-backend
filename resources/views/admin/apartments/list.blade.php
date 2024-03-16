@@ -18,7 +18,7 @@
         </div>
 
         {{-- Title Page --}}
-        <h1 class="page-title">Listed Properties</h1>
+        <h1 class="page-title">{{ count($apartments) }} Listed Properties</h1>
 
         {{-- Button --}}
         <div class="my-4">
