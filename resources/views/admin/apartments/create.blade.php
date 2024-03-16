@@ -128,7 +128,7 @@
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="fw-bold">Services *</h5>
-                                <span>18 services selected </span>
+                                <span class="selected-services">18 services selected </span>
                             </div>
                             <div class="input-container">
                                 <input type="text" class="form-control" id="service" autocomplete="off"
@@ -586,11 +586,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const showMoreBtn = document.querySelector('.show-more');
             const extraServices = document.querySelectorAll('.service-list.extra');
+            const selectedServicesSpan = document.querySelector('.selected-services');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
             // Nascondi gli elementi extra inizialmente
             extraServices.forEach(service => {
                 service.style.display = 'none';
             });
+
+            // Aggiorna il conteggio dei servizi selezionati
+            function updateSelectedServicesCount() {
+                const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                selectedServicesSpan.textContent = selectedCount + ' services selected';
+            }
 
             // Aggiungi un gestore per il clic sul pulsante "Show More" / "Hide"
             let showMore = true; // Flag per tenere traccia dello stato del pulsante
@@ -610,6 +618,16 @@
                 }
                 showMore = !showMore; // Inverti lo stato
             });
+
+            // Aggiungi un gestore per il cambio di stato delle checkbox
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectedServicesCount();
+                });
+            });
+
+            // Aggiorna il conteggio dei servizi selezionati all'avvio
+            updateSelectedServicesCount();
         });
 
         function simulateResize(width, height) {
