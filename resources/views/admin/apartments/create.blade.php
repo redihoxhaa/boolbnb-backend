@@ -103,31 +103,15 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-6 position-relative">
-                            <h5 class="fw-bold">Location *</h5>
-                            <div class="input-container">
-                                <input type="text" class="form-control" id="address" name="address" autocomplete="off"
-                                    placeholder="Select address..." value="{{ old('address') }}">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            <div id="map" style="width: 100%; height: 570px;" class='map'></div>
 
-                            @error('address')
-                                <div class="alert alert-danger mt-2">{{ $message }}</div>
-                            @enderror
-
-                            <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
-                                <ul class="suggestions-list"></ul>
-                            </div>
-                        </div>
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="fw-bold">Services *</h5>
                                 <span>18 services selected </span>
                             </div>
                             <div class="input-container">
-                                <input type="text" class="form-control" id="service" name="service"
-                                    autocomplete="off" placeholder="Search for service..." value="{{ old('service') }}">
+                                <input type="text" class="form-control" id="service" name="service" autocomplete="off"
+                                    placeholder="Search for service..." value="{{ old('service') }}">
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="mt-3">
@@ -139,8 +123,7 @@
                                                 <input type="checkbox" id="service{{ $service->id }}" name="services[]"
                                                     value="{{ $service->id }}" style="display: none;">
                                                 <span class="checkmark">
-                                                    <img src="{{ asset('assets/images/white-check.svg') }}"
-                                                        alt="">
+                                                    <img src="{{ asset('assets/images/white-check.svg') }}" alt="">
                                                 </span>
                                                 <span class="ps-1">{{ $service->name }}</span>
                                             </label>
@@ -154,7 +137,25 @@
                                 @enderror
                             </div>
 
+                        </div>
 
+                        <div class="col-12 position-relative mt-4">
+                            <h5 class="fw-bold">Location *</h5>
+                            <div class="input-container">
+                                <input type="text" class="form-control" id="address" name="address"
+                                    autocomplete="off" placeholder="Select address..." value="{{ old('address') }}">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div id="map" class="mt-4 mb-4" style="width: 100%; height: 300px;" class='map'>
+                            </div>
+
+                            @error('address')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+
+                            <div id="suggestionsMenu" class="card position-absolute radius d-none">
+                                <ul class="suggestions-list"></ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -259,7 +260,7 @@
                         <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
                     <div>
-                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Availabilty *</h6>
+                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Visibility *</h6>
                         <label class="switch mt-2">
                             <input type="checkbox">
                             <span class="slider"></span>
@@ -457,14 +458,13 @@
         });
 
         // Inizializza la mappa al caricamento della pagina
-        const initialLatitude = 0; // Modifica con la latitudine iniziale desiderata
-        const initialLongitude = 0; // Modifica con la longitudine iniziale desiderata
+
         const initialCenter = [12.49130000, 41.89020000];
         const map = tt.map({
             key: "CGrCXRtpRKgwQl1fo2NZ0mOC3k7CHzUX",
             container: "map",
             center: initialCenter,
-            zoom: 13
+            zoom: 14
         });
         map.addControl(new tt.FullscreenControl());
         map.addControl(new tt.NavigationControl());
@@ -499,7 +499,7 @@
                                             let latitude = geoData.results[0].position.lat;
                                             let longitude = geoData.results[0].position.lon;
 
-                                            console.log(latitude, longitude);
+
 
                                             map.setCenter([longitude, latitude]);
 
@@ -515,13 +515,13 @@
                                             markerElement.style.width = '52px';
                                             markerElement.style.height = '52px';
 
-                                            console.log(markerElement);
+
 
                                             marker = new tt.Marker({
                                                 element: markerElement,
                                                 anchor: 'bottom'
                                             }).setLngLat([longitude, latitude]);
-                                            console.log(marker);
+
                                             marker.addTo(map);
 
                                             // Centro la mappa sul nuovo marker

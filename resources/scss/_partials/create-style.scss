@@ -320,6 +320,21 @@
         top: 80px;
     }
 
+    .mapboxgl-canvas {
+        width: 100% !important;
+        object-fit: cover;
+        border-radius: 16px;
+    }
+
+    .suggestions-list {
+        padding: 10px 20px;
+    }
+
+    #suggestionsMenu {
+        z-index: 10;
+        width: 95%;
+    }
+
     @media screen and (min-width: 1200px) {
         .counter-name {
             font-size: 13px;
