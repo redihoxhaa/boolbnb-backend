@@ -105,6 +105,7 @@
 
     .show-more {
         cursor: pointer;
+        width: fit-content;
     }
 
     .custum-file-upload {
@@ -223,6 +224,7 @@
         border: 1px solid #d9d9d9;
         border-radius: 16px;
         padding: 20px 30px;
+        background-color: white !important;
 
         .span-no-boost {
             font-size: 10px;
@@ -328,6 +330,10 @@
 
     .suggestions-list {
         padding: 10px 20px;
+
+        li {
+            cursor: pointer;
+        }
     }
 
     #suggestionsMenu {

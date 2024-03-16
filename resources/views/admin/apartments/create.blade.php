@@ -128,7 +128,8 @@
                                                 <span class="ps-1">{{ $service->name }}</span>
                                             </label>
                                         @endforeach
-                                        <div class="show-more mt-3 ms-2 text-decoration-underline">Show More</div>
+                                        <div class="show-more mt-3 ms-2 text-decoration-underline text-center">Show More
+                                        </div>
                                     </li>
                                 </ul>
                                 @error('services')
@@ -198,13 +199,16 @@
                         <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship *</h5>
                         <div class="row">
                             <div class="p-2 col-4">
-                                <div class="d-flex flex-column">
-                                    <div class="card-sponsor">
-                                        <div class="mb-1"><img src="{{ asset('assets/images/gold.svg') }}"
-                                                alt="Bathrooms"></div>
+                                <div class="d-flex flex-column" onclick="selectSponsor('gold')">
+                                    <div class="card-sponsor plan">
+                                        <div class="mb-1">
+                                            <input type="radio" name="sponsor" id="gold" value="gold">
+                                            <label for="gold"><img src="{{ asset('assets/images/gold.svg') }}"
+                                                    alt="Bathrooms"></label>
+                                        </div>
                                         <div class="fw-bold">Gold<br>Plan</div>
                                         <span class="span-sponsor">1 days</span>
-                                        <div class=" price">
+                                        <div class="price">
                                             <div class="fw-bold">2.99 €</div>
                                         </div>
                                     </div>
@@ -212,40 +216,45 @@
                             </div>
 
                             <div class="p-2 col-4">
-                                <div class="d-flex flex-column gap-2">
-                                    <div class="card-sponsor">
-                                        <div class="mb-1"><img src="{{ asset('assets/images/diamond 1.svg') }}"
-                                                alt="diamond"></div>
+                                <div class="d-flex flex-column gap-2" onclick="selectSponsor('diamond')">
+                                    <div class="card-sponsor plan">
+                                        <div class="mb-1">
+                                            <input type="radio" name="sponsor" id="diamond" value="diamond">
+                                            <label for="diamond"><img src="{{ asset('assets/images/diamond 1.svg') }}"
+                                                    alt="diamond"></label>
+                                        </div>
                                         <div class="fw-bold">Diamond<br>Plan</div>
                                         <span class="span-sponsor">3 days</span>
-                                        <div class=" price">
+                                        <div class="price">
                                             <div class="fw-bold">5.99 €</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="p-2 col-4">
-                                <div class="d-flex flex-column gap-2">
-
-                                    <div class="card-sponsor active-sponsor">
-                                        <div class="mb-1"><img src="{{ asset('assets/images/emerald.svg') }}"
-                                                alt="emerald"></div>
+                                <div class="d-flex flex-column gap-2" onclick="selectSponsor('emerald')">
+                                    <div class="card-sponsor plan active-sponsor">
+                                        <div class="mb-1">
+                                            <input type="radio" name="sponsor" id="emerald" value="emerald" checked>
+                                            <label for="emerald"><img src="{{ asset('assets/images/emerald.svg') }}"
+                                                    alt="emerald"></label>
+                                        </div>
                                         <div class="fw-bold">Emerald<br>Plan</div>
                                         <span class="span-sponsor">6 days</span>
-                                        <div class=" price">
+                                        <div class="price">
                                             <div class="save text-uppercase">save 10%</div>
                                             <div class="fw-bold">9.99 €</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="p-2">
-                                <div class="no-sponsor d-flex">
+                                <div class="no-sponsor plan d-flex" onclick="selectSponsor('no-boost')">
                                     <div class="d-flex gap-2">
-                                        <div><input type="radio" name="boost" id="boost-no">
-                                            <label for="boost-no"></label>
+                                        <div>
+                                            <input type="radio" name="sponsor" id="no-boost" value="no-boost">
+                                            <label for="no-boost"></label>
+                                            <!-- Aggiunto questo label per rendere cliccabile l'intera card -->
                                         </div>
                                         <div>
                                             <p class="m-0 fw-bold">I don’t want to boost my listing</p>
@@ -253,10 +262,10 @@
                                                 visibility!)</span>
                                         </div>
                                     </div>
-                                    <br>
                                 </div>
                             </div>
                         </div>
+
                         <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
                     <div>
@@ -448,6 +457,16 @@
         const suggestionsMenu = document.getElementById('suggestionsMenu');
         const suggestionsList = suggestionsMenu.querySelector('.suggestions-list');
 
+        // Aggiungi un gestore di eventi di click al documento
+        document.addEventListener('click', function(event) {
+            // Verifica se l'elemento cliccato non è l'input o il menu delle suggerimenti
+            if (event.target !== search && event.target !== suggestionsMenu) {
+                // Nascondi il menu delle suggerimenti
+                suggestionsMenu.classList.add('d-none');
+            }
+        });
+
+        // Codice originale per gestire l'input
         search.addEventListener('input', function() {
             if (search.value.trim() !== '') {
                 getAddresses(search.value.trim());
@@ -557,13 +576,23 @@
                 service.style.display = 'none';
             });
 
-            // Aggiungi un gestore per il clic sul pulsante "Show More"
+            // Aggiungi un gestore per il clic sul pulsante "Show More" / "Hide"
+            let showMore = true; // Flag per tenere traccia dello stato del pulsante
             showMoreBtn.addEventListener('click', function() {
                 extraServices.forEach(service => {
-                    service.style.display = 'inline-block';
+                    if (showMore) {
+                        service.style.display = 'inline-block';
+                    } else {
+                        service.style.display = 'none';
+                    }
                 });
-                // Nascondi il pulsante "Show More" dopo il clic
-                this.style.display = 'none';
+                // Cambia il testo del pulsante e aggiorna lo stato
+                if (showMore) {
+                    this.textContent = 'Hide';
+                } else {
+                    this.textContent = 'Show More';
+                }
+                showMore = !showMore; // Inverti lo stato
             });
         });
 
@@ -712,5 +741,29 @@
                 });
             });
         });
+
+        // Gestione sponsor
+        function selectSponsor(sponsor) {
+            // Rimuove la classe active-sponsor da tutte le card-sponsor con la classe "plan"
+            const cards = document.querySelectorAll('.plan');
+            cards.forEach(card => {
+                card.classList.remove('active-sponsor');
+            });
+
+            // Seleziona il radio button corrispondente al sponsor cliccato
+            const radio = document.getElementById(sponsor);
+            if (radio) {
+                radio.checked = true;
+            }
+
+            // Aggiunge la classe active-sponsor alla card-sponsor cliccata, se esiste
+            const selectedCard = document.querySelector(`#${sponsor}`);
+            if (selectedCard) {
+                const parentCard = selectedCard.closest('.plan');
+                if (parentCard) {
+                    parentCard.classList.add('active-sponsor');
+                }
+            }
+        }
     </script>
 @endsection
