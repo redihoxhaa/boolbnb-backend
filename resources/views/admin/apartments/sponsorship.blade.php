@@ -21,8 +21,8 @@
         </div>
         <form id="payment-form" action="{{ route('admin.apartments.buySponsorship', $apartment->id) }}" method="POST">
             @csrf
-            <div class="row gap-3">
-                <div class="d-flex col-4 radio-input gap-3 justify-content-center flex-column">
+            <div class="row gap-3 flex-column flex-lg-row ">
+                <div class="d-flex col col-lg-4 radio-input gap-3 justify-content-center flex-column">
                     <h6 class="text-black">SELECT YOUR PLAN</h6>
                 @foreach ($sponsorships as $sponsorship)
                     <input value="{{ $sponsorship->id }}" name="sponsorship_choice" id="sponsorship{{ $sponsorship->id }}"
@@ -39,9 +39,9 @@
                     </label>
                 @endforeach
                 </div>
-                <div class="col-7 ps-4 mt-2">
+                <div class="col col-lg-7 ps-4 mt-2">
                     <h6 class="text-black">PAYMENT</h6>
-                    <div class="row mt-3">
+                    <div class="row mt-3 lg-gap-2">
                         <div class="col-3">
                             <div>
                                 @if ($apartment->images)
@@ -64,15 +64,15 @@
                     
                 </div>
             </div>
-            <div class="row pe-5"> 
-                <div class="mt-5 pe-5">
+            <div class="row"> 
+                <div class="mt-5">
                     <div class="d-flex flex-row-reverse">
                         <h2 class="strong">€{{ $sponsorship->package_price }}</h2>
                         <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4 "><i
                         class="fas fa-arrow-left"></i> Go Back</a>
                     </div>
                 </div>
-                <div class="mt-4 pe-5">
+                <div class="mt-4">
                     <div class="d-flex flex-row-reverse">
                         <button id="submit-button" class="buttonPayment buttonPayment--small buttonPayment--green"
                         style="display:none;">Pay Now</button>
