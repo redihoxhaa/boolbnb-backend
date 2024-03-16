@@ -34,14 +34,14 @@
                         <div class="p-2 col-6 col-xl-3">
                             <div class="text-center card-icon">
                                 <div class="counter-name">
-                                    <img class="pb-1 me-2" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
                                     Rooms
                                 </div>
                                 <div class="counter-counter mt-3">
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="1" class="custom-input" name="rooms">
+                                    <input type="number" value="{{ old('rooms', 1) }}" class="custom-input" name="rooms">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -52,13 +52,13 @@
                         <div class="p-2 col-6 col-xl-3">
                             <div class="text-center card-icon">
                                 <div class="counter-name">
-                                    <img class="me-2" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
+                                    <img class="me-1" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
                                 </div>
                                 <div class="counter-counter mt-3">
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="1" class="custom-input" name="beds">
+                                    <input type="number" value="{{ old('beds', 1) }}" class="custom-input" name="beds">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -69,14 +69,15 @@
                         <div class="p-2 col-6 col-xl-3">
                             <div class="text-center card-icon">
                                 <div class="counter-name">
-                                    <img class="pb-1 me-2" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
                                     Bathrooms
                                 </div>
                                 <div class="counter-counter mt-3">
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="1" class="custom-input" name="bathrooms">
+                                    <input type="number" value="{{ old('bathrooms', 1) }}" class="custom-input"
+                                        name="bathrooms">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -87,14 +88,15 @@
                         <div class="p-2 col-6 col-xl-3">
                             <div class="text-center card-icon">
                                 <div class="counter-name">
-                                    <img class="pb-1 me-2" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
                                     /<span class="sqm">sqm</span>
                                 </div>
                                 <div class="counter-counter mt-3">
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="1" class="custom-input" name="square_meters">
+                                    <input type="number" value="{{ old('square_meters', 1) }}" class="custom-input"
+                                        name="square_meters">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -104,13 +106,32 @@
                     </div>
                     <div class="row mt-3">
 
+                        <div class="col-12 position-relative mt-4">
+                            <h5 class="fw-bold">Location *</h5>
+                            <div class="input-container">
+                                <input type="text" class="form-control" id="address" name="address" autocomplete="off"
+                                    placeholder="Select address..." value="{{ old('address') }}">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div id="map" class="mt-3 mb-4" style="width: 100%; height: 412px;" class='map'>
+                            </div>
+
+                            @error('address')
+                                <div class="alert alert-danger mt-2">{{ $message }}</div>
+                            @enderror
+
+                            <div id="suggestionsMenu" class="card position-absolute radius d-none">
+                                <ul class="suggestions-list"></ul>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h5 class="fw-bold">Services *</h5>
-                                <span>18 services selected </span>
+                                <span class="selected-services">18 services selected </span>
                             </div>
                             <div class="input-container">
-                                <input type="text" class="form-control" id="service" name="service" autocomplete="off"
+                                <input type="text" class="form-control" id="service" autocomplete="off"
                                     placeholder="Search for service..." value="{{ old('service') }}">
                                 <i class="fas fa-search"></i>
                             </div>
@@ -118,12 +139,15 @@
                                 <ul>
                                     <li>
                                         @foreach ($services as $key => $service)
-                                            <label class="service-label service-list m-1{{ $key >= 10 ? ' extra' : '' }}"
+                                            <label role="button"
+                                                class="service-label service-list m-1{{ $key >= 10 ? ' extra' : '' }}"
                                                 for="service{{ $service->id }}">
                                                 <input type="checkbox" id="service{{ $service->id }}" name="services[]"
-                                                    value="{{ $service->id }}" style="display: none;">
+                                                    value="{{ $service->id }}" style="display: none;"
+                                                    @if (is_array(old('services')) && in_array($service->id, old('services'))) checked @endif>
                                                 <span class="checkmark">
-                                                    <img src="{{ asset('assets/images/white-check.svg') }}" alt="">
+                                                    <img src="{{ asset('assets/images/white-check.svg') }}"
+                                                        alt="">
                                                 </span>
                                                 <span class="ps-1">{{ $service->name }}</span>
                                             </label>
@@ -138,25 +162,6 @@
                                 @enderror
                             </div>
 
-                        </div>
-
-                        <div class="col-12 position-relative mt-4">
-                            <h5 class="fw-bold">Location *</h5>
-                            <div class="input-container">
-                                <input type="text" class="form-control" id="address" name="address"
-                                    autocomplete="off" placeholder="Select address..." value="{{ old('address') }}">
-                                <i class="fas fa-search"></i>
-                            </div>
-                            <div id="map" class="mt-4 mb-4" style="width: 100%; height: 300px;" class='map'>
-                            </div>
-
-                            @error('address')
-                                <div class="alert alert-danger mt-2">{{ $message }}</div>
-                            @enderror
-
-                            <div id="suggestionsMenu" class="card position-absolute radius d-none">
-                                <ul class="suggestions-list"></ul>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -179,7 +184,12 @@
                             <div class="text">
                                 <span>Click to upload image</span>
                             </div>
-                            <input type="file" id="file">
+                            <div id="image-container">
+                                <input type="file" id="file" name="images[]"
+                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                    onchange="checkFileSizeAndNumber(this)" multiple>
+                                <div id="file-size-error" class="text-danger"></div>
+                            </div>
                         </label>
                         <div class="d-flex gap-2">
                             <div class="add-photo">+</div>
@@ -202,14 +212,15 @@
                                 <div class="d-flex flex-column" onclick="selectSponsor('gold')">
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
-                                            <input type="radio" name="sponsor" id="gold" value="gold">
-                                            <label for="gold"><img src="{{ asset('assets/images/gold.svg') }}"
-                                                    alt="Bathrooms"></label>
+                                            <input class="d-none" type="radio" name="sponsor" id="gold"
+                                                value="gold">
+                                            <label for="gold"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/gold.svg') }}" alt="Bathrooms"></label>
                                         </div>
                                         <div class="fw-bold">Gold<br>Plan</div>
                                         <span class="span-sponsor">1 days</span>
                                         <div class="price">
-                                            <div class="fw-bold">2.99 €</div>
+                                            <div class="fw-bold">€2.99</div>
                                         </div>
                                     </div>
                                 </div>
@@ -219,14 +230,16 @@
                                 <div class="d-flex flex-column gap-2" onclick="selectSponsor('diamond')">
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
-                                            <input type="radio" name="sponsor" id="diamond" value="diamond">
-                                            <label for="diamond"><img src="{{ asset('assets/images/diamond 1.svg') }}"
+                                            <input class="d-none" type="radio" name="sponsor" id="diamond"
+                                                value="diamond">
+                                            <label for="diamond"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/diamond 1.svg') }}"
                                                     alt="diamond"></label>
                                         </div>
                                         <div class="fw-bold">Diamond<br>Plan</div>
                                         <span class="span-sponsor">3 days</span>
                                         <div class="price">
-                                            <div class="fw-bold">5.99 €</div>
+                                            <div class="fw-bold">€5.99</div>
                                         </div>
                                     </div>
                                 </div>
@@ -235,15 +248,17 @@
                                 <div class="d-flex flex-column gap-2" onclick="selectSponsor('emerald')">
                                     <div class="card-sponsor plan active-sponsor">
                                         <div class="mb-1">
-                                            <input type="radio" name="sponsor" id="emerald" value="emerald" checked>
-                                            <label for="emerald"><img src="{{ asset('assets/images/emerald.svg') }}"
+                                            <input class="d-none" type="radio" name="sponsor" id="emerald"
+                                                value="emerald" checked>
+                                            <label for="emerald"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/emerald.svg') }}"
                                                     alt="emerald"></label>
                                         </div>
                                         <div class="fw-bold">Emerald<br>Plan</div>
                                         <span class="span-sponsor">6 days</span>
                                         <div class="price">
                                             <div class="save text-uppercase">save 10%</div>
-                                            <div class="fw-bold">9.99 €</div>
+                                            <div class="fw-bold">€9.99</div>
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +286,8 @@
                     <div>
                         <h6 class="fw-bold text-uppercase mt-4 mb-2">Visibility *</h6>
                         <label class="switch mt-2">
-                            <input type="checkbox">
+                            <input type="checkbox" value="1" name='is_visible'
+                                @if (old('is_visible') == 1) checked @endif>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -570,11 +586,19 @@
         document.addEventListener('DOMContentLoaded', function() {
             const showMoreBtn = document.querySelector('.show-more');
             const extraServices = document.querySelectorAll('.service-list.extra');
+            const selectedServicesSpan = document.querySelector('.selected-services');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
             // Nascondi gli elementi extra inizialmente
             extraServices.forEach(service => {
                 service.style.display = 'none';
             });
+
+            // Aggiorna il conteggio dei servizi selezionati
+            function updateSelectedServicesCount() {
+                const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                selectedServicesSpan.textContent = selectedCount + ' services selected';
+            }
 
             // Aggiungi un gestore per il clic sul pulsante "Show More" / "Hide"
             let showMore = true; // Flag per tenere traccia dello stato del pulsante
@@ -594,6 +618,16 @@
                 }
                 showMore = !showMore; // Inverti lo stato
             });
+
+            // Aggiungi un gestore per il cambio di stato delle checkbox
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectedServicesCount();
+                });
+            });
+
+            // Aggiorna il conteggio dei servizi selezionati all'avvio
+            updateSelectedServicesCount();
         });
 
         function simulateResize(width, height) {
@@ -698,26 +732,56 @@
         }
 
         // Rimuovi l'event listener dal vecchio script di aggiornamento
-        document.removeEventListener('click', function(event) {
+        document.removeEventListener('click', handleCounterUpdate);
+        document.removeEventListener('mousedown', handleCounterMouseDown);
+
+        // Definisci la funzione per gestire l'aggiornamento del contatore
+        function handleCounterUpdate(event) {
             if (event.target.classList.contains('counter-control-plus')) {
                 updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
             } else if (event.target.classList.contains('counter-control-minus')) {
                 updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
             }
-        });
+        }
 
-        // Aggiungi l'event listener agli elementi di controllo (+/-)
-        document.addEventListener('click', function(event) {
+        // Definisci la funzione per gestire il mousedown
+        function handleCounterMouseDown(event) {
             if (event.target.classList.contains('counter-control-plus')) {
-                updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
+                // Imposta un timeout per avviare l'aggiornamento dopo 1 secondo
+                updateCounterTimeout = setTimeout(function() {
+                    // Imposta un intervallo per chiamare continuamente la funzione di aggiornamento
+                    updateCounterInterval = setInterval(function() {
+                        updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute(
+                            'name'));
+                    }, 40); // Modifica la frequenza dell'aggiornamento se necessario
+                }, 400); // 1000 millisecondi corrispondono a 1 secondo
             } else if (event.target.classList.contains('counter-control-minus')) {
-                updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
+                // Imposta un timeout per avviare l'aggiornamento dopo 1 secondo
+                updateCounterTimeout = setTimeout(function() {
+                    // Imposta un intervallo per chiamare continuamente la funzione di aggiornamento
+                    updateCounterInterval = setInterval(function() {
+                        updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute(
+                            'name'));
+                    }, 40); // Modifica la frequenza dell'aggiornamento se necessario
+                }, 400); // 1000 millisecondi corrispondono a 1 secondo
             }
+        }
+
+        // Aggiungi gli event listener agli elementi di controllo (+/-)
+        document.addEventListener('click', handleCounterUpdate);
+        document.addEventListener('mousedown', handleCounterMouseDown);
+
+        // Rimuovi l'event listener al rilascio del mouse
+        document.addEventListener('mouseup', function() {
+            clearTimeout(updateCounterTimeout);
+            clearInterval(updateCounterInterval);
         });
 
+        // Ricerca servizi
         document.addEventListener('DOMContentLoaded', function() {
             let searchInput = document.getElementById('service');
             let serviceLabels = document.querySelectorAll('.service-label');
+            let showMore = document.querySelector('.show-more');
 
             searchInput.addEventListener('input', function() {
                 let searchText = searchInput.value.trim().toLowerCase();
@@ -739,6 +803,9 @@
                         label.style.display = 'inline-block';
                     }
                 });
+
+                // Hide "Show More" button during search
+                showMore.style.display = 'none';
             });
         });
 

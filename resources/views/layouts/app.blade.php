@@ -25,10 +25,22 @@
         .pic-container {
             width: 40px
         }
+
+        .fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+        }
+
+        .fixed-navbar {
+            margin-top: 80px;
+        }
     </style>
 
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar fixed navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
 
 
@@ -88,7 +100,7 @@
             </div>
         </nav>
 
-        <main class="">
+        <main class="fixed-navbar">
             @yield('content')
         </main>
     </div>

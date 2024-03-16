@@ -1,108 +1,135 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">{{ __('Register') }}</div>
+    <div class="row register">
 
-                    <div class="card-body">
-                        <form id="registerForm" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="mt-2 mb-4 row text-center">
-                                <div>
-                                    Fields marked with * are mandatory.
-                                </div>
-                            </div>
-
-                            <div class="mb-4 row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}
-                                    *</label>
-
-                                <div class="col-md-6">
-                                    <input id="name" type="text"
-                                        class="form-control @error('name') is-invalid @enderror" name="name"
-                                        value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="mb-4 row">
-                                <label for="email"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }} *</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email"
-                                        class="form-control @error('email') is-invalid @enderror" name="email"
-                                        value="{{ old('email') }}" required autocomplete="email">
-
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="mb-4 row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}
-                                    *</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password" onkeyup="checkPasswords()">
-
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="mb-4 row">
-                                <label for="password-confirm"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }} *</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password"
-                                        onkeyup="checkPasswords()">
-                                    <div id="passwordError" class="d-none text-danger">
-                                        Passwords do not match.
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="mb-4 row">
-                                <label for="image"
-                                    class="col-md-4 col-form-label text-md-right">{{ __('Profile pic:') }} </label>
-                                <div class="col-md-6">
-                                    <input type="file" name="image"
-                                        accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
-                                        onchange="checkFileSizeAndNumber(this)">
-                                </div>
-                            </div>
-                            <div class="mb-4 row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Register') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        {{-- Background --}}
+        <div class="col-6 d-none d-md-block login-background">
+            <div class="text-container">
+                <div class="arrow-icon">
+                    <a href="">
+                        <img src="{{ asset('assets/images/arrow_icon.svg') }}" alt="">
+                    </a>
                 </div>
+                <h1 class="z-3">Redefining <b>tourist</b> lifestyles through our premium apartments</h1>
+            </div>
+            <img class="img-background" draggable="false" src="{{ asset('assets/images/login-background.png') }}"
+                alt="">
+        </div>
+
+        <div class="col-6 d-none d-md-block"></div>
+
+        {{-- Form --}}
+        <div
+            class="col-12 justify-content-center align-items-center col-md-6 justify-content-md-start d-flex padding-desktop-custom custom-height-desktop">
+            <div>
+                <form id="registerForm" method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                    @csrf
+
+                    {{-- Logo --}}
+                    <img class="login-logo" src="{{ asset('assets/images/malhome_logo.svg') }}" alt="">
+
+                    {{-- Title --}}
+                    <h1 class="login-title">Create your Account</h1>
+
+                    {{-- Mandatory --}}
+                    <div class="mb-3">
+                        <span>
+                            Fields marked with * are mandatory.
+                        </span>
+                    </div>
+
+                    {{-- Name --}}
+                    <div class="mb-2">
+                        <label for="name" class="col-md-4 col-form-label text-md-right custom-label">{{ __('Name') }}
+                            *</label>
+
+                        <div>
+                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Email --}}
+                    <div class="mb-2">
+                        <label for="email" class="col-form-label text-md-right">{{ __('E-Mail Address') }}
+                            *</label>
+
+                        <div>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="mb-2">
+                        <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}
+                            *</label>
+
+                        <div>
+                            <input id="password" type="password"
+                                class="form-control @error('password') is-invalid @enderror" name="password" required
+                                autocomplete="new-password" onkeyup="checkPasswords()">
+
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    {{-- Password Confirm --}}
+                    <div class="mb-2">
+                        <label for="password-confirm" class="col-form-label text-md-right">{{ __('Confirm Password') }}
+                            *</label>
+
+                        <div>
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
+                                required autocomplete="new-password" onkeyup="checkPasswords()">
+                            <div id="passwordError" class="d-none text-danger">
+                                Passwords do not match.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {{-- Image --}}
+                    <div class="mb-2">
+                        <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('User photo') }}
+                        </label>
+                        <div>
+                            <input type="file" name="image"
+                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                onchange="checkFileSizeAndNumber(this)">
+                        </div>
+                    </div>
+
+                    {{-- Submit --}}
+                    <div class="mt-4 my-2 mb-0">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn custom-button">
+                                {{ __('Register') }}
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
             </div>
         </div>
+
     </div>
 
     <script>
