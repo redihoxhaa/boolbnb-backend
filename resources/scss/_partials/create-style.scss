@@ -20,6 +20,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
+        cursor: pointer;
     }
 
     .counter-number {
@@ -190,6 +191,10 @@
         border-radius: 16px;
     }
 
+    .plan {
+        cursor: pointer;
+    }
+
     .card-sponsor {
         padding: 10px;
         border: 1px solid #d9d9d9;
@@ -213,10 +218,13 @@
     .save {
         position: absolute;
         font-size: 9px;
-        background-color: #c4e77a;
         padding: 2px;
         right: 0;
         bottom: 25px;
+    }
+
+    .sponsor-icon {
+        mix-blend-mode: darken;
     }
 
     .no-sponsor {
@@ -345,5 +353,17 @@
         .counter-name {
             font-size: 13px;
         }
+    }
+
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
     }
 }
