@@ -28,11 +28,10 @@ Route::get('/apartments/search', [ApartmentController::class, 'search']);
 Route::get('/apartments/show', [ApartmentController::class, 'show']);
 Route::get('/apartments/sponsored', [ApartmentController::class, 'sponsored']);
 Route::get('/services', [ServiceController::class, 'index']);
-Route::get('/userinfo', [UserController::class, 'index']);
 Route::post('/guest/messages', [MessageController::class, 'storeMessageFromGuest']);
 Route::post('/guest/visits', [VisitController::class, 'storeVisitFromGuest']);
 Route::get('/userinfo', [UserController::class, 'index']);
 
-// Route::middleware('web')->group(function () {
-
-// });
+Route::middleware('web')->group(function () {
+    Route::get('/logged-user', [UserController::class, 'show']);
+});
