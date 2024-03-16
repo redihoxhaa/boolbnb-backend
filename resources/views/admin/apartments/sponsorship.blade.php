@@ -79,8 +79,8 @@
                 <div class="mt-5">
                     <div class="d-flex flex-row-reverse">
                         <h2 class="strong">€{{ $sponsorship->package_price }}</h2>
-                        <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4 "><i
-                        class="fas fa-arrow-left"></i> Go Back</a>
+                        {{-- <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4 "><i
+                        class="fas fa-arrow-left"></i> Go Back</a> --}}
                     </div>
                 </div>
                 <div class="mt-4">
@@ -93,11 +93,11 @@
         </form>
         
 
-        <div>
+        {{-- <div>
             <div>CART DEBUG</div>
             <div>4525 2612 7890 2412</div>
             <div>02 / 2027</div>
-        </div>
+        </div> --}}
 
     </div>
 
