@@ -89,7 +89,8 @@
                 <div class="nav-element ms-2">
                     {{-- Logo --}}
                     <div class="pic-container">
-                        <img class="w-100" src="{{ asset('assets/images/logo-black.svg') }}" alt="">
+                        <a href="http://localhost:5173/"><img class="w-100"
+                                src="{{ asset('assets/images/logo-black.svg') }}" alt=""></a>
                     </div>
                 </div>
 
@@ -116,6 +117,12 @@
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3" href="http://localhost:5173/">
+                                    <i class="fa-solid fa-house fa-lg fa-fw"></i> Homepage
+                                </a>
+                            </li>
+                            <li
                                 class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.dashboard') }}">
@@ -126,7 +133,7 @@
                                 class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.apartments.index') }}">
-                                    <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
+                                    <i class="fa-solid fa-list fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
                             <li
