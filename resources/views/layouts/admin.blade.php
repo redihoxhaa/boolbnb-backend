@@ -32,26 +32,64 @@
 </head>
 
 <body>
+
+    <style>
+        .pic-container {
+            width: 40px
+        }
+
+        .nav-element {
+            width: fit-content !important;
+        }
+
+        .collapse-button {
+            left: 50%;
+            top: -20px;
+            transform: translate(50%)
+        }
+
+        .navbar-toggler-custom {
+            border: none;
+            box-shadow: none;
+            outline: none;
+            background-color: none;
+        }
+
+        @media only screen and (min-width:768px) {
+            .custom-sidebar {
+                max-width: 200px;
+                border-right: 1px solid #E8E8E8;
+            }
+        }
+    </style>
+
     <div id="app">
 
-        <header class="navbar sticky-top header flex-md-nowrap p-2 border-header">
-            <div class="row justify-content-between">
+        <header class="navbar sticky-top header flex-md-nowrap px-3 py-3 border-header">
+            <div class="row justify-content-between position-relative collapse-button">
 
-                {{-- Logo --}}
-                <a class="navbar-brand col-md-3 col-lg-2 me-0" href="/">BoolBnb</a>
 
-                {{-- Button Mobile --}}
-                <button class="navbar-toggler position-absolute d-md-none collapsed" type="button"
+
+                <span
+                    class="navbar-toggler-icon navbar-toggler-custom position-absolute d-md-none collapsed border-0 mt-2"
                     data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    aria-expanded="false" aria-label="Toggle navigation"></span>
+
 
             </div>
 
             {{-- Navbar --}}
-            <div class="navbar-nav">
-                <div class="nav-item text-nowrap ms-2">
+            <div class="container-fluid d-flex align-items-center w-100 justify-content-between">
+
+
+                <div class="nav-element ms-2">
+                    {{-- Logo --}}
+                    <div class="pic-container">
+                        <img class="w-100" src="{{ asset('assets/images/logo-black.svg') }}" alt="">
+                    </div>
+                </div>
+
+                <div class="nav-element ms-2">
                     <a class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
@@ -61,6 +99,7 @@
                         @csrf
                     </form>
                 </div>
+
             </div>
         </header>
 
@@ -69,32 +108,32 @@
                 <!-- Definire solo parte del menu di navigazione inizialmente per poi
         aggiungere i link necessari giorno per giorno
         -->
-                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block border-sidebar sidebar collapse">
+                <nav id="sidebarMenu" class="col-12 col-md-3 d-md-block custom-sidebar sidebar collapse">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li
-                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.dashboard') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-house fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.messages.index') }}">
                                     <i class="fa-solid fa-envelope fa-lg fa-fw"></i></i> Messages
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.analytics.index' ? 'active' : '' }}">
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 text-nowrap  {{ Route::currentRouteName() == 'admin.analytics.index' ? 'active' : '' }}">
                                 <a class="nav-link d-flex gap-4 align-items-center px-3"
                                     href="{{ route('admin.analytics.index') }}">
                                     <i class="fa-solid fa-chart-simple fa-lg fa-fw"></i></i></i> Analytics
@@ -106,7 +145,7 @@
                     </div>
                 </nav>
 
-                <main class="dark-bg col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <main class="dark-bg col-12 col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     @yield('content')
                 </main>
             </div>
