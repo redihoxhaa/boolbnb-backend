@@ -1,13 +1,18 @@
 .create {
     padding: 25px 0 50px 0;
 
-    .room-counter {
+    .counter-counter {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
-    .room-control {
+    .counter-name {
+        font-size: 16px;
+    }
+
+    .counter-control-plus,
+    .counter-control-minus {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -17,9 +22,17 @@
         border-radius: 50%;
     }
 
-    .room-number {
+    .counter-number {
         font-size: 24px;
         font-weight: bold;
+    }
+
+    .custom-input {
+        width: 45px;
+        border: none;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
     }
 
     .input-container {
@@ -287,11 +300,17 @@
     }
 
     .sqm {
-        font-size: 14px;
-        font-weight: 400;
+        font-size: 10px;
+        font-weight: 800;
     }
 
     .card {
         top: 80px;
+    }
+
+    @media screen and (min-width: 1200px) {
+        .counter-name {
+            font-size: 13px;
+        }
     }
 }

@@ -14,7 +14,7 @@
 
 
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
 
                     <input placeholder="Title..." type="text" class="form-control" id="title" name="title" required
@@ -31,63 +31,71 @@
                     @enderror
 
                     <div class="row mt-3">
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
-                                    Rooms</div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control">
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-2" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
+                                    Rooms
+                                </div>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <div class="room-number">2</div>
-                                    <div class="room-control">
+                                    <input type="number" class="custom-input" name="rooms">
+                                    <div class="counter-control-plus">
                                         +
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="me-2" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="me-2" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
                                 </div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control">
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <div class="room-number">2</div>
-                                    <div class="room-control">
+                                    <input type="number" class="custom-input" name="beds">
+                                    <div class="counter-control-plus">
                                         +
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
-                                    Bathrooms</div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control">
+
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-2" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
+                                    Bathrooms
+                                </div>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <div class="room-number">2</div>
-                                    <div class="room-control">
+                                    <input type="number" class="custom-input" name="bathrooms">
+                                    <div class="counter-control-plus">
                                         +
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1  me-2" src="{{ asset('assets/images/area.svg') }}" alt="Area">
-                                    Area
+
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-2" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
+                                    /<span class="sqm">sqm</span>
                                 </div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control">
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <div class="room-number">2 <span class="sqm">sqm</span></div>
-                                    <div class="room-control">
+                                    <input type="number" class="custom-input" name="square_meters">
+                                    <div class="counter-control-plus">
                                         +
                                     </div>
                                 </div>
@@ -150,7 +158,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-5">
+                <div class="col-lg-5">
                     <div>
                         <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
                         <label class="custum-file-upload" for="file">
@@ -543,5 +551,35 @@
                 }
             }
         }
+
+        // Funzione per gestire il click su "+" o "-"
+        function updateCounter(operation, fieldName) {
+            var inputField = document.querySelector('input[name="' + fieldName + '"]');
+            if (inputField) {
+                var currentValue = parseInt(inputField.value);
+                if (!isNaN(currentValue)) { // Verifica se il valore è un numero valido
+                    if (operation === 'plus') {
+                        inputField.value = currentValue + 1;
+                    } else if (operation === 'minus' && currentValue > 0) {
+                        inputField.value = currentValue - 1;
+                    }
+                } else {
+                    // Nel caso in cui il valore non sia un numero valido, impostiamo il valore del campo a 0
+                    inputField.value = 0;
+                }
+            }
+        }
+
+        // Aggiungi un listener per il click su "+" o "-"
+        document.addEventListener('click', function(event) {
+            // Verifica se l'elemento cliccato è un controllo di incremento o decremento
+            if (event.target.classList.contains('counter-control-plus')) {
+                // Esegue la funzione di aggiornamento con operazione di incremento
+                updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            } else if (event.target.classList.contains('counter-control-minus')) {
+                // Esegue la funzione di aggiornamento con operazione di decremento
+                updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            }
+        });
     </script>
 @endsection
