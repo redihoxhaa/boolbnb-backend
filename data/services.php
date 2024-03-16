@@ -10,18 +10,6 @@ return [
         'icon_path' => 'icon2.png',
     ],
     [
-        'name' => 'Parking',
-        'icon_path' => 'icon3.png',
-    ],
-    [
-        'name' => 'Breakfast included',
-        'icon_path' => 'icon4.png',
-    ],
-    [
-        'name' => 'Swimming Pool',
-        'icon_path' => 'icon5.png',
-    ],
-    [
         'name' => 'Cable TV',
         'icon_path' => 'icon6.png',
     ],
@@ -34,16 +22,32 @@ return [
         'icon_path' => 'icon8.png',
     ],
     [
+        'name' => 'Swimming Pool',
+        'icon_path' => 'icon5.png',
+    ],
+    [
         'name' => 'Gym',
         'icon_path' => 'icon9.png',
     ],
     [
-        'name' => 'Pets Allowed',
-        'icon_path' => 'icon10.png',
-    ],
-    [
         'name' => 'Room Service',
         'icon_path' => 'icon11.png',
+    ],
+    [
+        'name' => 'Restaurant',
+        'icon_path' => 'icon17.png',
+    ],
+    [
+        'name' => 'Bar/Lounge',
+        'icon_path' => 'icon18.png',
+    ],
+    [
+        'name' => 'Breakfast included',
+        'icon_path' => 'icon4.png',
+    ],
+    [
+        'name' => 'Pets Allowed',
+        'icon_path' => 'icon10.png',
     ],
     [
         'name' => 'Laundry Service',
@@ -58,20 +62,8 @@ return [
         'icon_path' => 'icon14.png',
     ],
     [
-        'name' => 'Airport Shuttle',
-        'icon_path' => 'icon15.png',
-    ],
-    [
         'name' => '24-hour Front Desk',
         'icon_path' => 'icon16.png',
-    ],
-    [
-        'name' => 'Restaurant',
-        'icon_path' => 'icon17.png',
-    ],
-    [
-        'name' => 'Bar/Lounge',
-        'icon_path' => 'icon18.png',
     ],
     [
         'name' => 'Business Center',
@@ -80,5 +72,13 @@ return [
     [
         'name' => 'Childcare Services',
         'icon_path' => 'icon20.png',
+    ],
+    [
+        'name' => 'Parking',
+        'icon_path' => 'icon3.png',
+    ],
+    [
+        'name' => 'Airport Shuttle',
+        'icon_path' => 'icon15.png',
     ],
 ];
