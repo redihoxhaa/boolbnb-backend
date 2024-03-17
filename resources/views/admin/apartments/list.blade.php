@@ -8,7 +8,7 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="mt-4 me-5 mb-5 listed-properties">
+    <div class="listed-properties">
 
         {{-- Path Page --}}
         <div>
