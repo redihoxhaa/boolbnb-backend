@@ -23,7 +23,7 @@
             @csrf <!-- Token CSRF -->
 
 
-            <div class="row">
+            <div class="row g-5">
                 <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
 
@@ -177,9 +177,10 @@
                 </div>
 
                 <div class="col-lg-5">
-                    <div>
-                        <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
-                        <label class="custum-file-upload" for="file">
+
+                    <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
+                    <div class="custum-file-upload">
+                        <div class="preview-row row justify-content-center align-items-center">
                             <div class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
                                     <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
@@ -191,34 +192,32 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text">
-                                <span>Click to upload image</span>
-                            </div>
-                            <div id="image-container">
-                                <input type="file" id="file" name="images[]"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
-                                    onchange="checkFileSizeAndNumber(this)" multiple>
-                                <div id="file-size-error" class="text-danger"></div>
-                            </div>
-                        </label>
-                        <div class="d-flex gap-2">
-                            <div class="add-photo">+</div>
-                            <div class="add-text">
-                                <span class="suggestion"><img src="{{ asset('assets/images/brightness_alert.svg') }}"
-                                        alt="Bathrooms"> suggestion</span>
-                                <div class="d-flex align-items-center gap-3 me-1">
-                                    <img src="{{ asset('assets/images/bolt.svg') }}" alt="bolt">
-                                    <p class="p-more-photo m-0">Add more photos, you'll assist the customer in making a
-                                        better-informed decision.</p>
-                                </div>
+                        </div>
+                        <div class="preview-text">
+                            <span>Preview your images</span>
+                        </div>
+                        <div id="image-container">
+                            <input type="file" id="file" name="images[]"
+                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                onchange="checkFileSizeAndNumber(this), previewImages(this)" multiple>
+                            <div id="file-size-error" class="text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label class="add-photo" for="file" role="button">+</label>
+                        <div class="add-text d-flex align-items-center justify-content-center">
+                            <div class="d-flex align-items-center justify-content-center gap-3 me-1">
+                                <img src="{{ asset('assets/images/bolt.svg') }}" alt="bolt">
+                                <div class="image-call m-0 text-center">Adding images increase your booking chances!</div>
                             </div>
                         </div>
                     </div>
 
+
                     <div>
                         <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship *</h5>
                         <div class="row">
-                            <div class="p-2 col-4">
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
                                 <div class="d-flex flex-column" onclick="selectSponsor('gold')">
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
@@ -236,7 +235,7 @@
                                 </div>
                             </div>
 
-                            <div class="p-2 col-4">
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
                                 <div class="d-flex flex-column gap-2" onclick="selectSponsor('diamond')">
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
@@ -254,7 +253,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="p-2 col-4">
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
                                 <div class="d-flex flex-column gap-2" onclick="selectSponsor('emerald')">
                                     <div class="card-sponsor plan active-sponsor">
                                         <div class="mb-1">
@@ -293,185 +292,39 @@
 
                         <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
-                    <div>
-                        <h6 class="fw-bold text-uppercase mt-4 mb-2">Visibility *</h6>
-                        <label class="switch mt-2">
-                            <input type="checkbox" value="1" name='is_visible'
-                                @if (old('is_visible') == 1) checked @endif>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <span class="span-payment">It will not appear in the search engine</span>
-                </div>
-            </div>
-            <div class="text-end mt-5 me-5">
-                <button type="submit" class="btn btn-create">Save apartment</button>
-            </div>
-            {{-- <div class="row mb-3">
-
-                <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-6">
-                    <label for="title" class="form-label">Title *</label>
-                    <input type="text" class="form-control" id="title" name="title" required maxlength="255"
-                        value="{{ old('title') }}">
-
-                    @error('title')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-6">
-                    <label for="description" class="form-label">Description *</label>
-                    <textarea class="form-control" id="description" name="description" required>{{ old('description') }}</textarea>
-
-                    @error('description')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-            </div>
+                    <div class="visibility-radio">
+                        <h6 class="fw-bold text-uppercase mt-5 mb-2">Visibility *</h6>
 
 
-            <div class="row mb-3">
-
-                <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="rooms" class="form-label">Rooms *</label>
-                    <input type="number" class="form-control" id="rooms" name="rooms" required min="1"
-                        value="{{ old('rooms') }}">
-
-                    @error('rooms')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="beds" class="form-label">Beds *</label>
-                    <input type="number" class="form-control" id="beds" name="beds" required min="1"
-                        value="{{ old('beds') }}">
-
-                    @error('beds')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="bathrooms" class="form-label">Bathrooms *</label>
-                    <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1"
-                        value="{{ old('bathrooms') }}">
-
-                    @error('bathrooms')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-            </div>
-
-
-            <div class="row mb-3">
-
-                <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="square_meters" class="form-label">Square Meters *</label>
-                    <input type="number" class="form-control" id="square_meters" name="square_meters" required
-                        min="1" value="{{ old('square_meters') }}">
-
-                    @error('square_meters')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-8">
-                    <label for="address" class="form-label">Address *</label>
-                    <input type="text" class="form-control" id="address" name="address" autocomplete="off"
-                        placeholder="Type your address..." value="{{ old('address') }}">
-
-                    @error('address')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                    @enderror
-
-                    <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
-                        <ul class="suggestions-list"></ul>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="row mb-3">
-
-                <!-- Campo per caricare le immagini dell'appartamento, con possibilità di aggiungere più immagini -->
-                <div class="col-md-6">
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="images" class="form-label">Images</label>
-                            <div id="image-container">
-                                <input type="file" name="images[]"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
-                                    onchange="checkFileSizeAndNumber(this)" multiple>
-                                <div id="file-size-error" class="text-danger"></div>
+                        <div class="radio-button-container d-flex flex-row-reverse justify-content-end">
+                            <div class="radio-button">
+                                <input type="radio" class="radio-button__input" id="radio1" value="0"
+                                    name="is_visible" @if (old('is_visible') == 0) checked @endif>
+                                <label class="radio-button__label" for="radio1">
+                                    <span class="radio-button__custom"></span>
+                                    Hidden
+                                </label>
+                            </div>
+                            <div class="radio-button">
+                                <input type="radio" class="radio-button__input" id="radio2" value="1"
+                                    name="is_visible" @if (old('is_visible') == 1) checked @endif checked>
+                                <label class="radio-button__label" for="radio2">
+                                    <span class="radio-button__custom"></span>
+                                    Available
+                                </label>
                             </div>
 
 
-                            @error('images')
-                                <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                            @enderror
-
                         </div>
                     </div>
+                    <span class="span-payment" id="payment-span" style="display: none;">It will not appear in the search
+                        engine</span>
                 </div>
-
-                <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
-                <div class="col-md-6">
-
-                    <label for="services" class="form-label">Services *</label><br>
-                    @foreach ($services as $service)
-                        <input type="checkbox" id="service{{ $service->id }}" name="services[]"
-                            value="{{ $service->id }}" @if (is_array(old('services')) && in_array($service->id, old('services'))) checked @endif>
-                        <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
-                    @endforeach
-
-                    @error('services')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
+            </div>
+            <div class="text-end mt-5">
+                <button type="submit" class="btn btn-create">Save apartment</button>
             </div>
 
-
-            <div class="row mb-3">
-
-                <!-- Campo per la visibilità dell'appartamento -->
-                <div class="col-md-6">
-                    <label class="form-label">Visibility *</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_private"
-                            value="0" @if (old('is_visible') == 0) checked @endif>
-                        <label class="form-check-label" for="visibility_private">Private</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_public"
-                            value="1" @if (old('is_visible') == 1) checked @endif>
-                        <label class="form-check-label" for="visibility_public">Public</label>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Bottone di submit -->
-            <button type="submit" class="btn btn-primary">Submit</button> --}}
         </form>
     </div>
 
@@ -840,6 +693,49 @@
                 if (parentCard) {
                     parentCard.classList.add('active-sponsor');
                 }
+            }
+        }
+
+        // Funzione per gestire la visibilità dello span in base alla selezione del radio button
+        document.querySelectorAll('input[name="is_visible"]').forEach(function(input) {
+            input.addEventListener('change', function() {
+                var spanPayment = document.getElementById('payment-span');
+                if (this.value === '0') {
+                    spanPayment.style.display =
+                        'inline'; // Mostra lo span se l'opzione "Hidden" è selezionata
+                } else {
+                    spanPayment.style.display = 'none'; // Nasconde lo span altrimenti
+                }
+            });
+        });
+
+        // Preview immagini
+        function previewImages(input) {
+            let previewContainer = document.querySelector('.preview-row');
+            previewContainer.innerHTML = ''; // Pulisce la preview
+            const previewText = document.querySelector('.preview-text');
+
+            if (input.files) {
+                let filesAmount = input.files.length;
+                for (let i = 0; i < filesAmount; i++) {
+                    let reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        let divCol = document.createElement('div');
+                        divCol.className = 'col-6 col-sm-3 col-lg-3 parent-image';
+
+                        let img = document.createElement('img');
+                        img.className = 'preview-single-image img-fluid';
+                        img.src = event.target.result;
+
+                        divCol.appendChild(img);
+                        previewContainer.appendChild(divCol);
+                    }
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+
+                previewText.classList.add('d-none');
             }
         }
     </script>
