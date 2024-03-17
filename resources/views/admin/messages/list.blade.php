@@ -11,13 +11,15 @@
     <div class="messages">
 
         {{-- Title --}}
-        <div class="py-4 px-5">
+        <div class="py-4 px-4">
 
             {{-- Path Page --}}
-            <div>
-                <span>Admin</span>
+            <div class="path-page">
+                <a href="{{ route('admin.dashboard') }}">Admin</a>
                 <span>/</span>
-                <span>Apartments</span>
+                <a href="{{ route('admin.apartments.index') }}">Apartments</a>
+                <span>/</span>
+                <span>Messages</span>
             </div>
 
             {{-- Title Page --}}
@@ -34,7 +36,7 @@
             </div>
             <div class="col-md-3 ps-4">
                 {{-- Title Section --}}
-                <h2 class="text-left custom-title-section">Listed Messages</h2>
+                <h2 class="text-left custom-title-section">Messages</h2>
                 <span class="custom-description-section">Select a message</span>
             </div>
             <div class="col-md-4 ps-4">
@@ -96,16 +98,17 @@
                         <div class="message-user-info">
                             {{-- Informazioni da javascript --}}
                             <div>
-                                <h5 class="apartment-message-description">Nome</h5>
-                                <span class="apartment-message-description">Email</span>
+                                <h5 class="apartment-message-name" id="message-name">Nome</h5>
+                                <span class="apartment-message-email" id="message-email">Email</span>
+                                <div class="apartment-message-date" id="message-date">Data</div>
                             </div>
                         </div>
                     </div>
                     <div>
-                        <p class="card-custom-container" id="message-text"></p>
+                        <p class="card-custom-container apartment-message-text" id="message-text"></p>
                     </div>
                     <div>
-                        <a class="btn custom-button" href="mailto:vitodurso98@gmail.com">Reply</a>
+                        <a class="btn custom-button" href="mailto:robertomalone@gmail.com">Reply</a>
                     </div>
                 </div>
             </div>
@@ -118,6 +121,24 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        function updateMessageDetails(message) {
+            const messageDate = message.querySelector('.apartment-message-date').value;
+            const messageDateElement = document.querySelector("#message-date");
+            messageDateElement.textContent = 'received on: ' + messageDate;
+
+            const messageName = message.querySelector('.apartment-message-name').value;
+            const messageNameElement = document.querySelector("#message-name");
+            messageNameElement.textContent = messageName;
+
+            const messageText = message.querySelector('.apartment-message-text').value;
+            const messageTextElement = document.querySelector("#message-text");
+            messageTextElement.textContent = messageText;
+
+            const messageEmail = message.querySelector('.apartment-message-email').value;
+            const messageEmailElement = document.querySelector("#message-email");
+            messageEmailElement.textContent = messageEmail;
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const apartmentTitles = document.querySelectorAll(".apartment-title");
             const messagesList = document.getElementById("messages-list");
@@ -127,12 +148,9 @@
 
             apartmentTitles.forEach(function(apartmentTitle) {
                 apartmentTitle.addEventListener("click", function() {
-                    // Rimuovi la classe "active" da tutti gli appartamenti
                     apartmentTitles.forEach(function(apartment) {
                         apartment.classList.remove("active");
                     });
-
-                    // Aggiungi la classe "active" all'appartamento cliccato
                     this.classList.add("active");
 
                     const apartmentId = this.dataset.id;
@@ -148,42 +166,39 @@
                                 });
                                 const formattedDate = luxonDate.toFormat(
                                     "yyyy-MM-dd HH:mm");
+
                                 messageDiv.innerHTML = `
                                 <div class="message border-bottom-custom p-4 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
                                     <div class="d-flex gap-3">
                                         <div> 
                                             <img class="icon-message" src="{{ asset('assets/images/mail_icon.svg') }}">
                                         </div>
-                                    <div>
-                                    <h5 class="apartment-message-title">${message.sender_name}</h5>
-                                    <h6 class="apartment-message-description">${message.sender_name}</h6>
-                                </div>
-                                <input type="hidden" class="message-text" value="${formattedDate}">
-                                `;
+                                        <div>
+                                            <h5>${message.sender_name}</h5>
+                                            <h6>${message.sender_email}</h6>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" class="apartment-message-name" value="${message.sender_name}">
+                                    <input type="hidden" class="apartment-message-email" value="${message.sender_email}">
+                                    <input type="hidden" class="apartment-message-date" value="${formattedDate}">
+                                    <input type="hidden" class="apartment-message-text" value="${message.message_text}">
+                                </div>`;
                                 messagesList.appendChild(messageDiv);
 
-                                // Se c'è solo un messaggio e siamo nell'ultimo ciclo, mostra il corpo del messaggio
                                 if (response.data.length === 1 && index === response
                                     .data.length - 1) {
-                                    const messageText = messageDiv.querySelector(
-                                        '.message-text').value;
-                                    const messageTextElement = document.querySelector(
-                                        "#message-text");
-                                    messageTextElement.textContent = messageText;
+                                    updateMessageDetails(messageDiv);
                                     messageBody.classList.remove("d-none");
                                 }
                             });
 
-                            // Nascondi il corpo del messaggio se ci sono più messaggi
                             if (response.data.length > 1) {
                                 messageBody.classList.add("d-none");
                             }
 
-                            // Mostra il div dei messaggi e nascondi il div degli appartamenti
                             messageGuide.classList.remove("d-none");
                             apartmentGuide.classList.add("d-none");
 
-                            // Nascondi la scritta "Select a message" se ci sono messaggi
                             if (response.data.length > 0) {
                                 messageGuide.classList.add("d-none");
                             }
@@ -191,9 +206,7 @@
                         .catch(error => console.error('Error fetching messages:', error));
                 });
 
-                // Verifica se c'è solo un appartamento nei risultati
                 if (apartmentTitles.length === 1) {
-                    // Simula un click sull'unico appartamento
                     apartmentTitle.click();
                 }
             });
@@ -201,25 +214,19 @@
             messagesList.addEventListener("click", function(event) {
                 const messageElement = event.target.closest(".message");
                 if (messageElement) {
-                    const messageText = messageElement.querySelector('.message-text').value;
-                    const messageTextElement = document.querySelector("#message-text");
-
-                    messageTextElement.textContent = messageText;
+                    updateMessageDetails(messageElement);
                     messageBody.classList.remove("d-none");
 
-                    // Rimuovi la classe "active" da tutti i messaggi
                     document.querySelectorAll(".message").forEach(function(msg) {
                         msg.classList.remove("active");
                     });
 
-                    // Aggiungi la classe "active" solo al messaggio selezionato
                     messageElement.classList.add("active");
-
-                    // Nascondi la scritta "Select a message" quando viene selezionato un messaggio
                     messageGuide.classList.add("d-none");
                 }
             });
         });
     </script>
+
 
 @endsection
