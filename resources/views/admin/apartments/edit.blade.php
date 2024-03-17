@@ -108,7 +108,7 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="{{ old('area', $apartment->square_meters) }}"
+                                    <input type="number" value="{{ old('square_meters', $apartment->square_meters) }}"
                                         class="custom-input" name="square_meters">
                                     <div class="counter-control-plus">
                                         +
