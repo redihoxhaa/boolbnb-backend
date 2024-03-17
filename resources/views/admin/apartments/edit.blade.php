@@ -327,8 +327,19 @@
                         engine</span>
                 </div>
             </div>
-            <div class="text-end mt-5">
-                <button type="submit" class="btn btn-create">Save apartment</button>
+            <div class="d-flex gap-4 w-100 justify-content-end mb-4">
+
+                <div class="text-end mt-5">
+                    <a href="{{ route('admin.apartments.show', $apartment) }}"
+                        class="btn btn-create border border-dark bg-white text-black">Discard
+                        changes</a>
+                </div>
+
+                <div class="text-end mt-5">
+                    <button type="submit" class="btn btn-create">Save apartment</button>
+                </div>
+
+
             </div>
 
         </form>

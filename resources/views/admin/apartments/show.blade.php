@@ -79,20 +79,23 @@
 
                     {{-- Informazione operazione --}}
                     <div class="modal-body text-center">
-                        You are about to delete <br> {{ $apartment->title }}</span>
+                        You are about to delete <br><span class="fw-bold">
+                            {{ $apartment->title }}</span>
                     </div>
 
                     <div class="modal-footer d-flex justify-content-center">
 
+
                         {{-- Pulsante annulla --}}
-                        <button class="btn btn-light text-uppercase fw-bold mb-4 mt-3" data-bs-dismiss="modal">Dismiss
+                        <button class="btn-tool border border-dark bg-white text-black border mb-4 mt-3"
+                            data-bs-dismiss="modal">Dismiss
                         </button>
 
                         {{-- Pulsante elimina --}}
                         <form action="{{ route('admin.apartments.destroy', $apartment) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <input class="btn btn-danger text-uppercase fw-bold mb-4 mt-3" type="submit" value="DELETE">
+                            <input class="btn btn-tool bg-danger text-white mb-4 mt-3" type="submit" value="Delete">
                         </form>
                     </div>
                 </div>
