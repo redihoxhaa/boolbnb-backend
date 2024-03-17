@@ -24,31 +24,29 @@
             <div class="row gap-3 flex-column flex-lg-row ">
                 <div class="d-flex col col-lg-4 radio-input gap-3 justify-content-center flex-column">
                     <h6 class="text-black">SELECT YOUR PLAN</h6>
-                @foreach ($sponsorships as $sponsorship)
-                    <input value="{{ $sponsorship->id }}" name="sponsorship_choice" id="sponsorship{{ $sponsorship->id }}"
-                        type="radio" class="sponsorship-radio" required>
-                    <label for="sponsorship{{ $sponsorship->id }}" class="row ">
-                        <div class="col-3">
-                            <div>
-                                @if ($sponsorship->package_name==='Gold')
-                                    <img src="{{ asset('assets/images/gold.svg') }}"
-                                    alt="Bathrooms">
-                                @elseif ($sponsorship->package_name==='Diamond')
-                                    <img src="{{ asset('assets/images/diamond 1.svg') }}"
-                                    alt="diamond">
-                                @else
-                                    <img src="{{ asset('assets/images/emerald.svg') }}"
-                                    alt="emerald">
-                                @endif
+                    @foreach ($sponsorships as $sponsorship)
+                        <input value="{{ $sponsorship->id }}" name="sponsorship_choice"
+                            id="sponsorship{{ $sponsorship->id }}" type="radio" class="sponsorship-radio"
+                            data-package-price="{{ $sponsorship->package_price }}" required>
+                        <label for="sponsorship{{ $sponsorship->id }}" class="row ">
+                            <div class="col-3">
+                                <div>
+                                    @if ($sponsorship->package_name === 'Gold')
+                                        <img src="{{ asset('assets/images/gold.svg') }}" class="darken" alt="Bathrooms">
+                                    @elseif ($sponsorship->package_name === 'Diamond')
+                                        <img src="{{ asset('assets/images/diamond 1.svg') }}" class="darken" alt="diamond">
+                                    @else
+                                        <img src="{{ asset('assets/images/emerald.svg') }}" class="darken" alt="emerald">
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-9 d-flex flex-column">
-                            <span>{{ $sponsorship->package_name }}</span>
-                            <span>{{ $sponsorship->package_duration }}h</span>
-                            <span class="align-self-end">€{{ $sponsorship->package_price }}</span>
-                        </div>
-                    </label>
-                @endforeach
+                            <div class="col-9 d-flex flex-column">
+                                <span>{{ $sponsorship->package_name }}</span>
+                                <span>{{ $sponsorship->package_duration }}h</span>
+                                <span class="package-price align-self-end">€{{ $sponsorship->package_price }}</span>
+                            </div>
+                        </label>
+                    @endforeach
                 </div>
                 <div class="col col-lg-7 ps-4 mt-2">
                     <h6 class="text-black">PAYMENT</h6>
@@ -72,13 +70,13 @@
                         </div>
                     </div>
                     <div id="dropin-container" style="display:none;"></div>
-                    
+
                 </div>
             </div>
-            <div class="row"> 
+            <div class="row">
                 <div class="mt-5">
                     <div class="d-flex flex-row-reverse">
-                        <h2 class="strong">€{{ $sponsorship->package_price }}</h2>
+                        <h2 class="price"></h2>
                         {{-- <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4 "><i
                         class="fas fa-arrow-left"></i> Go Back</a> --}}
                     </div>
@@ -86,12 +84,12 @@
                 <div class="mt-4">
                     <div class="d-flex flex-row-reverse">
                         <button id="submit-button" class="buttonPayment buttonPayment--small buttonPayment--green"
-                        style="display:none;">Pay Now</button>
+                            style="display:none;">Pay Now</button>
                     </div>
                 </div>
             </div>
         </form>
-        
+
 
         {{-- <div>
             <div>CART DEBUG</div>
@@ -138,6 +136,20 @@
                     setTimeout(function() {
                         paymentForm.submit(); // Submit the form after 2 seconds delay
                     }, 1500); // Delay in milliseconds (2000 milliseconds = 2 seconds)
+                });
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const radioButtons = document.querySelectorAll('.sponsorship-radio');
+            const priceDiv = document.querySelector('.price');
+
+            radioButtons.forEach(function(radioButton) {
+                radioButton.addEventListener('change', function() {
+                    if (this.checked) {
+                        const packagePrice = this.getAttribute('data-package-price');
+                        priceDiv.textContent = "€" + packagePrice;
+                    }
                 });
             });
         });

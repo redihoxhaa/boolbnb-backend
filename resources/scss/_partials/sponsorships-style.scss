@@ -58,15 +58,19 @@ Button
 
     //Colore Grigio
 
-    
+
 
     // Img Sponsor
 
-    .apartment-img-sponsorships{
+    .apartment-img-sponsorships {
         width: 100px;
         height: 80px;
         border-radius: 6px;
         object-fit: cover;
+    }
+
+    .darken {
+        mix-blend-mode: darken;
     }
 
     // Payment button
@@ -94,7 +98,8 @@ Button
 
     .buttonPayment--green {
         outline: none;
-        background-color: #CEF27F !important;;
+        background-color: #CEF27F !important;
+        ;
         border-color: #64d18a;
         color: black;
         transition: all 200ms ease;
