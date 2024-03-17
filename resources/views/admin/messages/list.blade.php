@@ -18,7 +18,7 @@
         <div class="row d-none" id="messages-column-mobile">
             <div class="col-md-12">
                 <button id="back-button-apartments-mobile" id="back-button-apartments-mobile"
-                    class="btn btn-primary mb-3">Back to Apartments</button>
+                    class="btn custom-button mb-3 ms-4">Back to Apartments</button>
                 <div class="list-group" id="messages-list-mobile">
                     <!-- Messages will be loaded here -->
                 </div>
@@ -27,8 +27,8 @@
 
         <div class="row d-none" id="message-details-column-mobile">
             <div class="col-md-12">
-                <button id="back-button-messages-mobile" class="btn btn-primary mb-3">Back to Messages</button>
-                <div class="message-body-mobile">
+                <button id="back-button-messages-mobile" class="btn custom-button mb-3 ms-4">Back to Messages</button>
+                <div class="message-body-mobile p-4">
                     <div class="user-mobile d-flex gap-2">
                         <div>
                             <img src="{{ asset('assets/images/message_user_icon.svg') }}" alt="">

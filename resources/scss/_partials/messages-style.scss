@@ -78,6 +78,10 @@
 
 .messages-mobile {
 
+    .message-mobile {
+        width: 100%;
+    }
+
     .custom-height-scroll {
         height: calc(100vh - 311px);
     }
@@ -148,4 +152,6 @@
         border-radius: 6px;
         object-fit: cover;
     }
+
+
 }
