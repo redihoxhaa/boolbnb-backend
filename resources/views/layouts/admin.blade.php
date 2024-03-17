@@ -67,6 +67,11 @@
             margin-top: 70px;
         }
 
+        .opened {
+            margin-top: 320px;
+            transition: all 0.3s ease-in-out;
+        }
+
         @media only screen and (min-width:768px) {
             .custom-sidebar {
                 max-width: 200px;
@@ -118,8 +123,8 @@
         <div>
             <div>
                 {{-- SidebarMenu --}}
-                <nav id="sidebarMenu "
-                    class="col-12 col-md-3 d-md-block custom-sidebar sidebar collapse sidebar-height-custom">
+                <nav id="sidebarMenu"
+                    class="col-12 col-md-3 d-md-block d-none custom-sidebar sidebar collapse sidebar-height-custom">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li
@@ -171,6 +176,19 @@
         </div>
 
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const collapseButton = document.querySelector("[data-bs-target='#sidebarMenu']");
+            const marginFixedCustom = document.querySelector(".margin-fixed-custom");
+            const sidebarMenu = document.getElementById("sidebarMenu");
+
+            collapseButton.addEventListener("click", function() {
+                marginFixedCustom.classList.toggle("opened");
+                sidebarMenu.classList.toggle("d-none");
+            });
+        });
+    </script>
 </body>
 
 </html>
