@@ -55,11 +55,31 @@
             transform: translate(50%)
         }
 
+
         .navbar-toggler-custom {
             border: none;
             box-shadow: none;
             outline: none;
             background-color: none;
+        }
+
+        .nav-item {
+            a {
+                color: rgb(134, 134, 134);
+
+                i {
+                    color: rgb(134, 134, 134);
+                }
+            }
+
+        }
+
+        .active-route {
+            color: black !important;
+
+            i {
+                color: black !important;
+            }
         }
 
         .sidebar-height-custom {
@@ -74,6 +94,7 @@
             margin-top: 320px;
             transition: all 0.3s ease-in-out;
         }
+
 
         @media only screen and (min-width:768px) {
             .custom-sidebar {
@@ -137,31 +158,31 @@
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  {{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }}">
-                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  ">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3 {{ Route::currentRouteName() == 'admin.dashboard' ? 'active-route' : '' }}"
                                     href="{{ route('admin.dashboard') }}">
                                     <i class="fa-solid fa-tachometer-alt fa-lg fa-fw"></i> Dashboard
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active' : '' }}">
-                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  ">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3 {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active-route' : '' }}"
                                     href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-list fa-lg fa-fw"></i> Apartments
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active' : '' }}">
-                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap ">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3  {{ Route::currentRouteName() == 'admin.messages.index' ? 'active-route' : '' }}"
                                     href="{{ route('admin.messages.index') }}">
-                                    <i class="fa-solid fa-envelope fa-lg fa-fw"></i></i> Messages
+                                    <i class="fa-solid fa-envelope fa-lg fa-fw"></i> Messages
                                 </a>
                             </li>
                             <li
-                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  {{ Route::currentRouteName() == 'admin.analytics.index' ? 'active' : '' }}">
-                                <a class="nav-link d-flex gap-4 align-items-center px-3"
+                                class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap ">
+                                <a class="nav-link d-flex gap-4 align-items-center px-3  {{ Route::currentRouteName() == 'admin.analytics.index' ? 'active-route' : '' }}"
                                     href="{{ route('admin.analytics.index') }}">
-                                    <i class="fa-solid fa-chart-simple fa-lg fa-fw"></i></i></i> Analytics
+                                    <i class="fa-solid fa-chart-simple fa-lg fa-fw"></i> Analytics
                                 </a>
                             </li>
                         </ul>
@@ -189,6 +210,17 @@
             collapseButton.addEventListener("click", function() {
                 marginFixedCustom.classList.toggle("opened");
                 sidebarMenu.classList.toggle("d-none");
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const currentRoute = "{{ Route::currentRouteName() }}";
+            const navLinks = document.querySelectorAll(".nav-link");
+
+            navLinks.forEach(function(link) {
+                if (link.getAttribute("href") === currentRoute) {
+                    link.parentElement.classList.add("active-route");
+                }
             });
         });
     </script>
