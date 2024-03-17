@@ -31,6 +31,8 @@ Route::get('/services', [ServiceController::class, 'index']);
 Route::post('/guest/messages', [MessageController::class, 'storeMessageFromGuest']);
 Route::post('/guest/visits', [VisitController::class, 'storeVisitFromGuest']);
 Route::get('/userinfo', [UserController::class, 'index']);
+Route::get('/apartments/{id}', [ApartmentController::class, 'show']);
+
 
 Route::middleware('web')->group(function () {
     Route::get('/logged-user', [UserController::class, 'show']);
