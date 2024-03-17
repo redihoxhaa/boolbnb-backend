@@ -7,10 +7,12 @@
     <div class="px-5 py-4 create container">
 
         {{-- Path Page --}}
-        <div>
-            <span>Admin</span>
+        <div class="path-page">
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
             <span>/</span>
-            <span>Apartments</span>
+            <a href="{{ route('admin.apartments.index') }}">Apartments</a>
+            <span>/</span>
+            <span>Create</span>
         </div>
 
         {{-- Title Page --}}
@@ -25,8 +27,8 @@
                 <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
 
-                    <input placeholder="* Title..." type="text" class="form-control" id="title" name="title" required
-                        maxlength="255" value="{{ old('title') }}">
+                    <input placeholder="* Title..." type="text" class="form-control" id="title" name="title"
+                        required maxlength="255" value="{{ old('title') }}">
 
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->

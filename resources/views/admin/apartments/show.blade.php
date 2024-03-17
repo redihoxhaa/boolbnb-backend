@@ -40,15 +40,72 @@
 
     <div class="px-5 py-4 show container">
 
-        <h2 class="mb-5 text-center">Apartment Details - {{ $apartment->title }}</h2>
+        {{-- Path Page --}}
+        <div class="path-page">
+            <span>Admin</span>
+            <span>/</span>
+            <span>Apartments</span>
+            <span>/</span>
+            <span>{{ $apartment->title }}</span>
+        </div>
+
+        <div class="header mb-4 mt-3 d-flex justify-content-between align-items-center">
+            <h2 class="">Apartment Details</h2>
+
+            <div class="buttons gap-3 d-none d-lg-flex">
+                <a role="button" class="btn-tool border border-dark bg-white text-black border-"
+                    href="{{ route('admin.apartments.edit', $apartment) }}">
+                    Edit
+                </a>
+
+                <a role='button' class="btn-tool bg-danger text-white" data-bs-toggle="modal"
+                    data-bs-target="#my-dialog-{{ $apartment->id }}">
+                    Delete apartment
+                </a>
+            </div>
+        </div>
+
+
+
+        {{-- Modale --}}
+        <div class="modal" id="my-dialog-{{ $apartment->id }}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content card-custom">
+
+                    {{-- Messaggio di alert --}}
+                    <div class="modal-header ">
+                        <h3 class="d-block w-100 text-center">Are you sure?</h3>
+                    </div>
+
+                    {{-- Informazione operazione --}}
+                    <div class="modal-body text-center">
+                        You are about to delete <br> {{ $apartment->title }}</span>
+                    </div>
+
+                    <div class="modal-footer d-flex justify-content-center">
+
+                        {{-- Pulsante annulla --}}
+                        <button class="btn btn-light text-uppercase fw-bold mb-4 mt-3" data-bs-dismiss="modal">Dismiss
+                        </button>
+
+                        {{-- Pulsante elimina --}}
+                        <form action="{{ route('admin.apartments.destroy', $apartment) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input class="btn btn-danger text-uppercase fw-bold mb-4 mt-3" type="submit" value="DELETE">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @php
             $images = explode(',', $apartment->images);
             $count = count($images);
         @endphp
 
-
-        <div id="carouselExampleIndicators" class="carousel slide mb-4 d-lg-none">
+        {{-- Carosello --}}
+        <div id="carouselExampleIndicators" class="carousel slide d-lg-none">
             <div class="carousel-inner">
                 @foreach ($images as $key => $image)
                     <div class="carousel-item @if ($key === 0) active @endif">
@@ -68,6 +125,7 @@
             </a>
         </div>
 
+        {{-- Images to grid --}}
         <div class="image-gallery d-none d-lg-block">
 
             <!-- Modal -->
@@ -79,8 +137,10 @@
 
             @if (count($images) === 1)
                 <div class="with-1-foto">
-                    <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" class="w-100"
-                        data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)">
+                    <div class="parent">
+                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" class="w-100"
+                            data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)">
+                    </div>
 
                 </div>
             @elseif (count($images) === 2)
@@ -235,14 +295,14 @@
 
         <div class="row">
             <div class="col-12">
-                <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
+                <h6 class="fw-bold mb-4 mt-4 text-uppercase">Info</h6>
 
-                <div>{{ $apartment->title }}</div>
-                <div>{{ $apartment->description }}</div>
+                <h3>{{ $apartment->title }}</h3>
+                <div class="pt-3 pb-4">{{ $apartment->description }}</div>
 
 
 
-                <div class="row mt-3">
+                <div class="row">
                     <div class="p-2 col-6 col-xl-3">
                         <div class="text-center card-icon">
                             <div class="counter-name">
@@ -277,70 +337,217 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="p-2 col-6 col-xl-3">
-                    <div class="text-center card-icon">
-                        <div class="counter-name">
-                            <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
-                            /<span class="sqm">sqm</span>
-                        </div>
-                        <div class="counter-counter mt-3">
-                            <div class="custom-input">{{ $apartment->square_meters }}</div>
+                    <div class="p-2 col-6 col-xl-3">
+                        <div class="text-center card-icon">
+                            <div class="counter-name">
+                                <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
+                                /<span class="sqm">sqm</span>
+                            </div>
+                            <div class="counter-counter mt-3">
+                                <div class="custom-input">{{ $apartment->square_meters }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
-        <div class="row mt-3">
+        <div class="row mt-5">
 
-            <div class="col-12">
+
+            <div class="col-lg-6">
                 <div class="d-flex align-items-center justify-content-between">
                     <h5 class="fw-bold">Services</h5>
                 </div>
 
-                <div class="mt-3">
-
+                <ul class="list-service mt-3 d-flex gap-3 flex-wrap">
                     @foreach ($apartment->services as $service)
-                        <span>{{ $service->name }}</span>
+                        <li class="d-flex align-items-center gap-2">
+                            @switch($service->name)
+                                @case('Private Bathroom')
+                                    <img class="service-icon" src="{{ asset('assets/images/bathrooms_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Wifi')
+                                    <img class="service-icon" src="{{ asset('assets/images/wifi_icon.svg') }}" alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Parking')
+                                    <img class="service-icon" src="{{ asset('assets/images/parking_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Breakfast included')
+                                    <img class="service-icon" src="{{ asset('assets/images/breakfast_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Swimming Pool')
+                                    <img class="service-icon" src="{{ asset('assets/images/swimmingpool_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Cable TV')
+                                    <img class="service-icon" src="{{ asset('assets/images/tv_icon.svg') }}" alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Air Conditioning')
+                                    <img class="service-icon" src="{{ asset('assets/images/air_conditioning_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Heating')
+                                    <img class="service-icon" src="{{ asset('assets/images/heating_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Gym')
+                                    <img class="service-icon" src="{{ asset('assets/images/gym_icon.svg') }}" alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Pets Allowed')
+                                    <img class="service-icon" src="{{ asset('assets/images/pets_icon.svg') }}" alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Room Service')
+                                    <img class="service-icon" src="{{ asset('assets/images/room_service_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Laundry Service')
+                                    <img class="service-icon" src="{{ asset('assets/images/laundry_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Concierge')
+                                    <img class="service-icon" src="{{ asset('assets/images/concierge_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Meeting Facilities')
+                                    <img class="service-icon" src="{{ asset('assets/images/meeting_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Airport Shuttle')
+                                    <img class="service-icon" src="{{ asset('assets/images/airport_shuttle_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('24-hour Front Desk')
+                                    <img class="service-icon" src="{{ asset('assets/images/front_desk_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Restaurant')
+                                    <img class="service-icon" src="{{ asset('assets/images/restaurant_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Bar/Lounge')
+                                    <img class="service-icon" src="{{ asset('assets/images/bar_icon.svg') }}" alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Business Center')
+                                    <img class="service-icon" src="{{ asset('assets/images/business_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @case('Childcare Services')
+                                    <img class="service-icon" src="{{ asset('assets/images/childcare_icon.svg') }}"
+                                        alt="">
+                                    <span class="service-tag">{{ $service->name }}</span>
+                                @break
+
+                                @default
+                                    <!-- Se il servizio non corrisponde a nessun caso precedente, mostra solo il nome del servizio -->
+                                    <span class="service-tag">{{ $service->name }}</span>
+                            @endswitch
+                        </li>
                     @endforeach
-
-                </div>
-
-            </div>
-
-            <div class="col-12 position-relative mt-4">
-                <h5 class="fw-bold">Location</h5>
-                <span>{{ $apartment->address }}</span>
-
-                <div id="map" class="mt-3 mb-4" style="width: 100%; height: 412px;" class='map'>
-                </div>
+                </ul>
 
             </div>
 
+            <div class="col-lg-6 mt-5 mt-lg-0">
+                <h5 class="fw-bold text-uppercase">Sponsor your apartment</h5>
+
+                <a class="row w-100" href="{{ route('admin.apartments.sponsorship', $apartment) }}">
+                    <div class="p-2">
+                        <div class="no-sponsor d-flex">
+                            <div class="d-flex gap-3 align-items-center">
+                                <div><img class="pb-1 me-2 img-rocket sponsor-icon"
+                                        src="{{ asset('assets/images/rocket.svg') }}">
+                                </div>
+                                <div class="">
+                                    <div class="d-flex felx-column">
+                                        <p class="m-0 fw-bold">Sponsor your apartment and boost your visibility
+                                            with
+                                            our
+                                            sponsorship opportunities!"</p>
+                                    </div>
+                                    <div>
+                                        <div class="span-no-boost text-decoration-underline" role="button">Choose
+                                            your plan</div>
+                                    </div>
+                                </div>
+                                <div><img class="pb-1" role="button"
+                                        src="{{ asset('assets/images/Group 179.svg') }}">
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="position-relative mt-4 pb-lg-5">
+            <h5 class="fw-bold">Location</h5>
+            <div class="pt-1">{{ $apartment->address }}</div>
+
+            <div id="map" class="mt-3 mb-4" style="width: 100%; height: 412px;" class='map'>
+            </div>
 
         </div>
 
-        <div class="col-lg-5">
+        <div class="buttons d-flex gap-3 d-lg-none justify-content-end pt-3 pb-4">
+            <a role="button" class="btn-tool border border-dark bg-white text-black border-"
+                href="{{ route('admin.apartments.edit', $apartment) }}">
+                Edit
+            </a>
 
-
-
-            <div>
-                <h6 class="fw-bold text-uppercase mt-4 mb-2">Visibility *</h6>
-                <label class="switch mt-2">
-                    <input type="checkbox" value="1" name='is_visible'
-                        @if (old('is_visible') == 1) checked @endif>
-                    <span class="slider"></span>
-                </label>
-            </div>
-            <span class="span-payment">It will not appear in the search engine</span>
+            <a role='button' class="btn-tool bg-danger text-white" data-bs-toggle="modal"
+                data-bs-target="#my-dialog-{{ $apartment->id }}">
+                Delete apartment
+            </a>
         </div>
 
+
+
     </div>
-    <div class="text-end mt-5 me-5">
-        <button type="submit" class="btn btn-create">Save apartment</button>
-    </div>
-    </div>
+
+
 
 
 

@@ -115,6 +115,11 @@ Button
         font-size: 14px;
     }
 
+    .start-date {
+        font-size: 12px;
+        color: gray;
+    }
+
     // Radio sponsorship
 
     // .radio-input {
@@ -186,7 +191,12 @@ Button
 
     .braintree-sheet__logo--header,
     .braintree-form__notice-of-collection {
-        display: none;
+
+
+
+        a {
+            display: none;
+        }
     }
 
     .braintree-sheet__header {
@@ -268,6 +278,18 @@ Button
         display: none;
     }
 
+    .braintree-card.braintree-form.braintree-sheet {
+        min-height: 232px;
+
+    }
+
+    .braintree-sheet__content.braintree-sheet__content--form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100%;
+    }
+
     @media screen and (min-width: 768px) {
         .braintree-form__field-group {
 
@@ -286,6 +308,20 @@ Button
 
                 }
 
+            }
+        }
+
+        .braintree-sheet__logo--header,
+        .braintree-form__notice-of-collection {
+            justify-self: end;
+            margin-bottom: -35px;
+            width: 100%;
+
+
+            a {
+                text-align: end;
+                display: block;
+                width: 100%;
             }
         }
 

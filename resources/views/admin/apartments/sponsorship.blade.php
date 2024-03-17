@@ -9,13 +9,16 @@
 
     {{-- <link rel="stylesheet" href="{{ asset('scss/partials/sponsorships-style.scss') }}"> --}}
     <div class="container py-4 px-5 sponsorship">
-        <div>
-            <span class="text-secondary">Admin</span>
-            <span class="text-secondary">/</span>
-            <span class="text-secondary">Apartments</span>
-            <span class="text-secondary">/</span>
-            <span>Sponsorships</span>
+
+        {{-- Path Page --}}
+        <div class="path-page">
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
+            <span>/</span>
+            <a href="{{ route('admin.apartments.index') }}">Apartments</a>
+            <span>/</span>
+            <span>Sponsorship</span>
         </div>
+
         <div class="mt-5 mb-5 d-flex align-items">
             <h1>Sponsorship</h1>
         </div>

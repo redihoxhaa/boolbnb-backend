@@ -5,6 +5,15 @@
 
     <div class="container py-4 px-5 edit">
 
+        {{-- Path Page --}}
+        <div class="path-page">
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
+            <span>/</span>
+            <a href="{{ route('admin.apartments.index') }}">Apartments</a>
+            <span>/</span>
+            <span>Edit</span>
+        </div>
+
         <h1 class="mb-5">Edit Apartment</h1>
         <form action="{{ route('admin.apartments.update', $apartment) }}" method="POST" enctype="multipart/form-data">
             <!-- Form per modificare l'appartamento esistente -->

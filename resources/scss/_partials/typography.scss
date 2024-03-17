@@ -8,3 +8,24 @@
 .nav-link {
     font-size: 14px;
 }
+
+.path-page {
+    font-size: 14px;
+
+    display: flex;
+    gap: 20px;
+    margin: 30px 0 40px 0;
+    flex-wrap: wrap;
+
+    a {
+        color: rgb(167, 167, 167);
+    }
+
+    a:hover {
+        color: rgb(82, 82, 82);
+    }
+
+    &:last-of-type {
+        color: #222222;
+    }
+}
