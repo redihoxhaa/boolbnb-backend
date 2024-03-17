@@ -1,9 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Apartment')
-@section('content')
+@section('title')
+    Edit Apartment - {{ $apartment->title }}
+@endsection
 
-    <div class="container py-4 px-5 edit">
+@section('content')
+    <div class="px-5 py-4 edit container">
 
         {{-- Path Page --}}
         <div class="path-page">
@@ -11,148 +13,163 @@
             <span>/</span>
             <a href="{{ route('admin.apartments.index') }}">Apartments</a>
             <span>/</span>
-            <span>Edit</span>
+            <span>Create</span>
         </div>
 
-        <h1 class="mb-5">Edit Apartment</h1>
+        {{-- Title Page --}}
+        <h1 class="page-title my-4">Edit Apartment</h1>
+
         <form action="{{ route('admin.apartments.update', $apartment) }}" method="POST" enctype="multipart/form-data">
             <!-- Form per modificare l'appartamento esistente -->
             @csrf <!-- Token CSRF -->
-            @method('PUT') <!-- Metodo di submit -->
+            @method('PUT')
 
-
-            <div class="row">
-                <div class="col-md-7">
+            <div class="row g-5">
+                <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
-                    <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                    <label for="title" class="form-label">Title *</label>
-                    <input type="text" class="form-control" id="title" name="title" required maxlength="255"
-                        value="{{ old('title', $apartment->title) }}">
+
+                    <input placeholder="* Title..." type="text" class="form-control" id="title" name="title"
+                        required maxlength="255" value="{{ old('title', $apartment->title) }}">
 
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
-                    <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
+                    <textarea class="form-control mt-3" placeholder="* Describe your apartament...." id="description" name="description"
+                        required>{{ old('description', $apartment->description) }}</textarea>
 
-                    <label for="description" class="form-label mt-3">Description *</label>
-                    <textarea class="form-control" id="description" name="description" required>{{ old('description', $apartment->description) }}</textarea>
-
-                    @error('description')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
                     @error('description')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
 
                     <div class="row mt-3">
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/cottage.svg') }}"
-                                        alt="Rooms">Rooms</div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control" role="button" onclick="decreaseValue('rooms')">-</div>
-                                    <div class="room-number" id="roomsNumber">{{ old('rooms', $apartment->rooms) }}</div>
-                                    <div class="room-control" role="button" onclick="increaseValue('rooms')">+</div>
-                                    @error('rooms')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/cottage.svg') }}" alt="Rooms">
+                                    Rooms
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="me-2" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
-                                </div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control" role="button" onclick="decreaseValue('beds')">-</div>
-                                    <div class="room-number" id="bedsNumber">{{ old('beds', $apartment->beds) }}</div>
-                                    <div class="room-control" role="button" onclick="increaseValue('beds')">+</div>
-                                    @error('beds')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/bathtub.svg') }}"
-                                        alt="Bathrooms">Bathrooms</div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control" role="button" onclick="decreaseValue('bathrooms')">-</div>
-                                    <div class="room-number" id="bathroomsNumber">
-                                        {{ old('bathrooms', $apartment->bathrooms) }}</div>
-                                    <div class="room-control" role="button" onclick="increaseValue('bathrooms')">+</div>
-                                    @error('bathrooms')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2 col-3">
-                            <div class=" text-center card-icon">
-                                <div><img class="pb-1 me-2" src="{{ asset('assets/images/area.svg') }}" alt="Area">Area
-                                </div>
-                                <div class="room-counter mt-3">
-                                    <div class="room-control" role="button" onclick="decreaseValue('area')">-</div>
-                                    <div class="room-number" id="areaNumber">{{ old('area', $apartment->square_meters) }}
-                                        <span class="sqm">sqm</span>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
+                                        -
                                     </div>
-                                    <div class="room-control" role="button" onclick="increaseValue('area', 50000)">+</div>
-                                    @error('area')
-                                        <div class="alert alert-danger mt-2">{{ $message }}</div>
-                                    @enderror
+                                    <input type="number" value="{{ old('rooms', $apartment->rooms) }}" class="custom-input"
+                                        name="rooms">
+                                    <div class="counter-control-plus">
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="me-1" src="{{ asset('assets/images/bed.svg') }}" alt="Beds"> Beds
+                                </div>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
+                                        -
+                                    </div>
+                                    <input type="number" value="{{ old('beds', $apartment->beds) }}" class="custom-input"
+                                        name="beds">
+                                    <div class="counter-control-plus">
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/bathtub.svg') }}" alt="Bathrooms">
+                                    Bathrooms
+                                </div>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
+                                        -
+                                    </div>
+                                    <input type="number" value="{{ old('bathrooms', $apartment->bathrooms) }}"
+                                        class="custom-input" name="bathrooms">
+                                    <div class="counter-control-plus">
+                                        +
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-2 col-6 col-xl-3">
+                            <div class="text-center card-icon">
+                                <div class="counter-name">
+                                    <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
+                                    /<span class="sqm">sqm</span>
+                                </div>
+                                <div class="counter-counter mt-3">
+                                    <div class="counter-control-minus">
+                                        -
+                                    </div>
+                                    <input type="number" value="{{ old('area', $apartment->square_meters) }}"
+                                        class="custom-input" name="square_meters">
+                                    <div class="counter-control-plus">
+                                        +
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-6 position-relative">
-                            <h5 class="fw-bold">Location</h5>
+
+                        <div class="col-12 position-relative mt-4">
+                            <h5 class="fw-bold">Location *</h5>
                             <div class="input-container">
                                 <input type="text" class="form-control" id="address" name="address" autocomplete="off"
-                                    placeholder="Type your address..." value="{{ old('address', $apartment->address) }}">
+                                    placeholder="Select address..." value="{{ old('address', $apartment->address) }}">
                                 <i class="fas fa-search"></i>
                             </div>
-                            <div class="mt-3">
-                                <img class="w-100" src="{{ asset('assets/images/Group256.png') }}" alt="img">
+                            <div id="map" class="mt-3 mb-4" style="width: 100%; height: 412px;" class='map'>
                             </div>
 
                             @error('address')
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                             @enderror
 
-                            <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
+                            <div id="suggestionsMenu"
+                                class="card bg-white border-secondary position-absolute radius d-none">
                                 <ul class="suggestions-list"></ul>
                             </div>
                         </div>
-                        <div class="col-6">
+
+                        <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="fw-bold">Service</h5>
-                                <span>{{ count(old('services', $apartment->services->pluck('id')->toArray())) }} services
-                                    selected</span>
+                                <h5 class="fw-bold">Services *</h5>
+                                <span
+                                    class="selected-services">{{ count(old('services', $apartment->services->pluck('id')->toArray())) }}
+                                </span>
                             </div>
                             <div class="input-container">
-                                <input type="text" class="form-control" id="service" name="service"
-                                    autocomplete="off" placeholder="Search for service..." value="{{ old('service') }}">
+                                <input type="text" class="form-control" id="service" autocomplete="off"
+                                    placeholder="Search for service..." value="{{ old('service') }}">
                                 <i class="fas fa-search"></i>
                             </div>
                             <div class="mt-3">
                                 <ul>
                                     <li>
-                                        @foreach ($services as $service)
-                                            <label
-                                                class="service-label service-list m-1{{ $loop->index >= 10 ? ' extra' : '' }}"
+                                        @foreach ($services as $key => $service)
+                                            <label role="button"
+                                                class="service-label service-list m-1{{ $key >= 10 ? ' extra' : '' }}"
                                                 for="service{{ $service->id }}">
                                                 <input type="checkbox" id="service{{ $service->id }}" name="services[]"
                                                     value="{{ $service->id }}" style="display: none;"
                                                     {{ in_array($service->id, old('services', $apartment->services->pluck('id')->toArray())) ? 'checked' : '' }}>
-                                                <span class="checkmark"></span>
-                                                <span>{{ $service->name }}</span>
+                                                <span class="checkmark">
+                                                    <img src="{{ asset('assets/images/white-check.svg') }}"
+                                                        alt="">
+                                                </span>
+                                                <span class="ps-1">{{ $service->name }}</span>
                                             </label>
                                         @endforeach
-                                        <div class="show-more mt-3 ms-2 text-decoration-underline">Show More</div>
+                                        <div class="show-more mt-3 ms-2 text-decoration-underline text-center">Show More
+                                        </div>
                                     </li>
                                 </ul>
                                 @error('services')
@@ -160,40 +177,16 @@
                                     <!-- Messaggio di errore -->
                                 @enderror
                             </div>
+
                         </div>
-
-
                     </div>
                 </div>
 
-                <div class="col-md-5">
-                    <div>
-                        <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
-                        <div class="col-md-12">
+                <div class="col-lg-5">
 
-                            @if ($apartment->images)
-                                <div class="row">
-                                    @foreach (explode(',', $apartment->images) as $image)
-                                        <div class="col-md-3">
-                                            <div class="position-relative">
-                                                <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
-                                                    class="img-fluid img-edit mb-2">
-                                                <div class="position-absolute div-delete-img">X</div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                    <div class="row" id="preview-images-container">
-                                        <!-- Qui verranno visualizzate le miniature delle immagini -->
-                                    </div>
-                                </div>
-                            @endif
-
-                            @error('images')
-                                <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                            @enderror
-
-                        </div>
-                        <label class="custum-file-upload" for="file">
+                    <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
+                    <div class="custum-file-upload">
+                        <div class="preview-row row justify-content-center align-items-center">
                             <div class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
                                     <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
@@ -205,255 +198,141 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text">
-                                <span>Click to upload image</span>
+                        </div>
+                        <div class="preview-text">
+                            <span>Preview your images</span>
+                        </div>
+                        <div id="image-container">
+                            <input type="file" id="file" name="images[]"
+                                accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
+                                onchange="checkFileSizeAndNumber(this), previewImages(this)" multiple>
+                            <div id="file-size-error" class="text-danger"></div>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label class="add-photo" for="file" role="button">+</label>
+                        <div class="add-text d-flex align-items-center justify-content-center">
+                            <div class="d-flex align-items-center justify-content-center gap-3 me-1">
+                                <img src="{{ asset('assets/images/bolt.svg') }}" alt="bolt">
+                                <div class="image-call m-0 text-center">Adding images increase your booking chances!</div>
                             </div>
-                            <input type="file" id="file">
-                        </label>
+                        </div>
                     </div>
 
-                    <div>
-                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Sponsor your apartment</h5>
 
+                    <div>
+                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship *</h5>
                         <div class="row">
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
+                                <div class="d-flex flex-column" onclick="selectSponsor('gold')">
+                                    <div class="card-sponsor plan">
+                                        <div class="mb-1">
+                                            <input class="d-none" type="radio" name="sponsor" id="gold"
+                                                value="gold">
+                                            <label for="gold"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/gold.svg') }}" alt="Bathrooms"></label>
+                                        </div>
+                                        <div class="fw-bold">Gold<br>Plan</div>
+                                        <span class="span-sponsor">1 days</span>
+                                        <div class="price">
+                                            <div class="fw-bold">€2.99</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
+                                <div class="d-flex flex-column gap-2" onclick="selectSponsor('diamond')">
+                                    <div class="card-sponsor plan">
+                                        <div class="mb-1">
+                                            <input class="d-none" type="radio" name="sponsor" id="diamond"
+                                                value="diamond">
+                                            <label for="diamond"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/diamond 1.svg') }}"
+                                                    alt="diamond"></label>
+                                        </div>
+                                        <div class="fw-bold">Diamond<br>Plan</div>
+                                        <span class="span-sponsor">3 days</span>
+                                        <div class="price">
+                                            <div class="fw-bold">€5.99</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
+                                <div class="d-flex flex-column gap-2" onclick="selectSponsor('emerald')">
+                                    <div class="card-sponsor plan active-sponsor">
+                                        <div class="mb-1">
+                                            <input class="d-none" type="radio" name="sponsor" id="emerald"
+                                                value="emerald" checked>
+                                            <label for="emerald"><img class=sponsor-icon
+                                                    src="{{ asset('assets/images/emerald.svg') }}"
+                                                    alt="emerald"></label>
+                                        </div>
+                                        <div class="fw-bold">Emerald<br>Plan</div>
+                                        <span class="span-sponsor">6 days</span>
+                                        <div class="price">
+                                            <div class="save text-uppercase">save 10%</div>
+                                            <div class="fw-bold">€9.99</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="p-2">
-                                <div class="no-sponsor d-flex">
-                                    <div class="d-flex gap-3 align-items-center">
-                                        <div><img class="pb-1 me-2 img-rocket"
-                                                src="{{ asset('assets/images/rocket.svg') }}">
+                                <div class="no-sponsor plan d-flex" onclick="selectSponsor('no-boost')">
+                                    <div class="d-flex gap-2">
+                                        <div>
+                                            <input type="radio" name="sponsor" id="no-boost" value="no-boost">
+                                            <label for="no-boost"></label>
+                                            <!-- Aggiunto questo label per rendere cliccabile l'intera card -->
                                         </div>
                                         <div>
-                                            <div class="d-flex felx-column">
-                                                <p class="m-0 fw-bold">Sponsor your apartment and boost your visibility
-                                                    with
-                                                    our
-                                                    sponsorship opportunities!"</p>
-                                            </div>
-                                            <div>
-                                                <div class="span-no-boost text-decoration-underline" role="button">Choose
-                                                    your plan</div>
-                                            </div>
-                                        </div>
-                                        <div><img class="pb-1 me-2" role="button"
-                                                src="{{ asset('assets/images/Group 179.svg') }}">
+                                            <p class="m-0 fw-bold">I don’t want to boost my listing</p>
+                                            <span class="span-no-boost">(Boosting your listing will increase your
+                                                visibility!)</span>
                                         </div>
                                     </div>
                                 </div>
-                                <br>
                             </div>
                         </div>
+
+                        <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
+                    <div class="visibility-radio">
+                        <h6 class="fw-bold text-uppercase mt-5 mb-2">Visibility *</h6>
 
 
-                    <div>
-                        <h6 class="fw-bold text-uppercase mt-1 mb-2">Available</h6>
-
-                        <label class="switch mt-2">
-                            <input type="checkbox" name="is_visible" id="visibility_switch"
-                                {{ old('is_visible', $apartment->is_visible) == 1 ? 'checked' : '' }}>
-                            <span class="slider"></span>
-                        </label>
-                        <div id="visibility_options"
-                            style="display: {{ old('is_visible', $apartment->is_visible) == 1 ? 'block' : 'none' }}">
-                        </div>
-                    </div>
-                    <span class="span-payment">It will not appear in the search engine</span>
-                </div>
-            </div>
-            <div class="text-end mt-5 me-5">
-                <button type="submit" class="btn btn-create">Save changes</button>
-            </div>
-    </div>
-
-
-
-    </form>
-    </div>
-
-
-    {{-- <div class="container">
-
-        <h1 class="my-5 text-black">Edit Apartment</h1> <!-- Titolo principale -->
-
-
-
-        <form action="{{ route('admin.apartments.update', $apartment) }}" method="POST" enctype="multipart/form-data">
-            <!-- Form per modificare l'appartamento esistente -->
-            @csrf <!-- Token CSRF -->
-            @method('PUT') <!-- Metodo di submit -->
-
-
-            <div class="row mb-3">
-
-                <!-- Campo per il titolo dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-6">
-                    <label for="title" class="form-label">Title *</label>
-                    <input type="text" class="form-control" id="title" name="title" required maxlength="255"
-                        value="{{ old('title', $apartment->title) }}">
-
-                    @error('title')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per la descrizione dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-6">
-
-                    <label for="description" class="form-label">Description *</label>
-                    <textarea class="form-control" id="description" name="description" required>{{ old('description', $apartment->description) }}</textarea>
-
-                    @error('description')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-            </div>
-
-
-            <!-- Campo per il numero di stanze dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="rooms" class="form-label">Rooms *</label>
-                    <input type="number" class="form-control" id="rooms" name="rooms" required min="1"
-                        value="{{ old('rooms', $apartment->rooms) }}">
-
-                    @error('rooms')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per il numero di letti dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="beds" class="form-label">Beds *</label>
-                    <input type="number" class="form-control" id="beds" name="beds" required min="1"
-                        value="{{ old('beds', $apartment->beds) }}">
-
-                    @error('beds')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per il numero di bagni dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="bathrooms" class="form-label">Bathrooms *</label>
-                    <input type="number" class="form-control" id="bathrooms" name="bathrooms" required min="1"
-                        value="{{ old('bathrooms', $apartment->bathrooms) }}">
-
-                    @error('bathrooms')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-            </div>
-
-
-            <div class="row mb-3">
-
-                <!-- Campo per i metri quadrati dell'appartamento, con validazione e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-4">
-                    <label for="square_meters" class="form-label">Square Meters *</label>
-                    <input type="number" class="form-control" id="square_meters" name="square_meters" required
-                        min="1" value="{{ old('square_meters', $apartment->square_meters) }}">
-
-                    @error('square_meters')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
-                </div>
-
-                <!-- Campo per l'indirizzo dell'appartamento, con suggerimenti, coordinate nascoste e ripristino dei dati precedenti in caso di errore -->
-                <div class="col-md-8">
-                    <label for="address" class="form-label">Address *</label>
-                    <input type="text" class="form-control" id="address" name="address" autocomplete="off"
-                        placeholder="Type your address..." value="{{ old('address', $apartment->address) }}">
-
-                    <div id="suggestionsMenu" class="card position-absolute w-100 radius d-none">
-                        <ul class="suggestions-list"></ul>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row mb-3">
-
-                <!-- Campo per caricare le immagini dell'appartamento, con possibilità di aggiungere più immagini -->
-                <div class="col-md-6">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="images" class="form-label">Images</label>
-                            <div id="image-container">
-                                <input type="file" name="images[]"
-                                    accept="image/jpeg, image/png, image/jpg, image/gif, image/webp, image/avif"
-                                    onchange="checkFileSizeAndNumber(this); previewImages(this)" multiple>
-                                <div id="file-size-error" class="text-danger"></div>
+                        <div class="radio-button-container d-flex flex-row-reverse justify-content-end">
+                            <div class="radio-button">
+                                <input type="radio" class="radio-button__input" id="radio1" value="0"
+                                    name="is_visible" @if (old('is_visible', $apartment->is_visible) == 0) checked @endif>
+                                <label class="radio-button__label" for="radio1">
+                                    <span class="radio-button__custom"></span>
+                                    Hidden
+                                </label>
+                            </div>
+                            <div class="radio-button">
+                                <input type="radio" class="radio-button__input" id="radio2" value="1"
+                                    name="is_visible" @if (old('is_visible', $apartment->is_visible) == 1) checked @endif>
+                                <label class="radio-button__label" for="radio2">
+                                    <span class="radio-button__custom"></span>
+                                    Available
+                                </label>
                             </div>
 
 
-                            @if ($apartment->images)
-                                <p class="card-text"><strong>Images:</strong></p>
-                                <div class="row">
-                                    @foreach (explode(',', $apartment->images) as $image)
-                                        <div class="col-md-3">
-                                            <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
-                                                class="img-fluid mb-2">
-                                        </div>
-                                    @endforeach
-                                    <div class="row" id="preview-images-container">
-                                        <!-- Qui verranno visualizzate le miniature delle immagini -->
-                                    </div>
-                                </div>
-                            @endif
-
-                            @error('images')
-                                <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                            @enderror
-
                         </div>
                     </div>
-                </div>
-
-                <!-- Campo per selezionare i servizi disponibili nell'appartamento -->
-                <div class="col-md-6">
-                    <label for="services" class="form-label">Services *</label><br>
-                    @foreach ($services as $service)
-                        <input type="checkbox" id="service{{ $service->id }}" name="services[]"
-                            value="{{ $service->id }}"
-                            {{ in_array($service->id, old('services', $apartment->services->pluck('id')->toArray())) ? 'checked' : '' }}>
-                        <label for="service{{ $service->id }}">{{ $service->name }}</label><br>
-                    @endforeach
-
-                    @error('services')
-                        <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
-                    @enderror
-
+                    <span class="span-payment" id="payment-span" style="display: none;">It will not appear in the search
+                        engine</span>
                 </div>
             </div>
-
-
-            <div class="row mb-3">
-                <!-- Campo per la visibilità dell'appartamento -->
-                <div class="col-md-6">
-                    <label class="form-label">Visibility *</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_private"
-                            value="0" @if (old('is_visible', $apartment->is_visible) == 0) checked @endif>
-                        <label class="form-check-label" for="visibility_private">Private</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_visible" id="visibility_public"
-                            value="1" @if (old('is_visible', $apartment->is_visible) == 1) checked @endif>
-                        <label class="form-check-label" for="visibility_public">Public</label>
-                    </div>
-                </div>
+            <div class="text-end mt-5">
+                <button type="submit" class="btn btn-create">Save apartment</button>
             </div>
 
-            <!-- Bottone di submit -->
-            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-    </div> --}}
+    </div>
 
 
     <!-- Script per la ricerca dell'indirizzo -->
@@ -463,6 +342,16 @@
         const suggestionsMenu = document.getElementById('suggestionsMenu');
         const suggestionsList = suggestionsMenu.querySelector('.suggestions-list');
 
+        // Aggiungi un gestore di eventi di click al documento
+        document.addEventListener('click', function(event) {
+            // Verifica se l'elemento cliccato non è l'input o il menu delle suggerimenti
+            if (event.target !== search && event.target !== suggestionsMenu) {
+                // Nascondi il menu delle suggerimenti
+                suggestionsMenu.classList.add('d-none');
+            }
+        });
+
+        // Codice originale per gestire l'input
         search.addEventListener('input', function() {
             if (search.value.trim() !== '') {
                 getAddresses(search.value.trim());
@@ -472,44 +361,35 @@
             }
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const showMoreBtn = document.querySelector('.show-more');
-            const extraServices = document.querySelectorAll('.service-list.extra');
+        // Inizializza la mappa al caricamento della pagina
 
-            // Nascondi gli elementi extra inizialmente
-            extraServices.forEach(service => {
-                service.style.display = 'none';
-            });
+        const initialCenter = [{{ $apartment->lon }}, {{ $apartment->lat }}];
+        const map = tt.map({
+            key: "CGrCXRtpRKgwQl1fo2NZ0mOC3k7CHzUX",
+            container: "map",
+            center: initialCenter,
+            zoom: 14
+        });
+        map.addControl(new tt.FullscreenControl());
+        map.addControl(new tt.NavigationControl());
 
-            // Aggiungi un gestore per il clic sul pulsante "Show More"
-            showMoreBtn.addEventListener('click', function() {
-                extraServices.forEach(service => {
-                    service.style.display = 'inline-block';
-                });
-                // Nascondi il pulsante "Show More" dopo il clic
-                this.style.display = 'none';
-            });
+        // Aggiungi il marker alla mappa
+        const markerElement = document.createElement('img');
+        markerElement.src = 'https://svgshare.com/i/14RK.svg';
+        markerElement.style.width = '52px';
+        markerElement.style.height = '52px';
+
+        marker = new tt.Marker({
+            element: markerElement,
+            anchor: 'bottom'
+        }).setLngLat(initialCenter);
+
+        marker.addTo(map);
+        window.addEventListener('load', function() {
+            simulateResize(window.innerWidth, window.innerHeight);
         });
 
-        function increaseValue(field, maxValue) {
-            const element = document.getElementById(field + 'Number');
-            const currentValue = parseInt(element.innerText);
-            maxValue = maxValue || 1000; // Set the maximum value to 1000 if not specified
 
-            if (currentValue < maxValue) {
-                element.innerText = currentValue + 1;
-            }
-        }
-
-        function decreaseValue(field) {
-            const element = document.getElementById(field + 'Number');
-            const currentValue = parseInt(element.innerText);
-            const minValue = 1; // Set the minimum value
-
-            if (currentValue > minValue) {
-                element.innerText = currentValue - 1;
-            }
-        }
 
         function getAddresses(address) {
             fetch(`https://api.tomtom.com/search/2/search/${encodeURIComponent(address)}.json?key=${keyApi}`)
@@ -525,6 +405,58 @@
                             li.textContent = result.address.freeformAddress;
                             li.addEventListener('click', () => {
                                 search.value = result.address.freeformAddress;
+
+                                // Chiamata all'API di geocodifica per ottenere latitudine e longitudine
+                                fetch(
+                                        `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(result.address.freeformAddress)}.json?key=${keyApi}`
+                                    )
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Geocoding failed');
+                                        return response.json();
+                                    })
+                                    .then(geoData => {
+                                        if (geoData.results && geoData.results.length > 0) {
+                                            let latitude = geoData.results[0].position.lat;
+                                            let longitude = geoData.results[0].position.lon;
+
+
+
+                                            map.setCenter([longitude, latitude]);
+
+                                            // Rimuovi il marker esistente se presente
+                                            if (marker) {
+                                                marker.remove();
+                                            }
+
+
+                                            // Aggiungi il marker alla mappa
+                                            const markerElement = document.createElement('img');
+                                            markerElement.src = 'https://svgshare.com/i/14RK.svg';
+                                            markerElement.style.width = '52px';
+                                            markerElement.style.height = '52px';
+
+
+
+                                            marker = new tt.Marker({
+                                                element: markerElement,
+                                                anchor: 'bottom'
+                                            }).setLngLat([longitude, latitude]);
+
+                                            marker.addTo(map);
+                                            simulateResize(window.innerWidth, window.innerHeight);
+
+
+                                            // Centro la mappa sul nuovo marker
+                                        } else {
+                                            console.error('No geocoding results found');
+                                        }
+
+
+
+
+                                    })
+                                    .catch(error => console.error('Error during geocoding:', error));
+
                                 suggestionsMenu.classList.add('d-none');
                             });
                             suggestionsList.appendChild(li);
@@ -533,6 +465,75 @@
                 })
                 .catch(error => console.error('Error:', error));
         }
+
+
+        // Funzione per gestire i servizi
+        document.addEventListener('DOMContentLoaded', function() {
+            const showMoreBtn = document.querySelector('.show-more');
+            const extraServices = document.querySelectorAll('.service-list.extra');
+            const selectedServicesSpan = document.querySelector('.selected-services');
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+            // Nascondi gli elementi extra inizialmente
+            extraServices.forEach(service => {
+                service.style.display = 'none';
+            });
+
+            // Aggiorna il conteggio dei servizi selezionati
+            function updateSelectedServicesCount() {
+                const selectedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                selectedServicesSpan.textContent = selectedCount + ' services selected';
+            }
+
+            // Aggiungi un gestore per il clic sul pulsante "Show More" / "Hide"
+            let showMore = true; // Flag per tenere traccia dello stato del pulsante
+            showMoreBtn.addEventListener('click', function() {
+                extraServices.forEach(service => {
+                    if (showMore) {
+                        service.style.display = 'inline-block';
+                    } else {
+                        service.style.display = 'none';
+                    }
+                });
+                // Cambia il testo del pulsante e aggiorna lo stato
+                if (showMore) {
+                    this.textContent = 'Hide';
+                } else {
+                    this.textContent = 'Show More';
+                }
+                showMore = !showMore; // Inverti lo stato
+            });
+
+            // Aggiungi un gestore per il cambio di stato delle checkbox
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectedServicesCount();
+                });
+            });
+
+            // Aggiorna il conteggio dei servizi selezionati all'avvio
+            updateSelectedServicesCount();
+        });
+
+        function simulateResize(width, height) {
+            // Imposta la larghezza e l'altezza dello schermo
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: width
+            });
+
+            Object.defineProperty(window, 'innerHeight', {
+                writable: true,
+                configurable: true,
+                value: height
+            });
+
+            // Crea e scatena l'evento resize
+            var event = new Event('resize');
+            window.dispatchEvent(event);
+        }
+
 
 
         // Funzione per gestire il cambiamento del file di input e visualizzare le anteprime delle immagini
@@ -563,25 +564,6 @@
         }
 
         // Funzione per fare il check sulla dimensione dell'immagine
-        function checkFileSize(input) {
-            const files = input.files;
-            const maxSize = 1024 * 1024; // 1024 KB in bytes
-            const errorDiv = document.getElementById('file-size-error');
-
-            // Resetta il contenuto del div
-            errorDiv.textContent = '';
-
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].size > maxSize) {
-                    errorDiv.textContent = 'The image has to weight 1MB max.' + files[i].name;
-                    input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
-                    return;
-                }
-            }
-        }
-
-        // Funzione per visualizzare immagini prima di caricarle
-
         function checkFileSizeAndNumber(input) {
             const files = input.files;
             const maxSize = 1024 * 1024; // 1024 KB in bytes
@@ -605,6 +587,177 @@
                     input.value = ''; // Cancella il valore dell'input per consentire la selezione di altri file
                     return;
                 }
+            }
+        }
+
+        // Aggiungi un listener per l'evento 'change' su tutti i campi di input
+        document.querySelectorAll('.custom-input').forEach(function(inputField) {
+            inputField.addEventListener('change', function(event) {
+                let currentValue = parseInt(event.target.value);
+                if (isNaN(currentValue) || currentValue < 1) {
+                    event.target.value = 1; // Imposta il valore a 1 se è negativo o non valido
+                }
+            });
+        });
+
+        // Aggiorna la funzione updateCounter per utilizzare il valore corrente dal campo di input
+        function updateCounter(operation, fieldName) {
+            let inputField = document.querySelector('input[name="' + fieldName + '"]');
+            if (inputField) {
+                let currentValue = parseInt(inputField.value);
+                if (isNaN(currentValue) || currentValue < 1) {
+                    currentValue = 1; // Imposta il valore predefinito a 1 se è negativo o non valido
+                }
+                if (operation === 'plus') {
+                    inputField.value = currentValue + 1;
+                } else if (operation === 'minus') {
+                    inputField.value = Math.max(currentValue - 1, 1);
+                }
+            }
+        }
+
+        // Rimuovi l'event listener dal vecchio script di aggiornamento
+        document.removeEventListener('click', handleCounterUpdate);
+        document.removeEventListener('mousedown', handleCounterMouseDown);
+
+        // Definisci la funzione per gestire l'aggiornamento del contatore
+        function handleCounterUpdate(event) {
+            if (event.target.classList.contains('counter-control-plus')) {
+                updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            } else if (event.target.classList.contains('counter-control-minus')) {
+                updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute('name'));
+            }
+        }
+
+        // Definisci la funzione per gestire il mousedown
+        function handleCounterMouseDown(event) {
+            if (event.target.classList.contains('counter-control-plus')) {
+                // Imposta un timeout per avviare l'aggiornamento dopo 1 secondo
+                updateCounterTimeout = setTimeout(function() {
+                    // Imposta un intervallo per chiamare continuamente la funzione di aggiornamento
+                    updateCounterInterval = setInterval(function() {
+                        updateCounter('plus', event.target.parentNode.querySelector('input').getAttribute(
+                            'name'));
+                    }, 40); // Modifica la frequenza dell'aggiornamento se necessario
+                }, 400); // 1000 millisecondi corrispondono a 1 secondo
+            } else if (event.target.classList.contains('counter-control-minus')) {
+                // Imposta un timeout per avviare l'aggiornamento dopo 1 secondo
+                updateCounterTimeout = setTimeout(function() {
+                    // Imposta un intervallo per chiamare continuamente la funzione di aggiornamento
+                    updateCounterInterval = setInterval(function() {
+                        updateCounter('minus', event.target.parentNode.querySelector('input').getAttribute(
+                            'name'));
+                    }, 40); // Modifica la frequenza dell'aggiornamento se necessario
+                }, 400); // 1000 millisecondi corrispondono a 1 secondo
+            }
+        }
+
+        // Aggiungi gli event listener agli elementi di controllo (+/-)
+        document.addEventListener('click', handleCounterUpdate);
+        document.addEventListener('mousedown', handleCounterMouseDown);
+
+        // Rimuovi l'event listener al rilascio del mouse
+        document.addEventListener('mouseup', function() {
+            clearTimeout(updateCounterTimeout);
+            clearInterval(updateCounterInterval);
+        });
+
+        // Ricerca servizi
+        document.addEventListener('DOMContentLoaded', function() {
+            let searchInput = document.getElementById('service');
+            let serviceLabels = document.querySelectorAll('.service-label');
+            let showMore = document.querySelector('.show-more');
+
+            searchInput.addEventListener('input', function() {
+                let searchText = searchInput.value.trim().toLowerCase();
+
+                serviceLabels.forEach(function(label) {
+                    let labelName = label.textContent.trim().toLowerCase();
+                    let checkbox = label.querySelector('input[type="checkbox"]');
+
+                    if (labelName.includes(searchText)) {
+                        label.style.display = 'inline-block';
+                        checkbox.style.display = 'none';
+                    } else {
+                        label.style.display = 'none';
+                        checkbox.style.display = 'none';
+                    }
+
+                    // Show selected checkboxes if they match the search text
+                    if (checkbox.checked && !labelName.includes(searchText)) {
+                        label.style.display = 'inline-block';
+                    }
+                });
+
+                // Hide "Show More" button during search
+                showMore.style.display = 'none';
+            });
+        });
+
+        // Gestione sponsor
+        function selectSponsor(sponsor) {
+            // Rimuove la classe active-sponsor da tutte le card-sponsor con la classe "plan"
+            const cards = document.querySelectorAll('.plan');
+            cards.forEach(card => {
+                card.classList.remove('active-sponsor');
+            });
+
+            // Seleziona il radio button corrispondente al sponsor cliccato
+            const radio = document.getElementById(sponsor);
+            if (radio) {
+                radio.checked = true;
+            }
+
+            // Aggiunge la classe active-sponsor alla card-sponsor cliccata, se esiste
+            const selectedCard = document.querySelector(`#${sponsor}`);
+            if (selectedCard) {
+                const parentCard = selectedCard.closest('.plan');
+                if (parentCard) {
+                    parentCard.classList.add('active-sponsor');
+                }
+            }
+        }
+
+        // Funzione per gestire la visibilità dello span in base alla selezione del radio button
+        document.querySelectorAll('input[name="is_visible"]').forEach(function(input) {
+            input.addEventListener('change', function() {
+                var spanPayment = document.getElementById('payment-span');
+                if (this.value === '0') {
+                    spanPayment.style.display =
+                        'inline'; // Mostra lo span se l'opzione "Hidden" è selezionata
+                } else {
+                    spanPayment.style.display = 'none'; // Nasconde lo span altrimenti
+                }
+            });
+        });
+
+        // Preview immagini
+        function previewImages(input) {
+            let previewContainer = document.querySelector('.preview-row');
+            previewContainer.innerHTML = ''; // Pulisce la preview
+            const previewText = document.querySelector('.preview-text');
+
+            if (input.files) {
+                let filesAmount = input.files.length;
+                for (let i = 0; i < filesAmount; i++) {
+                    let reader = new FileReader();
+
+                    reader.onload = function(event) {
+                        let divCol = document.createElement('div');
+                        divCol.className = 'col-6 col-sm-3 col-lg-3 parent-image';
+
+                        let img = document.createElement('img');
+                        img.className = 'preview-single-image img-fluid';
+                        img.src = event.target.result;
+
+                        divCol.appendChild(img);
+                        previewContainer.appendChild(divCol);
+                    }
+
+                    reader.readAsDataURL(input.files[i]);
+                }
+
+                previewText.classList.add('d-none');
             }
         }
     </script>

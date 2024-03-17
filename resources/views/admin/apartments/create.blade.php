@@ -130,7 +130,8 @@
                                 <div class="alert alert-danger mt-2">{{ $message }}</div>
                             @enderror
 
-                            <div id="suggestionsMenu" class="card position-absolute radius d-none">
+                            <div id="suggestionsMenu"
+                                class="card bg-white border-secondary position-absolute radius d-none">
                                 <ul class="suggestions-list"></ul>
                             </div>
                         </div>
