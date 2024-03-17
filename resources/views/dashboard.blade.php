@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'BoolBnB - Dashboard')
+@section('title', 'MalHome - Dashboard')
 
 @section('content')
     <div class="welcome container">

@@ -11,9 +11,16 @@
 @import "_partials/sponsorships-style.scss";
 @import "_partials/login-style.scss";
 @import "_partials/register-style.scss";
+@import "_partials/messages-style.scss";
+@import "_partials/list-properties-style.scss";
+
 
 body {
     font-family: "Montserrat";
+}
+
+main {
+    margin-top: 70px !important;
 }
 
 h1 {
@@ -37,80 +44,4 @@ li {
 a {
     display: block;
     width: fit-content;
-}
-
-/*
-------------------
-Listed Properties
-------------------
-*/
-
-.properties-table {
-    td {
-        vertical-align: middle;
-        padding: 20px 12px;
-    }
-}
-
-.apartment-img {
-    width: 100px;
-    height: 60px;
-    border-radius: 6px;
-    object-fit: cover;
-}
-
-.apartment-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-left: 12px;
-}
-
-.status-tag {
-    font-size: 12px;
-    padding: 10px 16px;
-    border-radius: 4px;
-}
-
-.tag-sponsored {
-    background-color: #f2d37f;
-}
-
-.tag-hidden {
-    background-color: #DFDFDF;
-}
-
-.tag-active {
-    background-color: #CEF27F;
-}
-
-td,
-th {
-    border: none;
-}
-
-.properties-table {
-
-    &:nth-child(odd) {
-
-        td {
-            box-shadow: none;
-            background-color: #f6f6f6;
-        }
-
-        td:first-child {
-            border-radius: 16px 0 0 16px;
-        }
-
-        td:last-child {
-            border-radius: 0 16px 16px 0;
-        }
-    }
-}
-
-.btn-group {
-    gap: 20px;
-}
-
-.active {
-    background-color: #F4F4F4;
 }

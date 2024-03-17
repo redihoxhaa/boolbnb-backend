@@ -1,0 +1,35 @@
+.messages {
+
+    .custom-title-section {
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .custom-description-section {
+        font-size: 14px;
+    }
+
+    .border-right-custom {
+        border-right: 1px solid #E8E8E8;
+    }
+
+    .border-bottom-custom {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    .border-top-custom {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    .active {
+        background-color: #F4F4F4;
+    }
+
+    .apartment-img {
+        width: 100px;
+        height: 80px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
+}

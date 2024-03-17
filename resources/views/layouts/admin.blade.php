@@ -59,33 +59,39 @@
             background-color: none;
         }
 
+        .sidebar-height-custom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            margin-top: 70px;
+        }
+
         @media only screen and (min-width:768px) {
             .custom-sidebar {
                 max-width: 200px;
                 border-right: 1px solid #E8E8E8;
+            }
+
+            .margin-fixed-custom {
+                margin-left: 200px;
             }
         }
     </style>
 
     <div id="app">
 
+        {{-- Header --}}
         <header class="navbar sticky-top header flex-md-nowrap px-3 py-3 border-header">
             <div class="row justify-content-between position-relative collapse-button">
-
-
-
                 <span
                     class="navbar-toggler-icon navbar-toggler-custom position-absolute d-md-none collapsed border-0 mt-2"
                     data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
                     aria-expanded="false" aria-label="Toggle navigation"></span>
-
-
             </div>
 
             {{-- Navbar --}}
-            <div class="container-fluid d-flex align-items-center w-100 justify-content-between">
-
-
+            <div class="container-fluid d-flex align-items-center justify-content-between">
                 <div class="nav-element ms-2">
                     {{-- Logo --}}
                     <div class="pic-container">
@@ -108,12 +114,12 @@
             </div>
         </header>
 
-        <div class="container-fluid vh-100">
-            <div class="row h-100">
-                <!-- Definire solo parte del menu di navigazione inizialmente per poi
-        aggiungere i link necessari giorno per giorno
-        -->
-                <nav id="sidebarMenu" class="col-12 col-md-3 d-md-block custom-sidebar sidebar collapse">
+        {{-- Main --}}
+        <div>
+            <div>
+                {{-- SidebarMenu --}}
+                <nav id="sidebarMenu "
+                    class="col-12 col-md-3 d-md-block custom-sidebar sidebar collapse sidebar-height-custom">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li
@@ -156,9 +162,11 @@
                     </div>
                 </nav>
 
-                <main class="dark-bg col-12 col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {{-- Main --}}
+                <main class="col-12 col-md-9 margin-fixed-custom">
                     @yield('content')
                 </main>
+
             </div>
         </div>
 

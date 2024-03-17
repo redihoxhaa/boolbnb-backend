@@ -4,9 +4,17 @@
 
 @section('content')
 
-    <div class="container create">
+    <div class="mt-4 me-5 mb-5 create">
 
-        <h1 class="mb-5">Create New Apartment</h1>
+        {{-- Path Page --}}
+        <div>
+            <span>Admin</span>
+            <span>/</span>
+            <span>Apartments</span>
+        </div>
+
+        {{-- Title Page --}}
+        <h1 class="page-title my-4">Create Apartment</h1>
 
         <form action="{{ route('admin.apartments.store') }}" method="POST" enctype="multipart/form-data">
             <!-- Form per creare un nuovo appartamento -->
