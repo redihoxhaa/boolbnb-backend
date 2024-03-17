@@ -1,0 +1,49 @@
+.card {
+    background-color: #D9D9D9;
+    border-color: #3C3C3C;
+    animation: fadeIn 1s ease;
+
+    .card-header {
+        background-color: #CEF27F;
+
+        h2 {
+            color: #3C3C3C;
+        }
+    }
+
+    .card-body {
+        .text-center {
+            margin-bottom: 4rem;
+
+            p {
+                color: #3C3C3C;
+                font-weight: bold;
+            }
+        }
+
+        .btn-primary {
+            background-color: #CEF27F;
+            border-color: #CEF27F;
+            transition: all 0.3s ease;
+            color: #3C3C3C;
+
+            &:hover {
+                background-color: darken(#CEF27F, 10%);
+                border-color: darken(#CEF27F, 10%);
+                transform: scale(1.05);
+            }
+        }
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
