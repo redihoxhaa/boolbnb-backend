@@ -70,4 +70,82 @@
         border-radius: 6px;
         object-fit: cover;
     }
+
+    .message {
+        cursor: pointer;
+    }
+}
+
+.messages-mobile {
+
+    .custom-height-scroll {
+        height: calc(100vh - 311px);
+    }
+
+    .custom-title-section {
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .custom-description-section {
+        font-size: 14px;
+    }
+
+    .apartment-message-title-mobile {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .apartment-message-date-mobile {
+        font-size: 12px;
+        padding-top: 5px;
+
+    }
+
+    .apartment-message-description-mobile {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .card-custom-container {
+        border: 1px solid #E8E8E8;
+        padding: 24px;
+        border-radius: 14px;
+        margin-top: 20px;
+    }
+
+    .custom-button {
+        background-color: #CEF27E;
+        border-radius: 100px;
+        padding: 8px 24px;
+        margin-bottom: 20px;
+    }
+
+    .icon-message {
+        width: 16px;
+    }
+
+    .border-right-custom {
+        border-right: 1px solid #E8E8E8;
+    }
+
+    .border-bottom-custom {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    .border-top-custom {
+        border-bottom: 1px solid #E8E8E8;
+    }
+
+    .active {
+        background-color: #F4F4F4;
+    }
+
+    .apartment-img-mobile {
+        width: 100px;
+        height: 80px;
+        border-radius: 6px;
+        object-fit: cover;
+    }
 }
