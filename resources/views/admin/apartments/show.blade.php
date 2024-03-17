@@ -42,9 +42,9 @@
 
         {{-- Path Page --}}
         <div class="path-page">
-            <span>Admin</span>
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
             <span>/</span>
-            <span>Apartments</span>
+            <a href="{{ route('admin.apartments.index') }}">Apartments</a>
             <span>/</span>
             <span>{{ $apartment->title }}</span>
         </div>
@@ -492,10 +492,10 @@
             <div class="col-lg-6 mt-5 mt-lg-0">
                 <h5 class="fw-bold text-uppercase">Sponsor your apartment</h5>
 
-                <a class="row w-100" href="{{ route('admin.apartments.sponsorship', $apartment) }}">
+                <a class="row " href="{{ route('admin.apartments.sponsorship', $apartment) }}">
                     <div class="p-2">
-                        <div class="no-sponsor d-flex">
-                            <div class="d-flex gap-3 align-items-center">
+                        <div class="no-sponsor d-flex justify-content-center align-items-center">
+                            <div class="d-flex gap-3 justify-content-center align-items-center">
                                 <div><img class="pb-1 me-2 img-rocket sponsor-icon"
                                         src="{{ asset('assets/images/rocket.svg') }}">
                                 </div>

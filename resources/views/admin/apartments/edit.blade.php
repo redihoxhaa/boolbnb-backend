@@ -13,7 +13,7 @@
             <span>/</span>
             <a href="{{ route('admin.apartments.index') }}">Apartments</a>
             <span>/</span>
-            <span>Create</span>
+            <span>Edit {{ $apartment->title }}</span>
         </div>
 
         {{-- Title Page --}}
@@ -52,8 +52,8 @@
                                     <div class="counter-control-minus">
                                         -
                                     </div>
-                                    <input type="number" value="{{ old('rooms', $apartment->rooms) }}" class="custom-input"
-                                        name="rooms">
+                                    <input type="number" value="{{ old('rooms', $apartment->rooms) }}"
+                                        class="custom-input" name="rooms">
                                     <div class="counter-control-plus">
                                         +
                                     </div>
@@ -248,7 +248,7 @@
                                             <input class="d-none" type="radio" name="sponsor" id="diamond"
                                                 value="diamond">
                                             <label for="diamond"><img class=sponsor-icon
-                                                    src="{{ asset('assets/images/diamond 1.svg') }}"
+                                                    src="{{ asset('assets/images/diamond.svg') }}"
                                                     alt="diamond"></label>
                                         </div>
                                         <div class="fw-bold">Diamond<br>Plan</div>

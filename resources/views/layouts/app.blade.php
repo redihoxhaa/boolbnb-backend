@@ -36,6 +36,7 @@
 
         .fixed-navbar {
             margin-top: 80px;
+
         }
     </style>
 

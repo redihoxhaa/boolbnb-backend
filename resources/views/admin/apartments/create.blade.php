@@ -243,7 +243,7 @@
                                             <input class="d-none" type="radio" name="sponsor" id="diamond"
                                                 value="diamond">
                                             <label for="diamond"><img class=sponsor-icon
-                                                    src="{{ asset('assets/images/diamond 1.svg') }}"
+                                                    src="{{ asset('assets/images/diamond.svg') }}"
                                                     alt="diamond"></label>
                                         </div>
                                         <div class="fw-bold">Diamond<br>Plan</div>

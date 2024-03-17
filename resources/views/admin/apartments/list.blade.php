@@ -8,11 +8,11 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="listed-properties py-4 px-5">
+    <div class="listed-properties container py-4 px-5">
 
         {{-- Path Page --}}
-        <div>
-            <span>Admin</span>
+        <div class="path-page">
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
             <span>/</span>
             <span>Apartments</span>
         </div>
@@ -71,12 +71,12 @@
         <div class="row">
             <div class="col">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">TITLE</th>
                                 <th scope="col" class="d-none d-lg-table-cell">ADDRESS</th>
-                                <th scope="col" class="d-none d-sm-table-cell text-center">STATUS</th>
+                                <th scope="col" class="d-none d-md-table-cell text-center">STATUS</th>
                                 <th scope="col" class="d-none d-xxl-table-cell text-nowrap text-center">LISTED ON</th>
                             </tr>
                         </thead>
@@ -111,7 +111,7 @@
                                         {{ $apartment->address }}</td>
 
                                     {{-- Status --}}
-                                    <td class="d-none d-sm-table-cell text-center">
+                                    <td class="d-none d-md-table-cell text-center">
                                         @if (
                                             $apartment->sponsorships->count() &&
                                                 $apartment->is_visible == 1 &&

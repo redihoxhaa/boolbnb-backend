@@ -37,7 +37,7 @@
                                     @if ($sponsorship->package_name === 'Gold')
                                         <img src="{{ asset('assets/images/gold.svg') }}" class="darken" alt="Bathrooms">
                                     @elseif ($sponsorship->package_name === 'Diamond')
-                                        <img src="{{ asset('assets/images/diamond 1.svg') }}" class="darken" alt="diamond">
+                                        <img src="{{ asset('assets/images/diamond.svg') }}" class="darken" alt="diamond">
                                     @else
                                         <img src="{{ asset('assets/images/emerald.svg') }}" class="darken" alt="emerald">
                                     @endif

@@ -44,3 +44,24 @@ a {
     display: block;
     width: fit-content;
 }
+
+main {
+    height: 100vh;
+}
+
+main,
+th,
+tbody,
+.table> :not(caption)>*>* {
+    background-color: rgb(252, 252, 252) !important;
+}
+
+.card-sponsor,
+.card-icon,
+.service-label {
+    background-color: white;
+}
+
+.listed-properties .properties-table:nth-child(odd) td {
+    background-color: rgb(245, 245, 245) !important;
+}
