@@ -8,7 +8,7 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="listed-properties">
+    <div class="listed-properties py-4 px-5">
 
         {{-- Path Page --}}
         <div>
@@ -88,7 +88,7 @@
                                     <td>
                                         <a class="d-flex align-items-center"
                                             href="{{ route('admin.apartments.show', $apartment) }}">
-                                            <div>
+                                            <div class="d-none d-sm-block">
                                                 @if ($apartment->images)
                                                     <img class="apartment-img"
                                                         src="{{ asset('storage/' . explode(',', $apartment->images)[0]) }}"
