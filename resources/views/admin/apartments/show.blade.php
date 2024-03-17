@@ -107,194 +107,223 @@
             $count = count($images);
         @endphp
 
-        {{-- Carosello --}}
-        <div id="carouselExampleIndicators" class="carousel slide d-lg-none">
-            <div class="carousel-inner">
-                @foreach ($images as $key => $image)
-                    <div class="carousel-item @if ($key === 0) active @endif">
-                        <div class="parent d-flex justify-content-center">
-                            <img class="d-block w-100" src="{{ asset('storage/' . $image) }}" alt="ApartmentImage">
+        @if ($apartment->images)
+            {{-- Carosello --}}
+            <div id="carouselExampleIndicators" class="carousel slide d-lg-none">
+                <div class="carousel-inner">
+                    @foreach ($images as $key => $image)
+                        <div class="carousel-item @if ($key === 0) active @endif">
+                            <div class="parent d-flex justify-content-center">
+                                <img class="d-block w-100" src="{{ asset('storage/' . $image) }}" alt="ApartmentImage">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+            {{-- Images to grid --}}
+            <div class="image-gallery d-none d-lg-block">
+
+                <!-- Modal -->
+                <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <img src="" alt="Apartment image" id="modalImage">
+                    </div>
+                </div>
+
+                @if (count($images) === 1)
+                    <div class="with-1-foto">
+                        <div class="parent">
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" class="w-100"
+                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)">
+                        </div>
+
+                    </div>
+                @elseif (count($images) === 2)
+                    <div class="with-2-foto d-flex gap-4">
+                        <div class="w-50-custom">
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
+                                data-bs-target="#modal1" onclick="openModal(0)">
+                        </div>
+                        <div class="w-50-custom">
+                            <img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image" data-bs-toggle="modal"
+                                data-bs-target="#modal1" onclick="openModal(1)">
                         </div>
                     </div>
-                @endforeach
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
-        </div>
-
-        {{-- Images to grid --}}
-        <div class="image-gallery d-none d-lg-block">
-
-            <!-- Modal -->
-            <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <img src="" alt="Apartment image" id="modalImage">
-                </div>
-            </div>
-
-            @if (count($images) === 1)
-                <div class="with-1-foto">
-                    <div class="parent">
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" class="w-100"
-                            data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)">
-                    </div>
-
-                </div>
-            @elseif (count($images) === 2)
-                <div class="with-2-foto d-flex gap-4">
-                    <div class="w-50-custom">
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
-                            data-bs-target="#modal1" onclick="openModal(0)">
-                    </div>
-                    <div class="w-50-custom">
-                        <img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image" data-bs-toggle="modal"
-                            data-bs-target="#modal1" onclick="openModal(1)">
-                    </div>
-                </div>
-            @elseif (count($images) === 3)
-                <div class="with-3-foto d-flex gap-4">
-                    <div class="w-50-custom">
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
-                            data-bs-target="#modal1" onclick="openModal(0)">
-                    </div>
-                    <div class="w-50 d-flex gap-4">
-                        <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
-                        <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
-                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
-                    </div>
-                </div>
-            @elseif (count($images) === 4)
-                <div class="with-4-foto d-flex gap-4">
-                    <div class="w-50-custom">
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
-                            data-bs-target="#modal1" onclick="openModal(0)">
-                    </div>
-                    <div class="w-50 d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
+                @elseif (count($images) === 3)
+                    <div class="with-3-foto d-flex gap-4">
+                        <div class="w-50-custom">
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
+                                data-bs-target="#modal1" onclick="openModal(0)">
+                        </div>
+                        <div class="w-50 d-flex gap-4">
                             <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
+                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
                             <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
                                     data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
                         </div>
-                        <div class="h-50-custom">
-                            <div class="w-100-custom"><img src="{{ asset('storage/' . $images[3]) }}"
+                    </div>
+                @elseif (count($images) === 4)
+                    <div class="with-4-foto d-flex gap-4">
+                        <div class="w-50-custom">
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
+                                data-bs-target="#modal1" onclick="openModal(0)">
+                        </div>
+                        <div class="w-50 d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                            </div>
+                            <div class="h-50-custom">
+                                <div class="w-100-custom"><img src="{{ asset('storage/' . $images[3]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(3)"></div>
+                            </div>
+                        </div>
+                    </div>
+                @elseif (count($images) === 5)
+                    <div class="with-5-foto d-flex gap-4">
+                        <div class="w-50-custom">
+                            <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
+                                data-bs-target="#modal1" onclick="openModal(0)">
+                        </div>
+                        <div class="w-50 d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(1)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                            </div>
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(3)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(4)"></div>
+                            </div>
+                        </div>
+                    </div>
+                @elseif (count($images) === 6)
+                    <div class="with-6-foto d-flex gap-4">
+                        <div class="w-50-custom d-flex flex-column gap-4">
+                            <div class="h-50-custom"><img src="{{ asset('storage/' . $images[1]) }}"
                                     alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
-                                    onclick="openModal(3)"></div>
+                                    onclick="openModal(1)"></div>
+                            <div class="h-50-custom"><img src="{{ asset('storage/' . $images[0]) }}"
+                                    alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                    onclick="openModal(0)"></div>
+                        </div>
+                        <div class="w-50 d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(3)"></div>
+                            </div>
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(4)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(5)"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @elseif (count($images) === 5)
-                <div class="with-5-foto d-flex gap-4">
-                    <div class="w-50-custom">
-                        <img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image" data-bs-toggle="modal"
-                            data-bs-target="#modal1" onclick="openModal(0)">
-                    </div>
-                    <div class="w-50 d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
+                @elseif (count($images) === 7)
+                    <div class="with-7-foto d-flex gap-4">
+                        <div class="w-50-custom d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(1)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                            </div>
+                            <div class="h-50-custom"><img src="{{ asset('storage/' . $images[0]) }}"
+                                    alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                    onclick="openModal(0)"></div>
                         </div>
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(3)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(4)"></div>
-                        </div>
-                    </div>
-                </div>
-            @elseif (count($images) === 6)
-                <div class="with-6-foto d-flex gap-4">
-                    <div class="w-50-custom d-flex flex-column gap-4">
-                        <div class="h-50-custom"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
-                        <div class="h-50-custom"><img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image"
-                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)"></div>
-                    </div>
-                    <div class="w-50 d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(3)"></div>
-                        </div>
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(4)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(5)"></div>
+                        <div class="w-50 d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(3)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(4)"></div>
+                            </div>
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(5)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[6]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(6)"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @elseif (count($images) === 7)
-                <div class="with-7-foto d-flex gap-4">
-                    <div class="w-50-custom d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
+                @elseif (count($images) === 8)
+                    <div class="with-8-foto d-flex gap-4">
+                        <div class="w-50-custom d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(2)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(3)"></div>
+                            </div>
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[0]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(0)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(1)"></div>
+                            </div>
                         </div>
-                        <div class="h-50-custom"><img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image"
-                                data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)"></div>
-                    </div>
-                    <div class="w-50 d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(3)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(4)"></div>
-                        </div>
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(5)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[6]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(6)"></div>
-                        </div>
-                    </div>
-                </div>
-            @elseif (count($images) === 8)
-                <div class="with-8-foto d-flex gap-4">
-                    <div class="w-50-custom d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[2]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(2)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[3]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(3)"></div>
-                        </div>
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[0]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(0)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[1]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(1)"></div>
+                        <div class="w-50 d-flex flex-column gap-4">
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(4)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(5)"></div>
+                            </div>
+                            <div class="h-50-custom d-flex gap-4">
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[6]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(6)"></div>
+                                <div class="w-50"><img src="{{ asset('storage/' . $images[7]) }}"
+                                        alt="Apartment image" data-bs-toggle="modal" data-bs-target="#modal1"
+                                        onclick="openModal(7)"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="w-50 d-flex flex-column gap-4">
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[4]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(4)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[5]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(5)"></div>
-                        </div>
-                        <div class="h-50-custom d-flex gap-4">
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[6]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(6)"></div>
-                            <div class="w-50"><img src="{{ asset('storage/' . $images[7]) }}" alt="Apartment image"
-                                    data-bs-toggle="modal" data-bs-target="#modal1" onclick="openModal(7)"></div>
-                        </div>
-                    </div>
-                </div>
-            @endif
+                @endif
 
-        </div>
+            </div>
+        @endif
 
         <div class="row">
             <div class="col-12">
@@ -343,7 +372,8 @@
                     <div class="p-2 col-6 col-xl-3">
                         <div class="text-center card-icon">
                             <div class="counter-name">
-                                <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area"> Area
+                                <img class="pb-1 me-1" src="{{ asset('assets/images/area.svg') }}" alt="Area">
+                                Area
                                 /<span class="sqm">sqm</span>
                             </div>
                             <div class="counter-counter mt-3">
@@ -355,6 +385,7 @@
 
             </div>
         </div>
+
         <div class="row mt-5">
 
 

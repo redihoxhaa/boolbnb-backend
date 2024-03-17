@@ -166,7 +166,7 @@
                             </li>
                             <li
                                 class="nav-item d-flex justify-content-center justify-content-md-start px-0 mx-4 text-nowrap  ">
-                                <a class="nav-link d-flex gap-4 align-items-center px-3 {{ Route::currentRouteName() == 'admin.apartments.index' ? 'active-route' : '' }}"
+                                <a class="nav-link d-flex gap-4 align-items-center px-3 {{ in_array(Route::currentRouteName(), ['admin.apartments.index', 'admin.apartments.show', 'admin.apartments.edit', 'admin.apartments.create']) ? 'active-route' : '' }}"
                                     href="{{ route('admin.apartments.index') }}">
                                     <i class="fa-solid fa-list fa-lg fa-fw"></i> Apartments
                                 </a>
@@ -201,29 +201,7 @@
 
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const collapseButton = document.querySelector("[data-bs-target='#sidebarMenu']");
-            const marginFixedCustom = document.querySelector(".margin-fixed-custom");
-            const sidebarMenu = document.getElementById("sidebarMenu");
-
-            collapseButton.addEventListener("click", function() {
-                marginFixedCustom.classList.toggle("opened");
-                sidebarMenu.classList.toggle("d-none");
-            });
-        });
-
-        document.addEventListener("DOMContentLoaded", function() {
-            const currentRoute = "{{ Route::currentRouteName() }}";
-            const navLinks = document.querySelectorAll(".nav-link");
-
-            navLinks.forEach(function(link) {
-                if (link.getAttribute("href") === currentRoute) {
-                    link.parentElement.classList.add("active-route");
-                }
-            });
-        });
-    </script>
+    <script></script>
 </body>
 
 </html>
