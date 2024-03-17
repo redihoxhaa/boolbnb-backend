@@ -163,7 +163,7 @@
                 </nav>
 
                 {{-- Main --}}
-                <main class="margin-fixed-custom p-5">
+                <main class="margin-fixed-custom">
                     @yield('content')
                 </main>
 
