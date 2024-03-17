@@ -5,7 +5,7 @@
 @section('content')
     <div class="messages-mobile d-lg-none">
         <div class="py-4 px-4">
-            <div class="path-page-mobile">
+            <div class="path-page">
                 <a href="{{ route('admin.dashboard') }}">Admin</a>
                 <span>/</span>
                 <a href="{{ route('admin.apartments.index') }}">Apartments</a>
