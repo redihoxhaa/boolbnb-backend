@@ -8,7 +8,7 @@
 
 
     {{-- <link rel="stylesheet" href="{{ asset('scss/partials/sponsorships-style.scss') }}"> --}}
-    <div class="container py-4 sponsorship">
+    <div class="container py-4 px-5 sponsorship">
         <div>
             <span class="text-secondary">Admin</span>
             <span class="text-secondary">/</span>
@@ -28,8 +28,8 @@
                         <input value="{{ $sponsorship->id }}" name="sponsorship_choice"
                             id="sponsorship{{ $sponsorship->id }}" type="radio" class="sponsorship-radio"
                             data-package-price="{{ $sponsorship->package_price }}" required>
-                        <label for="sponsorship{{ $sponsorship->id }}" class="row ">
-                            <div class="col-3">
+                        <label for="sponsorship{{ $sponsorship->id }}" class="row">
+                            <div class="col-3 d-flex justify-content-center align-items-center">
                                 <div>
                                     @if ($sponsorship->package_name === 'Gold')
                                         <img src="{{ asset('assets/images/gold.svg') }}" class="darken" alt="Bathrooms">
@@ -40,18 +40,29 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-9 d-flex flex-column">
-                                <span>{{ $sponsorship->package_name }}</span>
-                                <span>{{ $sponsorship->package_duration }}h</span>
+                            <div class="col-6 py-3 d-flex flex-column justify-content-center">
+                                <h4 class="mb-0">{{ $sponsorship->package_name }}</h4>
+                                @if ($sponsorship->package_name === 'Gold')
+                                    <span class="fw-normal">1 day</span>
+                                @elseif ($sponsorship->package_name === 'Diamond')
+                                    <span class="fw-normal">3 days</span>
+                                @else
+                                    <span class="fw-normal">6 days</span>
+                                @endif
+
+                            </div>
+                            <div class="col-3 mt-auto text-end">
                                 <span class="package-price align-self-end">€{{ $sponsorship->package_price }}</span>
                             </div>
+
                         </label>
                     @endforeach
                 </div>
                 <div class="col col-lg-7 ps-4 mt-2">
                     <h6 class="text-black">PAYMENT</h6>
-                    <div class="row mt-3 lg-gap-2">
-                        <div class="col-3">
+                    <div class="d-flex mt-3 lg-gap-2">
+                        <div class="me-4">
+
                             <div>
                                 @if ($apartment->images)
                                     <img class="apartment-img-sponsorships"
@@ -64,19 +75,25 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-9">
-                            <h6>{{ $sponsorship->package_name }}</h6>
+                        <div class="">
+                            <h6 class="selected-plan"></h6>
                             <h4>{{ $apartment->title }}</h4>
+                            <div class="d-flex">
+                                <span class="start-date"></span>
+
+                            </div>
                         </div>
                     </div>
-                    <div id="dropin-container" style="display:none;"></div>
 
+                    <div id="dropin-container" style="display:none;"></div>
                 </div>
+
             </div>
             <div class="row">
                 <div class="mt-5">
-                    <div class="d-flex flex-row-reverse">
-                        <h2 class="price"></h2>
+                    <div class="">
+                        <div class="text-end total d-none">Total (VAT Included):</div>
+                        <h2 class="price text-end"></h2>
                         {{-- <a href="{{ route('admin.apartments.index') }}" class="btn btn-secondary btn-sm mb-4 "><i
                         class="fas fa-arrow-left"></i> Go Back</a> --}}
                     </div>
@@ -140,15 +157,46 @@
             });
         });
 
+        // Impostazione totale da pagare
         document.addEventListener("DOMContentLoaded", function() {
             const radioButtons = document.querySelectorAll('.sponsorship-radio');
             const priceDiv = document.querySelector('.price');
+            const totalDiv = document.querySelector('.total');
 
             radioButtons.forEach(function(radioButton) {
                 radioButton.addEventListener('change', function() {
                     if (this.checked) {
                         const packagePrice = this.getAttribute('data-package-price');
                         priceDiv.textContent = "€" + packagePrice;
+                        totalDiv.classList.remove("d-none");
+                    }
+                });
+            });
+        });
+
+        // Impostazione delle info pacchetto
+        document.addEventListener("DOMContentLoaded", function() {
+            const radioButtons = document.querySelectorAll('.sponsorship-radio');
+            const startDateDiv = document.querySelector('.start-date');
+
+            radioButtons.forEach(function(radioButton) {
+                radioButton.addEventListener('change', function() {
+                    if (this.checked) {
+                        const packagePrice = parseFloat(this.getAttribute('data-package-price'));
+                        let startDateText = '';
+
+                        if (packagePrice ===
+                            2.99) {
+                            startDateText = '1 day of boost will be added to your listing!';
+                        } else if (packagePrice ===
+                            5.99) {
+                            startDateText = '3 days of boost will be added to your listing!';
+                        } else if (packagePrice ===
+                            9.99) {
+                            startDateText = '6 days of boost will be added to your listing!';
+                        }
+
+                        startDateDiv.textContent = startDateText;
                     }
                 });
             });

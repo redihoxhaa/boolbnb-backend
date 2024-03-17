@@ -3,6 +3,11 @@
 @section('title', 'My Messages')
 
 @section('content')
+
+    @php
+        // Importa Carbon
+        use Carbon\Carbon;
+    @endphp
     <div class="messages">
 
         {{-- Title --}}
@@ -108,7 +113,9 @@
         </div>
 
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"
+        integrity="sha512-dUlSLLkxslGILhPdCkALwk4szPhp3xmZIKFtlUD+O9Lslq41Aksmdt5OGqpomDoT4FsCUH70jQU8ezZHI3v1RQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -134,6 +141,13 @@
                             messagesList.innerHTML = '';
                             response.data.forEach((message, index) => {
                                 const messageDiv = document.createElement('div');
+
+                                const inputDate = message.created_at;
+                                const luxonDate = luxon.DateTime.fromISO(inputDate, {
+                                    zone: "utc"
+                                });
+                                const formattedDate = luxonDate.toFormat(
+                                    "yyyy-MM-dd HH:mm");
                                 messageDiv.innerHTML = `
                                 <div class="message border-bottom-custom p-4 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
                                     <div class="d-flex gap-3">
@@ -142,9 +156,9 @@
                                         </div>
                                     <div>
                                     <h5 class="apartment-message-title">${message.sender_name}</h5>
-                                    <h6 class="apartment-message-description">${message.created_at}</h6>
+                                    <h6 class="apartment-message-description">${message.sender_name}</h6>
                                 </div>
-                                <input type="hidden" class="message-text" value="${message.message_text}">
+                                <input type="hidden" class="message-text" value="${formattedDate}">
                                 `;
                                 messagesList.appendChild(messageDiv);
 
