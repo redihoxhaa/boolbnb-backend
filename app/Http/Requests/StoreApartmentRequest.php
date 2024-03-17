@@ -34,7 +34,8 @@ class StoreApartmentRequest extends FormRequest
             // 'longitude' => 'required|numeric',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,avif|max:1024',
             'services' => 'required|exists:services,id',
-            'is_visible' => 'required|boolean'
+            'is_visible' => 'required|boolean',
+            'sponsor' => 'nullable|string'
         ];
     }
 }

@@ -112,6 +112,25 @@ class ApartmentController extends Controller
             $apartment->services()->sync([]);
         }
 
+        if ($data['sponsor'] === 'Gold') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Gold';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        }
+
+        if ($data['sponsor'] === 'Diamond') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Diamond';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        }
+
+        if ($data['sponsor'] === 'Emerald') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Emerald';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        }
+
+
         return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully listed.');
     }
 
@@ -205,6 +224,21 @@ class ApartmentController extends Controller
         } else {
             $apartment->services()->sync([]);
         }
+
+        if ($data['sponsor'] === 'Gold') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Gold';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        } elseif ($data['sponsor'] === 'Diamond') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Diamond';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        } elseif ($data['sponsor'] === 'Emerald') {
+            $sponsorships = Sponsorship::all();
+            $preference = 'Emerald';
+            return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
+        }
+
         return redirect()->route('admin.apartments.show', $apartment)->with('message', $apartment->title . '" was successfully updated');
     }
 
@@ -229,8 +263,9 @@ class ApartmentController extends Controller
     {
         $apartment = Apartment::findOrFail($apartment);
         $sponsorships = Sponsorship::all();
+        $preference = '';
 
-        return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment'));
+        return view('admin.apartments.sponsorship', compact('sponsorships', 'apartment', 'preference'));
     }
 
     public function buySponsorship(Request $request, $apartmentID)

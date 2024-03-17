@@ -30,7 +30,8 @@
                     @foreach ($sponsorships as $sponsorship)
                         <input value="{{ $sponsorship->id }}" name="sponsorship_choice"
                             id="sponsorship{{ $sponsorship->id }}" type="radio" class="sponsorship-radio"
-                            data-package-price="{{ $sponsorship->package_price }}" required>
+                            data-package-price="{{ $sponsorship->package_price }}"
+                            @if ($preference === $sponsorship->package_name) checked @endif required>
                         <label for="sponsorship{{ $sponsorship->id }}" class="row">
                             <div class="col-3 d-flex justify-content-center align-items-center">
                                 <div>
@@ -175,6 +176,35 @@
                     }
                 });
             });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const dropinContainer = document.querySelector('#dropin-container');
+            const button = document.querySelector('#submit-button');
+            const checkedRadioButton = document.querySelector('.sponsorship-radio:checked');
+            const startDateDiv = document.querySelector('.start-date');
+
+            if (checkedRadioButton) {
+                dropinContainer.style.display = 'block';
+                button.style.display = 'block';
+
+                const packagePrice = parseFloat(checkedRadioButton.getAttribute('data-package-price'));
+                let startDateText = '';
+
+                if (packagePrice === 2.99) {
+                    startDateText = '1 day of boost will be added to your listing!';
+                } else if (packagePrice === 5.99) {
+                    startDateText = '3 days of boost will be added to your listing!';
+                } else if (packagePrice === 9.99) {
+                    startDateText = '6 days of boost will be added to your listing!';
+                }
+
+                startDateDiv.textContent = startDateText;
+            } else {
+                dropinContainer.style.display = 'none';
+                button.style.display = 'none';
+                startDateDiv.textContent = ''; // Pulisce il testo se nessun radio button è selezionato
+            }
         });
 
         // Impostazione delle info pacchetto

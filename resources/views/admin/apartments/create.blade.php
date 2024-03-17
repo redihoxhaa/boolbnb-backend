@@ -223,7 +223,7 @@
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
                                             <input class="d-none" type="radio" name="sponsor" id="gold"
-                                                value="gold">
+                                                value="Gold">
                                             <label for="gold"><img class=sponsor-icon
                                                     src="{{ asset('assets/images/gold.svg') }}" alt="Bathrooms"></label>
                                         </div>
@@ -241,7 +241,7 @@
                                     <div class="card-sponsor plan">
                                         <div class="mb-1">
                                             <input class="d-none" type="radio" name="sponsor" id="diamond"
-                                                value="diamond">
+                                                value="Diamond">
                                             <label for="diamond"><img class=sponsor-icon
                                                     src="{{ asset('assets/images/diamond.svg') }}"
                                                     alt="diamond"></label>
@@ -256,10 +256,10 @@
                             </div>
                             <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
                                 <div class="d-flex flex-column gap-2" onclick="selectSponsor('emerald')">
-                                    <div class="card-sponsor plan active-sponsor">
+                                    <div class="card-sponsor plan">
                                         <div class="mb-1">
                                             <input class="d-none" type="radio" name="sponsor" id="emerald"
-                                                value="emerald" checked>
+                                                value="Emerald">
                                             <label for="emerald"><img class=sponsor-icon
                                                     src="{{ asset('assets/images/emerald.svg') }}"
                                                     alt="emerald"></label>
@@ -277,7 +277,8 @@
                                 <div class="no-sponsor plan d-flex" onclick="selectSponsor('no-boost')">
                                     <div class="d-flex gap-2">
                                         <div>
-                                            <input type="radio" name="sponsor" id="no-boost" value="no-boost">
+                                            <input type="radio" name="sponsor" id="no-boost" value="no-boost"
+                                                checked>
                                             <label for="no-boost"></label>
                                             <!-- Aggiunto questo label per rendere cliccabile l'intera card -->
                                         </div>
