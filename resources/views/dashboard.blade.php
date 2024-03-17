@@ -3,7 +3,7 @@
 @section('title', 'MalHome - Dashboard')
 
 @section('content')
-    <div class="welcome py-4 px-5">
+    <div class="dashboard py-4 px-5">
 
         <div class="row">
 
