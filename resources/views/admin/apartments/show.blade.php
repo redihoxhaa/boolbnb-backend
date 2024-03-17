@@ -154,7 +154,8 @@
                         <h5 class="fw-bold">Location</h5>
                         <div>{{ $apartment->address }}</div>
                         <div class="mt-3">
-                            <img class="w-100" src="{{ asset('assets/images/Group256.png') }}" alt="img">
+                            <div id="map" class="mt-3 mb-4" style="width: 100%; height: 412px;" class='map'>
+                            </div>
                         </div>
 
 
@@ -286,6 +287,43 @@
 
 
 
-    </form>
+
     </div>
+    <script>
+        const initialCenter = [12.49130000,
+            41.89020000
+        ]; // Posizione iniziale della mappa (ad esempio, il centro di una città)
+        const map = tt.map({
+            key: "CGrCXRtpRKgwQl1fo2NZ0mOC3k7CHzUX",
+            container: "map",
+            center: initialCenter,
+            zoom: 14
+        });
+        map.addControl(new tt.FullscreenControl());
+        map.addControl(new tt.NavigationControl());
+
+        // Posizione dell'appartamento
+        const apartmentPosition = [{{ $apartment->lon }},
+            {{ $apartment->lat }}
+        ]; // Assicurati di avere i campi latitude e longitude nel modello dell'appartamento
+
+        // Imposta il centro della mappa sulla posizione dell'appartamento
+        map.panTo(apartmentPosition);
+
+        // Aggiungi il marker per l'appartamento
+        const markerElement = document.createElement('img');
+        markerElement.src = 'https://svgshare.com/i/14RK.svg';
+        markerElement.style.width = '52px';
+        markerElement.style.height = '52px';
+
+        const marker = new tt.Marker({
+            element: markerElement,
+            anchor: 'bottom'
+        }).setLngLat(apartmentPosition);
+
+        marker.addTo(map);
+        simulateResize(window.innerWidth, window.innerHeight);
+    </script>
+
+
 @endsection

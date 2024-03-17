@@ -316,4 +316,10 @@
     .img-rocket {
         mix-blend-mode: darken;
     }
+
+    .mapboxgl-canvas {
+        width: 100% !important;
+        object-fit: cover;
+        border-radius: 16px;
+    }
 }
