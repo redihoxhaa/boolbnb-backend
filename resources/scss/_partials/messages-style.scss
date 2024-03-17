@@ -1,5 +1,9 @@
 .messages {
 
+    .custom-height-scroll {
+        height: calc(100vh - 311px);
+    }
+
     .custom-title-section {
         font-size: 20px;
         font-weight: 600;
@@ -8,6 +12,34 @@
 
     .custom-description-section {
         font-size: 14px;
+    }
+
+    .apartment-message-title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .apartment-message-description {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .card-custom-container {
+        border: 1px solid #E8E8E8;
+        padding: 24px;
+        border-radius: 14px;
+        margin-top: 20px;
+    }
+
+    .custom-button {
+        background-color: #CEF27E;
+        border-radius: 100px;
+        padding: 8px 24px;
+        margin-bottom: 20px;
+    }
+
+    .icon-message {
+        width: 16px;
     }
 
     .border-right-custom {

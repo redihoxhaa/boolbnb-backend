@@ -3,9 +3,11 @@
 @section('title', 'My Messages')
 
 @section('content')
-    <div class="mt-4 mb-5 messages">
+    <div class="messages">
 
-        <div>
+        {{-- Title --}}
+        <div class="py-4 px-5">
+
             {{-- Path Page --}}
             <div>
                 <span>Admin</span>
@@ -15,39 +17,41 @@
 
             {{-- Title Page --}}
             <h1 class="page-title">Messages</h1>
+
         </div>
-        {{-- Title Section --}}
+
+        {{-- Messages Header --}}
         <div class="d-flex border-bottom-custom pb-4">
-            <div class="col-md-4">
+            <div class="col-md-5 ps-4">
                 {{-- Title Section --}}
                 <h2 class="text-left custom-title-section">Apartments</h2>
                 <span class="custom-description-section">Select an apartment</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3 ps-4">
                 {{-- Title Section --}}
-                <h2 class="text-left custom-title-section">Apartments</h2>
-                <span class="custom-description-section">Select an apartment</span>
+                <h2 class="text-left custom-title-section">Listed Messages</h2>
+                <span class="custom-description-section">Select a message</span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 ps-4">
                 {{-- Title Section --}}
-                <h2 class="text-left custom-title-section">Apartments</h2>
-                <span class="custom-description-section">Select an apartment</span>
+                <h2 class="text-left custom-title-section">Body Message</h2>
             </div>
         </div>
 
         {{-- Content --}}
-        <div class="d-flex align-items-stretch">
+        <div class="row">
 
             {{-- Apartment --}}
-            <div class="col-md-4 pe-0 border-right-custom">
+            <div class="col-md-5 pe-0 border-right-custom">
 
                 {{-- Apartment List --}}
                 <div class="list-group">
+
+                    {{-- Apartment Element --}}
                     @foreach ($apartments as $apartment)
-                        {{-- Apartment Element --}}
-                        <a href="#" class="p-4 apartment-title border-bottom-custom w-100 d-flex gap-3"
+                        <a href="#" class="p-4 apartment-title border-bottom-custom d-flex gap-3 w-100"
                             data-id="{{ $apartment->id }}">
-                            <div>
+                            <div class="d-none d-xl-block">
                                 @if ($apartment->images)
                                     <img class="apartment-img"
                                         src="{{ asset('storage/' . explode(',', $apartment->images)[0]) }}"
@@ -58,33 +62,45 @@
                                         alt="apartment-image">
                                 @endif
                             </div>
-                            <div>
-                                <h5 class="mb-1">{{ $apartment->title }}</h5>
-                                <span class="mb-1 fw-normal">{{ $apartment->address }}</span>
+                            <div class="d-flex flex-column justify-content-center">
+                                <h5 class="apartment-message-title">{{ $apartment->title }}</h5>
+                                <span class="apartment-message-description">{{ $apartment->address }}</span>
                             </div>
                         </a>
                     @endforeach
                 </div>
+
             </div>
 
             {{-- Messages List --}}
-            <div class="col-md-4 p-0 border-right-custom">
+            <div class="col-md-3 p-0 border-right-custom">
 
                 <div id="messages-list">
                     <!-- Messages will be loaded here -->
                 </div>
+
             </div>
 
             {{-- Messages --}}
-            <div class="col-md-4">
-                <h2 class="text-center mb-4">Body</h2>
-                <div class="message-guide text-center d-none">Select a message</div>
-                <div class="card message-body d-none">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="card-title">Message Body</h5>
+            <div class="col-md-4 p-4">
+                <div class="message-body d-none">
+                    <div class="user d-flex gap-2">
+                        <div>
+                            <img src="{{ asset('assets/images/message_user_icon.svg') }}" alt="">
+                        </div>
+                        <div class="message-user-info">
+                            {{-- Informazioni da javascript --}}
+                            <div>
+                                <h5 class="apartment-message-description">Nome</h5>
+                                <span class="apartment-message-description">Email</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text" id="message-text"></p>
+                    <div>
+                        <p class="card-custom-container" id="message-text"></p>
+                    </div>
+                    <div>
+                        <a class="btn custom-button" href="mailto:vitodurso98@gmail.com">Reply</a>
                     </div>
                 </div>
             </div>
@@ -119,19 +135,17 @@
                             response.data.forEach((message, index) => {
                                 const messageDiv = document.createElement('div');
                                 messageDiv.innerHTML = `
-                <div class="message border-bottom-custom p-4 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
-                    <div class="card-body d-flex gap-3">
-                        <div class=""> 
-                            <img class="icon-message" src="{{ asset('assets/images/mail_icon.svg') }}">
-                        </div>
-                        <div>
-                            <h5 class="card-title">${message.sender_name}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${message.sender_email}</h6>
-                        </div>
-                        <input type="hidden" class="message-text" value="${message.message_text}">
-                    </div>
-                </div>
-            `;
+                                <div class="message border-bottom-custom p-4 ${response.data.length === 1 && index === 0 ? 'active' : ''}" data-message-id="${message.id}">
+                                    <div class="d-flex gap-3">
+                                        <div> 
+                                            <img class="icon-message" src="{{ asset('assets/images/mail_icon.svg') }}">
+                                        </div>
+                                    <div>
+                                    <h5 class="apartment-message-title">${message.sender_name}</h5>
+                                    <h6 class="apartment-message-description">${message.created_at}</h6>
+                                </div>
+                                <input type="hidden" class="message-text" value="${message.message_text}">
+                                `;
                                 messagesList.appendChild(messageDiv);
 
                                 // Se c'è solo un messaggio e siamo nell'ultimo ciclo, mostra il corpo del messaggio
