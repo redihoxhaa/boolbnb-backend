@@ -60,7 +60,7 @@
                 </div>
                 <div class="col col-lg-7 ps-4 mt-2">
                     <h6 class="text-black">PAYMENT</h6>
-                    <div class="d-flex mt-3 lg-gap-2">
+                    <div class="d-flex mt-3 mb-4 lg-gap-2">
                         <div class="me-4">
 
                             <div>
@@ -79,7 +79,7 @@
                             <h6 class="selected-plan"></h6>
                             <h4>{{ $apartment->title }}</h4>
                             <div class="d-flex">
-                                <span class="start-date"></span>
+                                <span class="start-date">Increase your booking chances!</span>
 
                             </div>
                         </div>
