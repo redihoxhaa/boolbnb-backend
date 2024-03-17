@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="px-5 create container">
+    <div class="px-5 py-4 create container">
 
         {{-- Path Page --}}
         <div>

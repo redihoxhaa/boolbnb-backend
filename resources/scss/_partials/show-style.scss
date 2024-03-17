@@ -1,5 +1,48 @@
-.create {
+.show {
 
+
+
+    .slide {
+        border-radius: 16px;
+        overflow: hidden;
+
+        .carousel-inner {
+            height: 300px;
+
+            .carousel-item {
+
+
+                transition: opacity .6s ease;
+
+
+                .active {
+                    opacity: 1;
+                    transition: opacity .6s ease;
+                }
+
+                &:not(.active) {
+                    opacity: 0;
+                }
+
+                .parent {
+
+                    min-height: 300px;
+                    position: relative;
+
+                    img {
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+
+
+
+                    }
+                }
+            }
+        }
+
+    }
 
     .counter-counter {
         display: flex;
@@ -365,5 +408,104 @@
     /* Firefox */
     input[type=number] {
         -moz-appearance: textfield;
+    }
+
+    .image-gallery {
+        max-height: 500px;
+        overflow: hidden;
+        border-radius: 16px;
+
+        div {
+            border-radius: 16px;
+
+        }
+
+
+        img {
+            display: block;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            /* Or 'pixelated' */
+            transition: all 0.5s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                transform: scale(1.04);
+            }
+
+        }
+
+        .col-1,
+        .col-2,
+        .col-3,
+        .col-4,
+        .col-5,
+        .col-6,
+        .col-7,
+        .col-8,
+        .col-9,
+        .col-10,
+        .col-11,
+        .col-12,
+        .w-25,
+        .w-50,
+        .h-25,
+        .h-50-custom {
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .with-1.foto,
+        .with-2.foto,
+        .with-3.foto,
+        .with-4.foto,
+        .with-5.foto,
+        .with-6.foto,
+        .with-7.foto,
+        .with-8.foto {
+            height: 500px;
+        }
+
+        .h-50-custom {
+            height: 238px;
+
+        }
+
+        .w-50-custom {
+            height: 500px;
+            width: 50%;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .w-100-custom {
+            height: 238px;
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        .modal-dialog {
+
+
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
+            padding: 40px;
+            margin: 0;
+
+            img {
+                object-fit: contain;
+            }
+
+        }
     }
 }
