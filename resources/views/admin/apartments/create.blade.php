@@ -179,7 +179,7 @@
 
                 <div class="col-lg-5">
 
-                    <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
+                    <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
                     <div class="custum-file-upload">
                         <div class="preview-row row justify-content-center align-items-center">
                             <div class="icon">

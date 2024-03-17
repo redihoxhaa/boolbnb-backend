@@ -28,13 +28,13 @@
                 <div class="col-lg-7">
                     <h6 class="fw-bold mb-4 text-uppercase">Info</h6>
 
-                    <input placeholder="* Title..." type="text" class="form-control" id="title" name="title"
-                        required maxlength="255" value="{{ old('title', $apartment->title) }}">
+                    <input placeholder="Title..." type="text" class="form-control" id="title" name="title" required
+                        maxlength="255" value="{{ old('title', $apartment->title) }}">
 
                     @error('title')
                         <div class="alert alert-danger mt-2">{{ $message }}</div> <!-- Messaggio di errore -->
                     @enderror
-                    <textarea class="form-control mt-3" placeholder="* Describe your apartament...." id="description" name="description"
+                    <textarea class="form-control mt-3" placeholder="Describe your apartament...." id="description" name="description"
                         required>{{ old('description', $apartment->description) }}</textarea>
 
                     @error('description')
@@ -120,7 +120,7 @@
                     <div class="row mt-3">
 
                         <div class="col-12 position-relative mt-4">
-                            <h5 class="fw-bold">Location *</h5>
+                            <h5 class="fw-bold">Location</h5>
                             <div class="input-container">
                                 <input type="text" class="form-control" id="address" name="address" autocomplete="off"
                                     placeholder="Select address..." value="{{ old('address', $apartment->address) }}">
@@ -141,7 +141,7 @@
 
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="fw-bold">Services *</h5>
+                                <h5 class="fw-bold">Services</h5>
                                 <span
                                     class="selected-services">{{ count(old('services', $apartment->services->pluck('id')->toArray())) }}
                                 </span>
@@ -184,7 +184,7 @@
 
                 <div class="col-lg-5">
 
-                    <h6 class="fw-bold mb-4 text-uppercase">Photo *</h6>
+                    <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
                     <div class="custum-file-upload">
                         <div class="preview-row row justify-content-center align-items-center">
                             <div class="icon">
@@ -221,7 +221,7 @@
 
 
                     <div>
-                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship *</h5>
+                        <h5 class="fw-bold mt-5 mb-3 text-uppercase">Select your sponsorship</h5>
                         <div class="row">
                             <div class="p-2 col-12 col-md-4 col-lg-12 col-xl-4">
                                 <div class="d-flex flex-column" onclick="selectSponsor('gold')">
@@ -299,7 +299,7 @@
                         <div class="span-payment">You will be redirected to the payment page</div>
                     </div>
                     <div class="visibility-radio">
-                        <h6 class="fw-bold text-uppercase mt-5 mb-2">Visibility *</h6>
+                        <h6 class="fw-bold text-uppercase mt-5 mb-2">Visibility </h6>
 
 
                         <div class="radio-button-container d-flex flex-row-reverse justify-content-end">
