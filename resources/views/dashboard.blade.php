@@ -29,11 +29,11 @@
                 
                 // Definisci i messaggi per ogni periodo della giornata
                 if ($current_hour >= 1 && $current_hour < 12) {
-                    $greeting = 'Good Morning!';
+                    $greeting = 'Good morning!';
                 } elseif ($current_hour >= 12 && $current_hour < 18) {
-                    $greeting = 'Good Afternoon!';
+                    $greeting = 'Good afternoon!';
                 } else {
-                    $greeting = 'Good Evening!';
+                    $greeting = 'Good evening!';
                 }
                 
                 ?>
@@ -53,7 +53,7 @@
                 <div class="mb-4">
                     <h6 class="text-start text-uppercase title-group">About your apartments</h6>
                     <div class="d-flex flex-wrap g-2">
-                        <div class="col-12 col-sm-4 p-1">
+                        <a class="col-12 col-sm-4 p-1" href="{{ route('admin.apartments.index') }}">
                             <div class="summary-container py-4">
                                 <div class="d-flex justify-content-center gap-1 align-items-bottom mb-3">
                                     <img src="{{ asset('assets/images/house_icon.svg') }}" alt="">
@@ -63,8 +63,8 @@
                                     <div class="summary-number w-100 text-center">{{ $totalApartments }}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-sm-4 p-1">
+                        </a>
+                        <a class="col-12 col-sm-4 p-1" href="{{ route('admin.analytics.index') }}">
                             <div class="summary-container py-4">
                                 <div class="d-flex justify-content-center gap-1 align-items-bottom mb-3">
                                     <img src="{{ asset('assets/images/views_icon.svg') }}" alt="">
@@ -74,8 +74,8 @@
                                     <div class="summary-number w-100 text-center">{{ $totalVisits }}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-sm-4 p-1">
+                        </a>
+                        <a class="col-12 col-sm-4 p-1"href="{{ route('admin.analytics.index') }}">
                             <div class="summary-container py-4">
                                 <div class="d-flex justify-content-center gap-1 align-items-bottom mb-3">
                                     <img src="{{ asset('assets/images/message_icon.svg') }}" alt="">
@@ -85,7 +85,7 @@
                                     <div class="summary-number w-100 text-center">{{ $totalMessages }}</div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
 

@@ -66,7 +66,7 @@
 
         .nav-item {
 
-            border-radius: 10px !important;
+            border-radius: 6px !important;
 
             a {
                 color: rgb(167, 167, 167);
