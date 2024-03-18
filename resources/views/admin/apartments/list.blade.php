@@ -85,7 +85,7 @@
                                 <tr class="properties-table">
 
                                     {{-- Title --}}
-                                    <td>
+                                    <td class="ps-3">
                                         <a class="d-flex align-items-center"
                                             href="{{ route('admin.apartments.show', $apartment) }}">
                                             <div class="">
@@ -191,7 +191,7 @@
 
 
                                         {{-- Pulsanti desktop --}}
-                                        <div class="btn-group d-none d-sm-flex" role="group">
+                                        <div class="btn-group d-none d-sm-flex pe-1" role="group">
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
                                                 <img class="icon"
                                                     src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
