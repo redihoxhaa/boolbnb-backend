@@ -202,7 +202,18 @@
 
     </div>
 
-    <script></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const collapseButton = document.querySelector("[data-bs-target='#sidebarMenu']");
+            const marginFixedCustom = document.querySelector(".margin-fixed-custom");
+            const sidebarMenu = document.getElementById("sidebarMenu");
+
+            collapseButton.addEventListener("click", function() {
+                marginFixedCustom.classList.toggle("opened");
+                sidebarMenu.classList.toggle("d-none");
+            });
+        });
+    </script>
 </body>
 
 </html>

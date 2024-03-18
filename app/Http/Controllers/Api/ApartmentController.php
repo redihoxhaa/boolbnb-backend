@@ -81,7 +81,7 @@ class ApartmentController extends Controller
 
         // Verifica se il parametro radius è stato fornito
 
-        $radius = $request->has('radius') ? $data['radius'] : 5;
+        $radius = $request->has('radius') ? $data['radius'] : 1;
 
         // Effettua una chiamata all'API di geocodifica per ottenere la latitudine e la longitudine
 
@@ -181,7 +181,7 @@ class ApartmentController extends Controller
                 $nonSponsoredApartments = $nonSponsoredQuery->get();
 
                 // Calcola e aggiunge la distanza per ogni appartamento non sponsorizzato
-                
+
                 $nonSponsoredApartments->each(function ($apartment) use ($latitude, $longitude) {
                     $apartment->distance = $this->haversineDistance($latitude, $longitude, $apartment->lat, $apartment->lon);
                 });
@@ -300,7 +300,7 @@ class ApartmentController extends Controller
             ->orderBy(function ($query) {
 
                 // Ordina gli appartamenti in base alla data di creazione della sponsorizzazione più recente
-                
+
                 $query->select('created_at')
                     ->from('apartment_sponsorship')
                     ->whereColumn('apartment_id', 'apartments.id')

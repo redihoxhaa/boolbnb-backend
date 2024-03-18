@@ -3,25 +3,29 @@
 @section('title', 'Congratulations!')
 
 @section('content')
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <h2 class="mb-0">Congratulations!</h2>
-                    </div>
-                    <div class="card-body pt-5">
-                        <p class="lead text-center mb-4">Your payment was successful.</p>
-                        <div class="text-center mb-4">
-                            <p><strong>Apartment Title:</strong> {{ $apartment->title }}</p>
-                            <p><strong>Sponsorship Package:</strong> {{ $sponsorship->package_name }}</p>
-                            <p><strong>End Date:</strong> {{ $endDate }}</p>
+    <div class="sponsor-result py-4 px-5">
+
+        <div class="row">
+
+            <div class="col-12 col-xl-6">
+
+                {{-- Title Page --}}
+                <img class="mt-4" src="{{ asset('assets/images/sponsor_result_icon.svg') }}" alt="">
+                <h1 class="page-title title-dashboard mb-3">Your payment <br>was successful.<h1>
+
+                        <h6 class="text-start text-uppercase title-group mt-4">Apartment Title</h6>
+                        <span class="text-dashboard">{{ $apartment->title }}</span>
+
+                        <h6 class="text-start text-uppercase title-group mt-4">Sponsorship Package</h6>
+                        <span class="text-dashboard">{{ $sponsorship->package_name }}</span>
+
+                        <h6 class="text-start text-uppercase title-group  mt-4">End Date</h6>
+                        <span class="text-dashboard">{{ $endDate }}</span>
+
+                        <div class="text-start mt-4">
+                            <a href="{{ route('admin.apartments.index') }}" class="btn custom-button">Continue</a>
                         </div>
-                        <div class="text-center">
-                            <a href="{{ route('admin.apartments.index') }}" class="btn btn-primary">Continue</a>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
