@@ -65,6 +65,9 @@
         }
 
         .nav-item {
+
+            border-radius: 10px !important;
+
             a {
                 color: rgb(167, 167, 167);
 
@@ -73,6 +76,11 @@
                 }
             }
 
+        }
+
+        .nav-item:hover i,
+        .nav-item:hover a {
+            color: black;
         }
 
         .active-route {
