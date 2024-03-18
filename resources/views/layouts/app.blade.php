@@ -24,7 +24,7 @@
 
     <style>
         .pic-container {
-            width: 40px
+            width: 130px;
         }
 
         .fixed {

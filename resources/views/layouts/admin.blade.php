@@ -44,7 +44,7 @@
 
     <style>
         .pic-container {
-            width: 40px
+            width: 130px;
         }
 
         .nav-element {
@@ -149,7 +149,7 @@
                 <div class="nav-element ms-2">
                     {{-- Logo --}}
                     <div class="pic-container">
-                        <a href="http://localhost:5173/"><img class=""
+                        <a href="http://localhost:5173/"><img class="w-100"
                                 src="{{ asset('assets/images/logo-black.svg') }}" alt=""></a>
                     </div>
                 </div>
