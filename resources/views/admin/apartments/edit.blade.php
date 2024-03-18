@@ -183,8 +183,25 @@
                 </div>
 
                 <div class="col-lg-5">
+                    <div class="mb-4">
+                        @if ($apartment->images)
+                            <h6 class="fw-bold mb-4 text-uppercase">Actual Photos</h6>
+                            <div class="row">
+                                @foreach (explode(',', $apartment->images) as $image)
+                                    <div class="col-6 col-md-4">
+                                        <div class="position-relative preview-photos mb-4">
+                                            <img src="{{ asset('storage/' . $image) }}" alt="Apartment Image"
+                                                class="img-edit mb-2">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
 
-                    <h6 class="fw-bold mb-4 text-uppercase">Photo</h6>
+
+
+                    <h6 class="fw-bold mb-4 text-uppercase">Add photos</h6>
                     <div class="custum-file-upload">
                         <div class="preview-row row justify-content-center align-items-center">
                             <div class="icon">
