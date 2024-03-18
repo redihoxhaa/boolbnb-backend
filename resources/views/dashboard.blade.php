@@ -41,16 +41,16 @@
 
                 {{-- Title Page --}}
                 <h1 class="page-title title-dashboard mb-3">Welcome
-                    <span class="title-user text-capitalize">{{ Auth::user()->name }}</span><br>{{ $greeting }}
+                    <span class="title-user text-capitalize">
+                        {{ trim(explode(' ', Auth::user()->name)[0]) }}</span>,<br>{{ $greeting }}
                 </h1>
 
-                <p class="text-dashboard">Here are three simple steps to get you started. We suggest starting from
-                    creating a
-                    candidate.
+                <p class="text-dashboard">How are you doing today? In this dashboard you have an overview of how your account
+                    is performing.
                 </p>
 
                 {{-- Summon icon --}}
-                <div class="mb-4">
+                <div class="mb-4 py-4">
                     <h6 class="text-start text-uppercase title-group">About your apartments</h6>
                     <div class="d-flex flex-wrap g-2">
                         <a class="col-12 col-sm-4 p-1" href="{{ route('admin.apartments.index') }}">
@@ -91,15 +91,15 @@
 
                 {{-- Action --}}
                 <div>
-                    <h6 class="text-start text-uppercase title-group mb-3">Common Action</h6>
+                    <h6 class="text-start text-uppercase title-group mb-3">Common Actions</h6>
 
                     {{-- Create Apartment --}}
                     <div class="button-action rounded mb-4">
                         <a class="col-12 d-flex p-4" href="{{ route('admin.apartments.create') }}">
                             <img class="me-4" src="{{ asset('assets/images/new_apartment_icon.svg') }}" alt="">
                             <div class="flex-grow-1 d-flex flex-column text-start">
-                                <h4 class="summary-number">Create Apartment</h4>
-                                <span class="summary-title">Add new apartment now</span>
+                                <h4 class="summary-number">List new apartment</h4>
+                                <span class="summary-title">List your apartment now</span>
                             </div>
                             <img class="arrow-icon-button" src="{{ asset('assets/images/arrow_icon.svg') }}"
                                 alt="">
@@ -113,7 +113,7 @@
                                 alt="">
                             <div class="flex-grow-1 d-flex flex-column text-start">
                                 <h4 class="summary-number">Incoming messages</h4>
-                                <span class="summary-title">Respond to potential customers</span>
+                                <span class="summary-title">Get in touch with potential customers</span>
                             </div>
                             <img class="arrow-icon-button" src="{{ asset('assets/images/arrow_icon.svg') }}"
                                 alt="">
@@ -129,7 +129,7 @@
                                 plan!</b></h1>
                         <div class="d-flex align-items-start gap-3 mt-4">
                             <img class="pt-1" src="{{ asset('assets/images/star_icon.svg') }}" alt="">
-                            <p>your apartment will appear among the first results</p>
+                            <p>Your apartment will appear among the first results</p>
                         </div>
                         <div class="d-flex align-items-start gap-3 mt-2">
                             <img class="pt-1" src="{{ asset('assets/images/bolt.svg') }}" alt="">

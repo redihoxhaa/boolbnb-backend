@@ -8,6 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="icon" href="{{ asset('assets/images/logo-favicon.svg') }}" id="favicon">
 
     <title>@yield('title')</title>
 
@@ -104,6 +105,21 @@
             transition: all 0.3s ease-in-out;
         }
 
+        .user-photo-container {
+            width: 40px;
+            height: 40px;
+            border: 2px solid lightgray;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
 
         @media only screen and (min-width:768px) {
             .custom-sidebar {
@@ -133,12 +149,20 @@
                 <div class="nav-element ms-2">
                     {{-- Logo --}}
                     <div class="pic-container">
-                        <a href="http://localhost:5173/"><img class="w-100"
+                        <a href="http://localhost:5173/"><img class=""
                                 src="{{ asset('assets/images/logo-black.svg') }}" alt=""></a>
                     </div>
                 </div>
 
-                <div class="nav-element ms-2">
+                <div class="nav-element d-flex gap-3 align-items-center ms-2">
+
+                    @if (auth()->check() && auth()->user()->user_photo)
+                        <div class="user-photo-container">
+                            <img src="{{ asset('storage/' . Auth::user()->user_photo) }}" class="user-photo"
+                                alt="User Photo">
+                        </div>
+                    @endif
+
                     <a class="nav-link" href="{{ route('logout') }}"
                         onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">
@@ -148,6 +172,8 @@
                         @csrf
                     </form>
                 </div>
+
+
 
             </div>
         </header>

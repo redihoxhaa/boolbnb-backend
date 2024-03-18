@@ -15,6 +15,7 @@
         text-align: left;
         line-height: 140%;
         width: 340px;
+        width: 95%;
     }
 
     .summary-container {
@@ -97,6 +98,12 @@
         img {
             width: 100%;
             padding-bottom: 2px;
+        }
+    }
+
+    @media only screen and (min-width: 576px) {
+        .text-dashboard {
+            width: unset;
         }
     }
 }
