@@ -3,7 +3,7 @@
 @section('title', 'My Messages')
 
 @section('content')
-    <div class="messages-mobile d-lg-none">
+    <div class="messages-mobile d-xl-none">
         <div class="py-4 px-4">
             <div class="path-page">
                 <a href="{{ route('admin.dashboard') }}">Admin</a>
@@ -81,7 +81,7 @@
     </div>
 
 
-    <div class="messages d-none d-lg-block">
+    <div class="messages d-none d-xl-block">
 
         {{-- Title --}}
         <div class="py-4 px-4">
@@ -102,12 +102,12 @@
 
         {{-- Messages Header --}}
         <div class="d-flex border-bottom-custom pb-4">
-            <div class="col-md-5 ps-4">
+            <div class="col-md-4 ps-4">
                 {{-- Title Section --}}
                 <h2 class="text-left custom-title-section">Apartments</h2>
                 <span class="custom-description-section">Select an apartment</span>
             </div>
-            <div class="col-md-3 ps-4">
+            <div class="col-md-4 ps-4">
                 {{-- Title Section --}}
                 <h2 class="text-left custom-title-section">Messages</h2>
                 <span class="custom-description-section">Select a message</span>
@@ -122,7 +122,7 @@
         <div class="row">
 
             {{-- Apartment --}}
-            <div class="col-md-5 pe-0 border-right-custom">
+            <div class="col-md-4 pe-0 border-right-custom">
 
                 {{-- Apartment List --}}
                 <div class="list-group">
@@ -153,7 +153,7 @@
             </div>
 
             {{-- Messages List --}}
-            <div class="col-md-3 p-0 border-right-custom">
+            <div class="col-md-4 p-0 border-right-custom">
 
                 <div id="messages-list">
                     <!-- Messages will be loaded here -->
@@ -253,8 +253,15 @@
                     messagesListMobile.classList.add("d-none");
 
                     // Aggiorna i dettagli del messaggio con i dati dal div cliccato
+
+                    const luxonDateMobile = luxon.DateTime.fromISO(messageMobile.dataset.date, {
+                        zone: "utc"
+                    });
+                    const formattedDateMobile = luxonDateMobile.toFormat(
+                        "yyyy-MM-dd HH:mm");
+
                     const messageDateElementMobile = document.getElementById("message-date-mobile");
-                    messageDateElementMobile.textContent = 'Received on: ' + messageMobile.dataset.date;
+                    messageDateElementMobile.textContent = 'Received on: ' + formattedDateMobile;
 
                     const messageNameElementMobile = document.getElementById("message-name-mobile");
                     messageNameElementMobile.textContent = messageMobile.dataset.name;
@@ -358,7 +365,7 @@
                                         </div>
                                         <div>
                                             <h5>${message.sender_name}</h5>
-                                            <h6>${message.sender_email}</h6>
+                                            <span class="sender-email">${message.sender_email}</span>
                                         </div>
                                     </div>
                                     <input type="hidden" class="apartment-message-name" value="${message.sender_name}">
