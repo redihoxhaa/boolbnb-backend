@@ -8,7 +8,7 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="listed-properties container py-4 px-5">
+    <div class="listed-properties container py-4 px-3 px-lg-5">
 
         {{-- Path Page --}}
         <div class="path-page">
@@ -141,7 +141,7 @@
                                     {{-- Button --}}
                                     <td class="text-center">
 
-                                        <button class="btn btn-secondary d-sm-none" type="button" data-bs-toggle="collapse"
+                                        <button class="btn border-0 d-sm-none" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#collapse-{{ $apartment->id }}" aria-expanded="false"
                                             aria-controls="collapse-{{ $apartment->id }}">
                                             <i class="fa-solid fa-ellipsis-v"></i>
