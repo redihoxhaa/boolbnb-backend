@@ -28,11 +28,21 @@
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
                     <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    <!-- Aggiunta del div per il messaggio di avviso -->
+                    <div id="missingFieldMessage" class="alert alert-danger mt-3" style="display: none;">Please fill all the
+                        fields.</div>
                 </form>
             </div>
             <div class="col-md-8">
                 <h2 class="text-center mb-3">Analytics Chart</h2>
-                <canvas id="myChart"></canvas>
+                <div id="chartContainer" style="position: relative;">
+                    <canvas id="myChart" style="display: none;"></canvas>
+                    <div id="emptyChartDataMessage" class="alert alert-info" style="display: none;">{{ $apartment->title }}
+                        has no data available for
+                        the chart.</div>
+                </div>
+                <div id="emptyDataMessage" class="alert alert-warning" style="display: none;">Please select both start and
+                    end dates.</div>
             </div>
         </div>
     </div>
@@ -59,8 +69,12 @@
             });
 
             // Funzione per generare le date tra due date
+<<<<<<< HEAD
 
             function getDates(startDate, endDate) {
+=======
+            function getAllDates(startDate, endDate) {
+>>>>>>> d2ba0be871f87eea9ee55c13b5fffe7542072030
                 const dates = [];
                 let currentDate = new Date(startDate);
                 const end = new Date(endDate);
@@ -69,7 +83,6 @@
                     dates.push(new Date(currentDate));
                     currentDate.setDate(currentDate.getDate() + 1);
                 }
-
                 return dates;
             }
 
@@ -79,6 +92,7 @@
                 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
                     .getAttribute('content');
 
+
                 axios.get('http://localhost:8000/api/analytics', {
                         params: {
                             apartmentId: apartmentId,
@@ -87,13 +101,12 @@
                         }
                     })
                     .then(function(response) {
-                        console.log(response); // Visualizza l'intera risposta
                         const data = response.data;
-                        const labels = getDates(startDate,
-                            endDate); // Genera tutte le date nel range selezionato
+                        const allDates = getAllDates(startDate, endDate);
                         const visitsData = data.visits || [];
                         const messagesData = data.messages || [];
 
+<<<<<<< HEAD
                         console.log('Labels:', labels); // Visualizza le etichette
                         console.log('Visits data:', visitsData); // Visualizza i dati delle visite
                         console.log('Messages data:', messagesData); // Visualizza i dati dei messaggi
@@ -106,21 +119,34 @@
                         
                         if (visitsData.length > 0 || messagesData.length > 0) {
                             myChart.destroy(); // Distruggi il grafico esistente
+=======
+                        // Aggiorna il grafico con i nuovi dati solo se sono definiti
+                        if ((visitsData.length > 0 || messagesData.length > 0) && startDate && endDate) {
+                            myChart.destroy();
+>>>>>>> d2ba0be871f87eea9ee55c13b5fffe7542072030
                             myChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
-                                    labels: sortedLabels.map(date => date
-                                        .toLocaleDateString()
-                                    ), // Converti le date in formato stringa locale
+                                    labels: allDates.map(date => date.toLocaleDateString()),
                                     datasets: [{
                                         label: 'Visits',
-                                        data: visitsData,
+                                        data: allDates.map(date => {
+                                            const visit = visitsData.find(item => item
+                                                .date === date.toISOString().split(
+                                                    'T')[0]);
+                                            return visit ? visit.count : 0;
+                                        }),
                                         fill: false,
                                         borderColor: 'rgba(75, 192, 192, 1)',
                                         tension: 0.1
                                     }, {
                                         label: 'Messages',
-                                        data: messagesData,
+                                        data: allDates.map(date => {
+                                            const message = messagesData.find(item =>
+                                                item.date === date.toISOString()
+                                                .split('T')[0]);
+                                            return message ? message.count : 0;
+                                        }),
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
                                         tension: 0.1
@@ -134,8 +160,23 @@
                                     }
                                 }
                             });
+                            // Visualizza il grafico e nasconde i messaggi di avviso
+                            $('#myChart').show();
+                            $('#emptyDataMessage').hide();
+                            $('#emptyChartDataMessage').hide();
+                            $('#missingFieldMessage').hide(); // Nasconde il messaggio di campo mancante
+                        } else if (!startDate || !endDate) {
+                            // Se uno o entrambi i campi delle date sono vuoti, mostra un messaggio di avviso
+                            // specifico per i campi delle date vuote
+                            $('#myChart').hide();
+                            $('#emptyDataMessage').show();
+                            $('#emptyChartDataMessage').hide();
                         } else {
-                            console.log('Nessun dato disponibile per il grafico.');
+                            // Se non ci sono dati disponibili per il grafico, mostra un messaggio di avviso
+                            // specifico per i dati del grafico vuoti
+                            $('#myChart').hide();
+                            $('#emptyDataMessage').hide();
+                            $('#emptyChartDataMessage').show();
                         }
                     })
                     .catch(function(error) {
@@ -143,13 +184,30 @@
                     });
             }
 
+            // Mostra il grafico vuoto all'apertura della pagina
+            updateChart(null, null, null);
+
             $('#filterForm').submit(function(e) {
                 e.preventDefault();
                 const apartmentId = $('#apartmentSelect').val();
                 const startDate = $('#startDate').val();
                 const endDate = $('#endDate').val();
+
+                // Verifica se uno dei campi è vuoto
+                if (!apartmentId || !startDate || !endDate) {
+                    $('#missingFieldMessage').show();
+                    return;
+                }
+
+                // Aggiorna il grafico quando il modulo viene inviato
                 updateChart(apartmentId, startDate, endDate);
+            });
+
+            // Nascondi il messaggio di campo mancante quando si inseriscono dati in uno dei campi di ricerca
+            $('#apartmentSelect, #startDate, #endDate').on('input', function() {
+                $('#missingFieldMessage').hide();
             });
         });
     </script>
+
 @endsection

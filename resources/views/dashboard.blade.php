@@ -3,9 +3,9 @@
 @section('title', 'MalHome - Dashboard')
 
 @section('content')
-    <div class="dashboard py-4 px-5">
+    <div class="dashboard container py-4 px-5">
 
-        <div class="row">
+        <div class="row g-5">
 
             <div class="col-12 col-xl-6">
                 {{-- Path Page --}}
@@ -41,7 +41,7 @@
 
                 {{-- Title Page --}}
                 <h1 class="page-title title-dashboard mb-3">Welcome
-                    <span class="title-user">{{ Auth::user()->name }}</span><br>{{ $greeting }}
+                    <span class="title-user text-capitalize">{{ Auth::user()->name }}</span><br>{{ $greeting }}
                 </h1>
 
                 <p class="text-dashboard">Here are three simple steps to get you started. We suggest starting from
@@ -60,7 +60,7 @@
                                     <span class="summary-title">Apartments</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalApartments }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalApartments }}</div>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                     <span class="summary-title">Visits</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalVisits }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalVisits }}</div>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                     <span class="summary-title">Messages</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalMessages }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalMessages }}</div>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
             </div>
             <div class="d-none d-xl-block col-xl-6">
                 <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="ad-sponsor p-4 pb-5">
+                    <div class="ad-sponsor">
                         <img class="icon-rocket" src="{{ asset('assets/images/rocket.svg') }}" alt="">
                         <h1 class="ad-sponsor-title"><b>Increase visits</b> to your apartments, try our <b>sponsored
                                 plan!</b></h1>

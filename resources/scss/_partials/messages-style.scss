@@ -1,5 +1,12 @@
 .messages {
 
+    width: calc(100vw - 200px);
+    overflow-x: hidden;
+
+    .sender-email {
+        font-size: 14px;
+    }
+
     .custom-height-scroll {
         height: calc(100vh - 311px);
     }
