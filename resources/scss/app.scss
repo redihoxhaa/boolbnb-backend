@@ -45,3 +45,16 @@ a {
     display: block;
     width: fit-content;
 }
+
+.bg-success-subtle {
+    background-color: #fcfff4 !important;
+}
+
+.toast-header-success {
+    background-color: #CEF27E !important;
+    color: black !important;
+
+    button {
+        color: black !important;
+    }
+}
