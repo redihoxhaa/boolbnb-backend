@@ -37,8 +37,8 @@
                 <h2 class="text-center mb-3">Analytics Chart</h2>
                 <div id="chartContainer" style="position: relative;">
                     <canvas id="myChart" style="display: none;"></canvas>
-                    <div id="emptyChartDataMessage" class="alert alert-info" style="display: none;">{{ $apartment->title }}
-                        has no data available for
+                    <div id="emptyChartDataMessage" class="alert alert-info" style="display: none;">
+                        Has no data available for
                         the chart.</div>
                 </div>
                 <div id="emptyDataMessage" class="alert alert-warning" style="display: none;">Please select both start and
