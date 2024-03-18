@@ -8,7 +8,7 @@
 @section('title', 'Manage Apartments')
 
 @section('content')
-    <div class="listed-properties container py-4 px-5">
+    <div class="listed-properties container py-4 px-3 px-lg-5">
 
         {{-- Path Page --}}
         <div class="path-page">
@@ -88,7 +88,7 @@
                                     <td>
                                         <a class="d-flex align-items-center"
                                             href="{{ route('admin.apartments.show', $apartment) }}">
-                                            <div class="d-none d-sm-block">
+                                            <div class="">
                                                 @if ($apartment->images)
                                                     <img class="apartment-img"
                                                         src="{{ asset('storage/' . explode(',', $apartment->images)[0]) }}"
@@ -140,7 +140,35 @@
 
                                     {{-- Button --}}
                                     <td class="text-center">
-                                        <div class="btn-group" role="group">
+
+                                        <button class="btn border-0 d-sm-none" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse-{{ $apartment->id }}" aria-expanded="false"
+                                            aria-controls="collapse-{{ $apartment->id }}">
+                                            <i class="fa-solid fa-ellipsis-v"></i>
+                                        </button>
+
+                                        <div class="collapse" id="collapse-{{ $apartment->id }}">
+                                            <div
+                                                class="d-flex py-2 flex-column gap-2 align-items-center justify-content-center">
+                                                {{-- Pulsanti mobile --}}
+                                                <a href="{{ route('admin.apartments.edit', $apartment) }}">
+                                                    <img class="icon"
+                                                        src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
+                                                </a>
+                                                <a href="{{ route('admin.apartments.sponsorship', $apartment) }}">
+                                                    <img src="{{ asset('assets/images/' . 'sponsor_icon.svg') }}">
+                                                </a>
+                                                <a role='button' data-bs-toggle="modal"
+                                                    data-bs-target="#my-dialog-{{ $apartment->id }}">
+                                                    <img src="{{ asset('assets/images/' . 'delete_icon.svg') }}">
+                                                </a>
+                                            </div>
+                                        </div>
+
+
+
+                                        {{-- Pulsanti desktop --}}
+                                        <div class="btn-group d-none d-sm-flex" role="group">
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
                                                 <img class="icon" src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
                                             </a>
@@ -152,46 +180,47 @@
                                                 data-bs-target="#my-dialog-{{ $apartment->id }}">
                                                 <img src="{{ asset('assets/images/' . 'delete_icon.svg') }}">
                                             </a>
-
-                                            {{-- Modale --}}
-                                            <div class="modal" id="my-dialog-{{ $apartment->id }}">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content card-custom">
-
-                                                        {{-- Messaggio di alert --}}
-                                                        <div class="modal-header ">
-                                                            <h3 class="d-block w-100 text-center">Are you sure?</h3>
-                                                        </div>
-
-                                                        {{-- Informazione operazione --}}
-                                                        <div class="modal-body text-center">
-                                                            You are about to delete <br><span class="fw-bold">
-                                                                {{ $apartment->title }}</span>
-                                                        </div>
-
-                                                        <div class="modal-footer d-flex justify-content-center">
+                                        </div>
 
 
-                                                            {{-- Pulsante annulla --}}
-                                                            <button
-                                                                class="btn-tool border border-dark bg-white text-black border mb-4 mt-3"
-                                                                data-bs-dismiss="modal">Dismiss
-                                                            </button>
+                                        {{-- Modale --}}
+                                        <div class="modal" id="my-dialog-{{ $apartment->id }}">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content card-custom">
 
-                                                            {{-- Pulsante elimina --}}
-                                                            <form
-                                                                action="{{ route('admin.apartments.destroy', $apartment) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <input class="btn btn-tool bg-danger text-white mb-4 mt-3"
-                                                                    type="submit" value="Delete">
-                                                            </form>
-                                                        </div>
+                                                    {{-- Messaggio di alert --}}
+                                                    <div class="modal-header ">
+                                                        <h3 class="d-block w-100 text-center">Are you sure?</h3>
+                                                    </div>
+
+                                                    {{-- Informazione operazione --}}
+                                                    <div class="modal-body text-center">
+                                                        You are about to delete <br><span class="fw-bold">
+                                                            {{ $apartment->title }}</span>
+                                                    </div>
+
+                                                    <div class="modal-footer d-flex justify-content-center">
+
+
+                                                        {{-- Pulsante annulla --}}
+                                                        <button
+                                                            class="btn-tool border border-dark bg-white text-black border mb-4 mt-3"
+                                                            data-bs-dismiss="modal">Dismiss
+                                                        </button>
+
+                                                        {{-- Pulsante elimina --}}
+                                                        <form action="{{ route('admin.apartments.destroy', $apartment) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <input class="btn btn-tool bg-danger text-white mb-4 mt-3"
+                                                                type="submit" value="Delete">
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </td>
                                 </tr>
                             @endforeach

@@ -8,7 +8,7 @@
 
 
     {{-- <link rel="stylesheet" href="{{ asset('scss/partials/sponsorships-style.scss') }}"> --}}
-    <div class="container py-4 px-5 sponsorship">
+    <div class="container py-4 px-3 px-lg-5 sponsorship">
 
         {{-- Path Page --}}
         <div class="path-page">
@@ -103,9 +103,11 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <div class="d-flex flex-row-reverse">
+                    <div class="d-flex flex-row-reverse gap-4">
                         <button id="submit-button" class="buttonPayment buttonPayment--small buttonPayment--green"
                             style="display:none;">Pay Now</button>
+                        <button class="buttonPayment buttonPayment--small bg-white"><a
+                                href="{{ route('admin.apartments.index') }}">Back</a></button>
                     </div>
                 </div>
             </div>

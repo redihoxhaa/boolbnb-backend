@@ -48,6 +48,7 @@
     </div>
 
     <!-- Assicurati di includere jQuery, Chart.js e Axios.js prima di utilizzarli -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -68,7 +69,12 @@
             });
 
             // Funzione per generare le date tra due date
+<<<<<<< HEAD
+
+            function getDates(startDate, endDate) {
+=======
             function getAllDates(startDate, endDate) {
+>>>>>>> d2ba0be871f87eea9ee55c13b5fffe7542072030
                 const dates = [];
                 let currentDate = new Date(startDate);
                 const end = new Date(endDate);
@@ -81,6 +87,7 @@
             }
 
             // Funzione per aggiornare il grafico in base al filtro di data
+
             function updateChart(apartmentId, startDate, endDate) {
                 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
                     .getAttribute('content');
@@ -99,9 +106,24 @@
                         const visitsData = data.visits || [];
                         const messagesData = data.messages || [];
 
+<<<<<<< HEAD
+                        console.log('Labels:', labels); // Visualizza le etichette
+                        console.log('Visits data:', visitsData); // Visualizza i dati delle visite
+                        console.log('Messages data:', messagesData); // Visualizza i dati dei messaggi
+
+                        // Assicurati che le etichette siano ordinate correttamente
+
+                        const sortedLabels = labels.sort((a, b) => new Date(a) - new Date(b));
+
+                        // Aggiorna il grafico con i nuovi dati solo se sono definiti
+                        
+                        if (visitsData.length > 0 || messagesData.length > 0) {
+                            myChart.destroy(); // Distruggi il grafico esistente
+=======
                         // Aggiorna il grafico con i nuovi dati solo se sono definiti
                         if ((visitsData.length > 0 || messagesData.length > 0) && startDate && endDate) {
                             myChart.destroy();
+>>>>>>> d2ba0be871f87eea9ee55c13b5fffe7542072030
                             myChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {

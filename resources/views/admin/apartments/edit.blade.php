@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <div class="px-5 py-4 edit container">
+    <div class="px-3 px-lg-5 py-4 edit container">
 
         {{-- Path Page --}}
         <div class="path-page">
