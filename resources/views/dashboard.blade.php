@@ -3,7 +3,7 @@
 @section('title', 'MalHome - Dashboard')
 
 @section('content')
-    <div class="dashboard py-4 px-5">
+    <div class="dashboard container py-4 px-5">
 
         <div class="row">
 
@@ -60,7 +60,7 @@
                                     <span class="summary-title">Apartments</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalApartments }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalApartments }}</div>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                     <span class="summary-title">Visits</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalVisits }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalVisits }}</div>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                                     <span class="summary-title">Messages</span>
                                 </div>
                                 <div>
-                                    <span class="summary-number">{{ $totalMessages }}</span>
+                                    <div class="summary-number w-100 text-center">{{ $totalMessages }}</div>
                                 </div>
                             </div>
                         </div>
