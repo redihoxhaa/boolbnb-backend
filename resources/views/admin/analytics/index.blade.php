@@ -3,11 +3,20 @@
 @section('title', 'Analytics')
 
 @section('content')
-    <div class="container py-4">
-        <h1 class="pb-3">Analytics</h1>
+    <div class="analytics container py-4 px-3 px-lg-5">
+
+        {{-- Path Page --}}
+        <div class="path-page">
+            <a href="{{ route('admin.dashboard') }}">Admin</a>
+            <span>/</span>
+            <span>Apartments</span>
+        </div>
+
+        {{-- Title Page --}}
+        <h1 class="page-title">Analytics</h1>
+
         <div class="row">
-            <div class="col-md-4">
-                <h2 class="text-center mb-3">Filter by Apartment and Date Range</h2>
+            <div class="col-12 col-md-6">
                 <form id="filterForm">
                     @csrf <!-- Aggiungi questa direttiva per proteggere il form -->
                     <div class="mb-3">
@@ -27,27 +36,29 @@
                         <label for="endDate" class="form-label">End Date</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
-                    <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    <button type="submit" class="btn custom-button">Apply Filter</button>
                     <!-- Aggiunta del div per il messaggio di avviso -->
-                    <div id="missingFieldMessage" class="alert alert-danger mt-3" style="display: none;">Please fill all the
+                    <div id="missingFieldMessage" class="alert alert-danger mt-3" style="display: none;">Please fill all
+                        the
                         fields.</div>
                 </form>
             </div>
-            <div class="col-md-8">
-                <h2 class="text-center mb-3">Analytics Chart</h2>
+            <div class="col-12 col-md-6">
                 <div id="chartContainer" style="position: relative;">
                     <canvas id="myChart" style="display: none;"></canvas>
                     <div id="emptyChartDataMessage" class="alert alert-info" style="display: none;">
                         No data available for
                         the chart.</div>
                 </div>
-                <div id="emptyDataMessage" class="alert alert-warning" style="display: none;">Please select both start and
+                <div id="emptyDataMessage" class="alert alert-warning" style="display: none;">Please select both start
+                    and
                     end dates.</div>
+
             </div>
         </div>
     </div>
 
-    <!-- Assicurati di includere jQuery, Chart.js e Axios.js prima di utilizzarli -->
+    <!-- Inclusione jQuery, Chart.js e Axios.js -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -114,9 +125,10 @@
                                                     'T')[0]);
                                             return visit ? visit.count : 0;
                                         }),
-                                        fill: false,
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        tension: 0.1
+                                        fill: true,
+                                        fillColor: 'rgb(206, 242, 127)',
+                                        borderColor: 'rgb(206, 242, 127)',
+                                        tension: 0.2
                                     }, {
                                         label: 'Messages',
                                         data: allDates.map(date => {
@@ -127,13 +139,17 @@
                                         }),
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
-                                        tension: 0.1
+                                        tension: 0.2
                                     }]
                                 },
                                 options: {
                                     scales: {
                                         y: {
-                                            beginAtZero: true
+                                            beginAtZero: true,
+                                            ticks: {
+                                                stepSize: 1, // Imposta il passo a 1 per garantire solo numeri interi sull'asse Y
+                                                precision: 0 // Imposta la precisione a 0 per evitare decimali
+                                            }
                                         }
                                     }
                                 }
