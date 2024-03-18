@@ -41,7 +41,7 @@
 
                 {{-- Title Page --}}
                 <h1 class="page-title title-dashboard mb-3">Welcome
-                    <span class="title-user">{{ Auth::user()->name }}</span><br>{{ $greeting }}
+                    <span class="title-user text-capitalize">{{ Auth::user()->name }}</span><br>{{ $greeting }}
                 </h1>
 
                 <p class="text-dashboard">Here are three simple steps to get you started. We suggest starting from
