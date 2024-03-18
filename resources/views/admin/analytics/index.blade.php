@@ -38,6 +38,7 @@
     </div>
 
     <!-- Assicurati di includere jQuery, Chart.js e Axios.js prima di utilizzarli -->
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -58,6 +59,7 @@
             });
 
             // Funzione per generare le date tra due date
+
             function getDates(startDate, endDate) {
                 const dates = [];
                 let currentDate = new Date(startDate);
@@ -72,6 +74,7 @@
             }
 
             // Funzione per aggiornare il grafico in base al filtro di data
+
             function updateChart(apartmentId, startDate, endDate) {
                 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
                     .getAttribute('content');
@@ -96,9 +99,11 @@
                         console.log('Messages data:', messagesData); // Visualizza i dati dei messaggi
 
                         // Assicurati che le etichette siano ordinate correttamente
+
                         const sortedLabels = labels.sort((a, b) => new Date(a) - new Date(b));
 
                         // Aggiorna il grafico con i nuovi dati solo se sono definiti
+                        
                         if (visitsData.length > 0 || messagesData.length > 0) {
                             myChart.destroy(); // Distruggi il grafico esistente
                             myChart = new Chart(ctx, {
