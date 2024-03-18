@@ -106,27 +106,50 @@
                                         </a>
                                     </td>
 
+
+
                                     {{-- Address --}}
                                     <td class="center d-none d-lg-table-cell">
                                         {{ $apartment->address }}</td>
 
+                                    <td class="d-md-none ps-sm-1 pe-sm-4 text-center">
+                                        @if (
+                                            $apartment->sponsorships->count() &&
+                                                $apartment->is_visible == 1 &&
+                                                $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
+                                            <div class="d-inline mobile-icon-size sponsored-color-icon">
+                                                <i class="fa-solid fa-bolt"></i>
+                                            </div>
+                                        @elseif (!$apartment->is_visible)
+                                            <div class="d-inline mobile-icon-size text-nowrap text-secondary">
+                                                <i class="fa-solid fa-eye-slash"></i>
+                                            </div>
+                                        @else
+                                            <div class="d-inline mobile-icon-size active-color-icon">
+                                                <i class="fa-solid fa-earth-americas"></i>
+                                            </div>
+                                        @endif
+
+                                    </td>
+
                                     {{-- Status --}}
-                                    <td class="d-none d-md-table-cell text-center">
+                                    <td class="d-none d-md-table-cell text-center text-nowrap">
                                         @if (
                                             $apartment->sponsorships->count() &&
                                                 $apartment->is_visible == 1 &&
                                                 $apartment->sponsorships[count($apartment->sponsorships) - 1]->pivot->end_date > Carbon::now())
                                             <div class="status-tag tag-sponsored d-inline">
+                                                <i class="fa-solid fa-bolt pe-1 icon-opacity-color"></i>
                                                 <span>Sponsored</span>
                                             </div>
                                         @elseif (!$apartment->is_visible)
                                             <div class="status-tag tag-hidden d-inline text-nowrap">
-                                                <img class="me-1" src="{{ asset('assets/images/' . 'hidden_icon.svg') }}"
-                                                    alt="">
+                                                <i class="fa-solid fa-eye-slash pe-1 icon-opacity-color"></i>
                                                 <span>Hidden</span>
                                             </div>
                                         @else
-                                            <div class="status-tag tag-active d-inline">
+                                            <div class="status-tag tag-active d-inline ">
+                                                <i class="fa-solid fa-earth-americas pe-1 icon-opacity-color"></i>
                                                 <span>Active</span>
                                             </div>
                                         @endif
@@ -170,7 +193,8 @@
                                         {{-- Pulsanti desktop --}}
                                         <div class="btn-group d-none d-sm-flex" role="group">
                                             <a href="{{ route('admin.apartments.edit', $apartment) }}">
-                                                <img class="icon" src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
+                                                <img class="icon"
+                                                    src="{{ asset('assets/images/' . 'edit_icon.svg') }}">
                                             </a>
                                             <a href="{{ route('admin.apartments.sponsorship', $apartment) }}">
                                                 <img src="{{ asset('assets/images/' . 'sponsor_icon.svg') }}">
