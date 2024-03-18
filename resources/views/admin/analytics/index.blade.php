@@ -9,7 +9,7 @@
         <div class="path-page">
             <a href="{{ route('admin.dashboard') }}">Admin</a>
             <span>/</span>
-            <span>Apartments</span>
+            <span>Analytics</span>
         </div>
 
         {{-- Title Page --}}
@@ -20,7 +20,7 @@
                 <form id="filterForm">
                     @csrf <!-- Aggiungi questa direttiva per proteggere il form -->
                     <div class="mb-3">
-                        <label for="apartmentSelect" class="form-label">Select Apartment</label>
+                        <label for="apartmentSelect" class="form-label minimize pt-3">Select Apartment</label>
                         <select class="form-select" id="apartmentSelect" name="apartmentId">
                             <option value="">Select Apartment</option>
                             @foreach ($apartments as $apartment)
@@ -29,14 +29,14 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="startDate" class="form-label">Start Date</label>
+                        <label for="startDate" class="form-label minimize pt-3">Start Date</label>
                         <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
                     <div class="mb-3">
-                        <label for="endDate" class="form-label">End Date</label>
+                        <label for="endDate" class="form-label minimize pt-3">End Date</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
-                    <button type="submit" class="btn custom-button">Apply Filter</button>
+                    <button type="submit" class="btn custom-button mt-3">Apply Filter</button>
                     <!-- Aggiunta del div per il messaggio di avviso -->
                     <div id="missingFieldMessage" class="alert alert-danger mt-3" style="display: none;">Please fill all
                         the
@@ -126,9 +126,9 @@
                                             return visit ? visit.count : 0;
                                         }),
                                         fill: true,
-                                        fillColor: 'rgb(206, 242, 127)',
+                                        backgroundColor: 'rgba(206, 242, 127, 0.2)',
                                         borderColor: 'rgb(206, 242, 127)',
-                                        tension: 0.2
+                                        tension: 0.4
                                     }, {
                                         label: 'Messages',
                                         data: allDates.map(date => {
@@ -137,9 +137,10 @@
                                                 .split('T')[0]);
                                             return message ? message.count : 0;
                                         }),
-                                        fill: false,
+                                        fill: true,
+                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
                                         borderColor: 'rgba(255, 99, 132, 1)',
-                                        tension: 0.2
+                                        tension: 0.4
                                     }]
                                 },
                                 options: {

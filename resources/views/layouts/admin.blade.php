@@ -66,10 +66,10 @@
 
         .nav-item {
             a {
-                color: rgb(134, 134, 134);
+                color: rgb(167, 167, 167);
 
                 i {
-                    color: rgb(134, 134, 134);
+                    color: rgb(167, 167, 167);
                 }
             }
 
