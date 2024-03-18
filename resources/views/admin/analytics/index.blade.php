@@ -83,7 +83,7 @@
             function updateChart(apartmentId, startDate, endDate) {
                 axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
                     .getAttribute('content');
-                $('#myChart').show();
+
 
                 axios.get('http://localhost:8000/api/analytics', {
                         params: {
