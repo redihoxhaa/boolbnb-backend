@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ApartmentController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\VisitController;
+use App\Http\Controllers\Api\AnalyticsController;
 use App\Models\Visit;
 use Illuminate\Support\Facades\Route;
 

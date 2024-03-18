@@ -1,8 +1,6 @@
 @extends('layouts.admin')
 
-@section('title')
-    Analytics
-@endsection
+@section('title', 'Analytics')
 
 @section('content')
     <div class="container py-4">
@@ -11,6 +9,7 @@
             <div class="col-md-4">
                 <h2 class="text-center mb-3">Filter by Apartment and Date Range</h2>
                 <form id="filterForm">
+                    @csrf <!-- Aggiungi questa direttiva per proteggere il form -->
                     <div class="mb-3">
                         <label for="apartmentSelect" class="form-label">Select Apartment</label>
                         <select class="form-select" id="apartmentSelect" name="apartmentId">
@@ -38,10 +37,13 @@
         </div>
     </div>
 
+    <!-- Assicurati di includere jQuery, Chart.js e Axios.js prima di utilizzarli -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            // Inizializza il grafico con dati vuoti
             const ctx = document.getElementById('myChart').getContext('2d');
             let myChart = new Chart(ctx, {
                 type: 'line',
@@ -55,46 +57,87 @@
                 }
             });
 
-            // Funzione per aggiornare il grafico in base al filtro di data
-            function updateChart(apartmentId, startDate, endDate) {
-                // Esegui una chiamata AJAX al backend per ottenere i dati filtrati
-                // Sostituisci questa parte con la tua logica di backend per ottenere i dati filtrati
-                // Dati di esempio
-                const labels = ['2024-03-01', '2024-03-02', '2024-03-03']; // Esempio di etichette per gli assi x
-                const visitsData = [10, 20, 15]; // Esempio di dati per le visite
-                const messagesData = [5, 8, 6]; // Esempio di dati per i messaggi
+            // Funzione per generare le date tra due date
+            function getDates(startDate, endDate) {
+                const dates = [];
+                let currentDate = new Date(startDate);
+                const end = new Date(endDate);
 
-                // Aggiorna il grafico con i nuovi dati
-                myChart.destroy(); // Distruggi il grafico esistente
-                myChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Visits',
-                            data: visitsData,
-                            fill: false,
-                            borderColor: 'rgba(75, 192, 192, 1)',
-                            tension: 0.1
-                        }, {
-                            label: 'Messages',
-                            data: messagesData,
-                            fill: false,
-                            borderColor: 'rgba(255, 99, 132, 1)',
-                            tension: 0.1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
+                while (currentDate <= end) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+
+                return dates;
             }
 
-            // Gestisci la sottomissione del modulo di filtro
+            // Funzione per aggiornare il grafico in base al filtro di data
+            function updateChart(apartmentId, startDate, endDate) {
+                axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content');
+
+                axios.get('http://localhost:8000/api/analytics', {
+                        params: {
+                            apartmentId: apartmentId,
+                            startDate: startDate,
+                            endDate: endDate
+                        }
+                    })
+                    .then(function(response) {
+                        console.log(response); // Visualizza l'intera risposta
+                        const data = response.data;
+                        const labels = getDates(startDate,
+                            endDate); // Genera tutte le date nel range selezionato
+                        const visitsData = data.visits || [];
+                        const messagesData = data.messages || [];
+
+                        console.log('Labels:', labels); // Visualizza le etichette
+                        console.log('Visits data:', visitsData); // Visualizza i dati delle visite
+                        console.log('Messages data:', messagesData); // Visualizza i dati dei messaggi
+
+                        // Assicurati che le etichette siano ordinate correttamente
+                        const sortedLabels = labels.sort((a, b) => new Date(a) - new Date(b));
+
+                        // Aggiorna il grafico con i nuovi dati solo se sono definiti
+                        if (visitsData.length > 0 || messagesData.length > 0) {
+                            myChart.destroy(); // Distruggi il grafico esistente
+                            myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: sortedLabels.map(date => date
+                                        .toLocaleDateString()
+                                    ), // Converti le date in formato stringa locale
+                                    datasets: [{
+                                        label: 'Visits',
+                                        data: visitsData,
+                                        fill: false,
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        tension: 0.1
+                                    }, {
+                                        label: 'Messages',
+                                        data: messagesData,
+                                        fill: false,
+                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                        tension: 0.1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            console.log('Nessun dato disponibile per il grafico.');
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error retrieving statistics data', error);
+                    });
+            }
+
             $('#filterForm').submit(function(e) {
                 e.preventDefault();
                 const apartmentId = $('#apartmentSelect').val();
