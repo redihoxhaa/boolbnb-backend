@@ -5,7 +5,7 @@
 @section('content')
     <div class="dashboard container py-4 px-5">
 
-        <div class="row">
+        <div class="row g-5">
 
             <div class="col-12 col-xl-6">
                 {{-- Path Page --}}
@@ -123,7 +123,7 @@
             </div>
             <div class="d-none d-xl-block col-xl-6">
                 <div class="d-flex justify-content-center align-items-center h-100">
-                    <div class="ad-sponsor p-4 pb-5">
+                    <div class="ad-sponsor">
                         <img class="icon-rocket" src="{{ asset('assets/images/rocket.svg') }}" alt="">
                         <h1 class="ad-sponsor-title"><b>Increase visits</b> to your apartments, try our <b>sponsored
                                 plan!</b></h1>

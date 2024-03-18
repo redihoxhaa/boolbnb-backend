@@ -3,7 +3,7 @@
 @section('title', 'Congratulations!')
 
 @section('content')
-    <div class="sponsor-result py-4 px-5">
+    <div class="sponsor-result container py-4 px-5">
 
         <div class="row">
 
