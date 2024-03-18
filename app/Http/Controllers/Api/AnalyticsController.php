@@ -20,36 +20,21 @@ class AnalyticsController extends Controller
 
         $visitsData = Visit::where('apartment_id', $apartmentId)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as datetime')
-            ->pluck('datetime')
-            ->groupBy(function ($datetime) {
-                return Carbon::parse($datetime)->format('Y-m-d H:i:s'); // Raggruppa i dati per giorno e ora
-            })
-            ->map(function ($item) {
-                return $item->count(); // Conta le visite per ogni giorno e ora
-            });
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->get()
+            ->toArray();
 
         $messagesData = Message::where('apartment_id', $apartmentId)
             ->whereBetween('created_at', [$startDate, $endDate])
-            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as datetime')
-            ->pluck('datetime')
-            ->groupBy(function ($datetime) {
-                return Carbon::parse($datetime)->format('Y-m-d H:i:s'); // Raggruppa i dati per giorno e ora
-            })
-            ->map(function ($item) {
-                return $item->count(); // Conta i messaggi per ogni giorno e ora
-            });
-
-        $labels = $visitsData->keys(); // Ottieni le etichette (giorni) come array
+            ->selectRaw('DATE_FORMAT(created_at, "%Y-%m-%d") as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->get()
+            ->toArray();
 
         return response()->json([
-            'labels' => $labels,
-            'visits' => $visitsData->sortBy(function ($value, $key) {
-                return Carbon::parse($key); // Ordina i dati in base alla data
-            })->values()->toArray(), // Converti i dati in un array numerico
-            'messages' => $messagesData->sortBy(function ($value, $key) {
-                return Carbon::parse($key); // Ordina i dati in base alla data
-            })->values()->toArray() // Converti i dati in un array numerico
+            'visits' => $visitsData,
+            'messages' => $messagesData
         ]);
     }
 }

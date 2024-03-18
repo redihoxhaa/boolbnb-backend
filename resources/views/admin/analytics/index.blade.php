@@ -58,18 +58,12 @@
             });
 
             // Funzione per generare le date tra due date
-            function getDates(startDate, endDate) {
-                const dates = [];
-                let currentDate = new Date(startDate);
-                const end = new Date(endDate);
-
-                while (currentDate <= end) {
-                    dates.push(new Date(currentDate));
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-
-                return dates;
+            function getDates(startDate, endDate, messagesData, visitsData) {
+                const dates = new Set([...messagesData.map(item => item.date), ...visitsData.map(item => item
+                    .date)]);
+                return Array.from(dates);
             }
+
 
             // Funzione per aggiornare il grafico in base al filtro di data
             function updateChart(apartmentId, startDate, endDate) {
@@ -87,7 +81,7 @@
                         console.log(response); // Visualizza l'intera risposta
                         const data = response.data;
                         const labels = getDates(startDate,
-                            endDate); // Genera tutte le date nel range selezionato
+                            endDate, data.messages, data.visits); // Genera tutte le date nel range selezionato
                         const visitsData = data.visits || [];
                         const messagesData = data.messages || [];
 
@@ -104,18 +98,28 @@
                             myChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
-                                    labels: sortedLabels.map(date => date
+                                    labels: sortedLabels.map(date => new Date(date)
                                         .toLocaleDateString()
                                     ), // Converti le date in formato stringa locale
                                     datasets: [{
                                         label: 'Visits',
-                                        data: visitsData,
+                                        data: sortedLabels.map(date => {
+                                            const visit = visitsData.find(item => item
+                                                .date === date);
+                                            return visit ? visit.count :
+                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                        }),
                                         fill: false,
                                         borderColor: 'rgba(75, 192, 192, 1)',
                                         tension: 0.1
                                     }, {
                                         label: 'Messages',
-                                        data: messagesData,
+                                        data: sortedLabels.map(date => {
+                                            const message = messagesData.find(item =>
+                                                item.date === date);
+                                            return message ? message.count :
+                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                        }),
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
                                         tension: 0.1
@@ -129,6 +133,11 @@
                                     }
                                 }
                             });
+
+                            // Confronto tra le date nei dati dei messaggi e le etichette
+                            console.log('Etichette:', sortedLabels);
+                            console.log('Date dei messaggi:', messagesData.map(item => item.date));
+
                         } else {
                             console.log('Nessun dato disponibile per il grafico.');
                         }
