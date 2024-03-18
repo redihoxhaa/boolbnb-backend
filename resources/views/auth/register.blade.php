@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row register py-4">
+    <div class="row register py-4 py-sm-0">
 
         {{-- Background --}}
         <div class="col-6 d-none d-md-block login-background">
