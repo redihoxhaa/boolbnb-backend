@@ -58,12 +58,18 @@
             });
 
             // Funzione per generare le date tra due date
-            function getDates(startDate, endDate, messagesData, visitsData) {
-                const dates = new Set([...messagesData.map(item => item.date), ...visitsData.map(item => item
-                    .date)]);
-                return Array.from(dates);
-            }
+            // Funzione per generare tutte le date tra due date
+            function getAllDates(startDate, endDate) {
+                const dates = [];
+                let currentDate = new Date(startDate);
+                const end = new Date(endDate);
 
+                while (currentDate <= end) {
+                    dates.push(new Date(currentDate));
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+                return dates;
+            }
 
             // Funzione per aggiornare il grafico in base al filtro di data
             function updateChart(apartmentId, startDate, endDate) {
@@ -80,17 +86,14 @@
                     .then(function(response) {
                         console.log(response); // Visualizza l'intera risposta
                         const data = response.data;
-                        const labels = getDates(startDate,
-                            endDate, data.messages, data.visits); // Genera tutte le date nel range selezionato
+                        const allDates = getAllDates(startDate,
+                        endDate); // Genera tutte le date nel range selezionato
                         const visitsData = data.visits || [];
                         const messagesData = data.messages || [];
 
-                        console.log('Labels:', labels); // Visualizza le etichette
+                        console.log('All Dates:', allDates); // Visualizza tutte le date nel range selezionato
                         console.log('Visits data:', visitsData); // Visualizza i dati delle visite
                         console.log('Messages data:', messagesData); // Visualizza i dati dei messaggi
-
-                        // Assicurati che le etichette siano ordinate correttamente
-                        const sortedLabels = labels.sort((a, b) => new Date(a) - new Date(b));
 
                         // Aggiorna il grafico con i nuovi dati solo se sono definiti
                         if (visitsData.length > 0 || messagesData.length > 0) {
@@ -98,27 +101,28 @@
                             myChart = new Chart(ctx, {
                                 type: 'line',
                                 data: {
-                                    labels: sortedLabels.map(date => new Date(date)
-                                        .toLocaleDateString()
-                                    ), // Converti le date in formato stringa locale
+                                    labels: allDates.map(date => date
+                                .toLocaleDateString()), // Converti le date in formato stringa locale
                                     datasets: [{
                                         label: 'Visits',
-                                        data: sortedLabels.map(date => {
+                                        data: allDates.map(date => {
                                             const visit = visitsData.find(item => item
-                                                .date === date);
+                                                .date === date.toISOString().split(
+                                                    'T')[0]);
                                             return visit ? visit.count :
-                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                            0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
                                         }),
                                         fill: false,
                                         borderColor: 'rgba(75, 192, 192, 1)',
                                         tension: 0.1
                                     }, {
                                         label: 'Messages',
-                                        data: sortedLabels.map(date => {
+                                        data: allDates.map(date => {
                                             const message = messagesData.find(item =>
-                                                item.date === date);
+                                                item.date === date.toISOString()
+                                                .split('T')[0]);
                                             return message ? message.count :
-                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                            0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
                                         }),
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -135,7 +139,7 @@
                             });
 
                             // Confronto tra le date nei dati dei messaggi e le etichette
-                            console.log('Etichette:', sortedLabels);
+                            console.log('Labels:', allDates.map(date => date.toLocaleDateString()));
                             console.log('Date dei messaggi:', messagesData.map(item => item.date));
 
                         } else {
@@ -146,6 +150,7 @@
                         console.error('Error retrieving statistics data', error);
                     });
             }
+
 
             $('#filterForm').submit(function(e) {
                 e.preventDefault();
