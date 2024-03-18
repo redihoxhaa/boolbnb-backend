@@ -137,19 +137,19 @@
                                     }
                                 }
                             });
-
-                            // Confronto tra le date nei dati dei messaggi e le etichette
-                            console.log('Labels:', allDates.map(date => date.toLocaleDateString()));
-                            console.log('Date dei messaggi:', messagesData.map(item => item.date));
-
                         } else {
-                            console.log('Nessun dato disponibile per il grafico.');
+                            console.log('No data available for the chart.');
+                            // Aggiungi qui il codice per stampare il messaggio desiderato
+                            // Ad esempio:
+                            $('#myChart').replaceWith(
+                                '<div class="alert alert-info">No data available for the chart.</div>');
                         }
                     })
                     .catch(function(error) {
                         console.error('Error retrieving statistics data', error);
                     });
             }
+
 
 
             $('#filterForm').submit(function(e) {
