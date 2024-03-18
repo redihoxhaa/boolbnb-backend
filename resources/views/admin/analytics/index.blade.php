@@ -87,7 +87,7 @@
                         console.log(response); // Visualizza l'intera risposta
                         const data = response.data;
                         const allDates = getAllDates(startDate,
-                        endDate); // Genera tutte le date nel range selezionato
+                            endDate); // Genera tutte le date nel range selezionato
                         const visitsData = data.visits || [];
                         const messagesData = data.messages || [];
 
@@ -102,7 +102,8 @@
                                 type: 'line',
                                 data: {
                                     labels: allDates.map(date => date
-                                .toLocaleDateString()), // Converti le date in formato stringa locale
+                                        .toLocaleDateString()
+                                        ), // Converti le date in formato stringa locale
                                     datasets: [{
                                         label: 'Visits',
                                         data: allDates.map(date => {
@@ -110,7 +111,7 @@
                                                 .date === date.toISOString().split(
                                                     'T')[0]);
                                             return visit ? visit.count :
-                                            0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
                                         }),
                                         fill: false,
                                         borderColor: 'rgba(75, 192, 192, 1)',
@@ -122,7 +123,7 @@
                                                 item.date === date.toISOString()
                                                 .split('T')[0]);
                                             return message ? message.count :
-                                            0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
+                                                0; // Se c'è un dato, restituisci il conteggio, altrimenti 0
                                         }),
                                         fill: false,
                                         borderColor: 'rgba(255, 99, 132, 1)',
@@ -157,7 +158,16 @@
                 const apartmentId = $('#apartmentSelect').val();
                 const startDate = $('#startDate').val();
                 const endDate = $('#endDate').val();
-                updateChart(apartmentId, startDate, endDate);
+
+                // Verifica se i campi di data sono stati compilati
+                if (!startDate || !endDate) {
+                    // Se uno o entrambi i campi sono vuoti, visualizza un messaggio
+                    $('#myChart').replaceWith(
+                        '<div class="alert alert-warning">Date fields are required.</div>');
+                } else {
+                    // Se entrambi i campi sono compilati, procedi con l'aggiornamento del grafico
+                    updateChart(apartmentId, startDate, endDate);
+                }
             });
         });
     </script>
