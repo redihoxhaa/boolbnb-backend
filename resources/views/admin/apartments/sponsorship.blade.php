@@ -24,8 +24,8 @@
         </div>
         <form id="payment-form" action="{{ route('admin.apartments.buySponsorship', $apartment->id) }}" method="POST">
             @csrf
-            <div class="row gap-3 flex-column flex-lg-row ">
-                <div class="d-flex col col-lg-4 radio-input gap-3 justify-content-center flex-column">
+            <div class="row gap-3 flex-column flex-lg-row">
+                <div class="d-flex col col-lg-4 radio-input px-4 px-sm-0 gap-3 justify-content-center flex-column">
                     <h6 class="text-black">SELECT YOUR PLAN</h6>
                     @foreach ($sponsorships as $sponsorship)
                         <input value="{{ $sponsorship->id }}" name="sponsorship_choice"

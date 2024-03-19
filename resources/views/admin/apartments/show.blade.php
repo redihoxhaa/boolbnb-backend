@@ -9,7 +9,7 @@
         @if (session('success'))
             <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                 <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header-success bg-success text-white">
+                    <div class="toast-header custom-toaster">
                         <strong class="me-auto"><i class="fa-solid fa-check me-1"></i>Success!</strong>
                         <button type="button" class="btn-close btn-close-black" data-bs-dismiss="toast"
                             aria-label="Close"></button>
@@ -24,9 +24,9 @@
         @if (session('message'))
             <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
                 <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header bg-success text-white">
+                    <div class="toast-header custom-toaster">
                         <strong class="me-auto"><i class="fa-solid fa-check me-2"></i>Success!</strong>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                        <button type="button" class="btn-close btn-close-black" data-bs-dismiss="toast"
                             aria-label="Close"></button>
                     </div>
                     <div class="toast-body bg-success-subtle text-emphasis-success">

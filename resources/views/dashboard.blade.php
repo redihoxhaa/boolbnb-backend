@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                         </a>
-                        <a class="col-12 col-sm-4 p-1"href="{{ route('admin.analytics.index') }}">
+                        <a class="col-12 col-sm-4 p-1"href="{{ route('admin.messages.index') }}">
                             <div class="summary-container py-4">
                                 <div class="d-flex justify-content-center gap-1 align-items-bottom mb-3">
                                     <img src="{{ asset('assets/images/message_icon.svg') }}" alt="">

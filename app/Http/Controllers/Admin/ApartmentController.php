@@ -256,7 +256,7 @@ class ApartmentController extends Controller
         }
         $apartment->delete();
 
-        return redirect()->route('admin.apartments.index')->with('message', $apartment->title . '" was successfully deleted.');
+        return redirect()->route('admin.apartments.index')->with('message', $apartment->title . ' was successfully deleted.');
     }
 
     public function sponsorship($apartment)

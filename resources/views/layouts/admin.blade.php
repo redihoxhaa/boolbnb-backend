@@ -247,6 +247,13 @@
                 sidebarMenu.classList.toggle("d-none");
             });
         });
+
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
+
+        // Event listener for button click
+        document.querySelector("[data-bs-target='#sidebarMenu']").addEventListener('click', scrollToTop);
     </script>
 </body>
 
